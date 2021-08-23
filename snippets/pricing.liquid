@@ -1,0 +1,55 @@
+{%- comment -%}
+
+Pricing renderer.
+Used by product and line_item.
+
+Note: .js-price-compare-at-style shows the price
+
+{%- endcomment -%}
+
+{%- if template_class == 'order' -%}
+  {%- assign compare_price = compare_at_price | money -%}
+  {%- assign final_price = price | money -%}
+  {%- assign price_class = 'uppercase-text order-letter-space-sm' -%}
+  {%- assign original_price = original_at_price | money -%}
+{%- else -%}
+  {%- assign compare_price = compare_at_price | money_without_trailing_zeros -%}
+  {%- assign final_price = price | money_without_trailing_zeros -%}
+  {%- assign original_price = original_at_price | money_without_trailing_zeros -%}
+  {%- assign price_class = '' -%}
+{%- endif -%}
+
+{%- if product.tags contains 'gift-fragrance' and settings.enable_gift_products -%}
+  {%- unless settings.enable_gift_products_purchasable -%}
+    {%- assign compare_price = '' -%}
+    {%- assign final_price = '' -%}
+  {%- endunless -%}
+{%- endif -%}
+
+{%- if compare_at_price > price -%}
+  <span class="price price--compare-at{% unless compare_at_price == price or compare_at_price == 0 %} js-price-compare-at-style{% endunless %}">
+    <h3 class="price__value {{ price_class }}">{{ compare_price }}</h3>
+  </span>
+  <span class="price price--final">
+    <h3 class="price__value js-price {{ price_class }}">{{ final_price }}</h3>
+  </span>
+{%- else -%}
+  {% if compare_at_price != price %} 
+    <span class="price price--compare-at{% unless compare_at_price == price or price == original_at_price or compare_at_price == 0 %} js-price-compare-at-style{% endunless %}">
+      <h3 class="price__value {{ price_class }}">
+        {% unless compare_at_price %}
+          {{ original_price }}
+        {% else %}
+          {{ compare_price }}
+        {% endunless %}
+      </h3>
+    </span>	
+    <span class="price price--final">
+      <h3 class="price__value js-price {{ price_class }}">{{ final_price }}</h3>
+    </span>
+  {% else %}
+    <span class="price price--final">
+      <h3 class="price__value js-price {{ price_class }}">{{ final_price }}</h3>
+    </span>
+  {% endif %}
+{%- endif -%}

@@ -1,0 +1,61 @@
+{% if section.settings.title != blank %}
+  <p class="campaigns__header__title heading--1">{{ section.settings.title | upcase }}</p>
+{% endif %}
+
+{% if section.settings.text != blank %}
+  <div class="campaigns__header__text">{{ section.settings.text }}</div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Campaigns header",
+    "class": "campaigns__header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header"
+      },  
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image"
+      },
+      {
+        "type": "range",
+        "id": "alignment",
+        "label": "Image alignment",
+        "info": "Selects where the image zooms when on mobile.",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Fallback background color"
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  .campaigns__header {
+    background-color: {{ section.settings.color }};
+    {% if section.settings.image %}
+      background-image: url("{{ section.settings.image | img_url: 'master' }}");
+      background-position: {{ section.settings.alignment }}% 0;
+    {% endif %}
+  }
+</style>

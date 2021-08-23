@@ -1,0 +1,85 @@
+{% assign image_mobile = section.settings.image_mobile %}
+{% assign image_desktop = section.settings.image_desktop %}
+
+{% if image_mobile == blank %}
+  {% assign image_mobile_src = 'mobile-password.jpg' | asset_img_url: 'master' %}
+{% else %}
+  {% assign image_mobile_src = image_mobile | img_url: 'master' %}
+{% endif %}
+
+{% if image_desktop == blank %}
+  {% assign image_desktop_src = 'desktop-password.jpg' | asset_img_url: 'master' %}
+{% else %}
+  {% assign image_desktop_src = image_desktop | img_url: 'master' %}
+{% endif %}
+
+<picture class="site-is-down__image">
+  <source media="(max-width: 996px)" srcset="{{ image_mobile_src }}">
+  <source srcset="{{ image_desktop_src }}">
+  <img src="{{ image_desktop_src }}" alt="{{ section.settings.image_desktop.alt }}">
+</picture>
+<div class="site-is-down__content">
+
+  {% assign logo = section.settings.logo %}
+
+  {%- if logo == blank -%}
+    {% assign logo_src = 'black-logo.png' | asset_img_url: '45x' %}
+  {%- else -%}
+    {% assign logo_src = logo | img_url: '45x' %}
+  {%- endif -%}
+
+  <img class="site-is-down__content__logo" src="{{ logo_src }}" alt="{{ section.settings.logo.alt }}">
+
+  {% if section.settings.title %}
+    <h1 class="site-is-down__content__title uppercase-text">{{ section.settings.title }}</h1>
+  {% endif %}
+
+  {% if section.settings.text %}
+    <div class="site-is-down__content__text">{{ section.settings.text }}</div>
+  {% endif %}
+</div> 
+
+{% schema %}
+  {
+    "name": "Site is down",
+    "tag": "section",
+    "class": "site-is-down",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "label": "Title",
+        "id": "title",
+        "type": "text",
+        "default": "We'll be back soon"
+      },
+      {
+        "label": "Text",
+        "id": "text",
+        "type": "richtext",
+        "default": "<p>The secret is out. We redesigned our website to improve your shopping experience. Please check back in a few hours to browse the new and improved ANINEBING.com. If we can assist with anything in the meantime, please contact concierge@aninebing.com.</p>"
+      },
+      {
+        "label": "Logo",
+        "id": "logo",
+        "type": "image_picker"
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "label": "Mobile image",
+        "id": "image_mobile",
+        "type": "image_picker"
+      },
+      {
+        "label": "Desktop image",
+        "id": "image_desktop",
+        "type": "image_picker"
+      }
+    ]
+  }
+{% endschema %}

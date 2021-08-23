@@ -1,0 +1,12 @@
+{%- assign header = settings.checkout_marketing_title -%}
+{%- assign text = settings.checkout_marketing_text -%}
+
+<div class="checkout-marketing">
+  {% if header != blank %}
+  <h2 class="checkout-marketing__header">{{ header }}</h2>
+  {% endif %}
+
+  {% if text != blank %}
+  <div class="checkout-marketing__text">{{ text }}</div>
+  {% endif %}
+</div>

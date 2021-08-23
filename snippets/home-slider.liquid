@@ -1,0 +1,86 @@
+{% assign slider_unique_identifier = section.settings.slider_unique_identifier %}
+
+<div id="{{- slider_unique_identifier -}}">
+  {% for block in section.blocks %}
+
+    {% assign match_url = block.settings.url %}
+
+    {% if match_url == request.path %}
+
+      {% assign home_title = block.settings.home_title %}
+      {% assign home_name = block.settings.selected_collection %}
+      {% assign selected_collection = collections[home_name] %}
+      {% assign product_limit = block.settings.product_limit %}
+      {% assign enable_product_limit = block.settings.enable_product_limit %}
+      {% assign restrict_height = block.settings.restrict_height %}
+
+      {% capture sliderConfig %}
+        {
+          "dots": false,
+          "arrows": true,
+          "infinite": true,
+          "speed": 300,
+          "slidesToShow": 1,
+          "centerMode": true,
+          "lazyLoad": "progressive",
+          "variableWidth": true,
+          "nextArrow": "<button class='slick-next slick-arrow slider-arrow slider-arrow--next' aria-label='Next' type='button' style=''>Next</button>",
+          "prevArrow": "<button class='slick-prev slick-arrow slider-arrow slider-arrow--prev' aria-label='Previous' type='button' style=''>Previous</button>",
+          "responsive": [
+            {
+              "breakpoint": 996,
+              "settings": {
+                "dots": false,
+                "arrows": false,
+                "infinite": true,
+                "speed": 300,
+                "slidesToShow": 1,
+                "centerMode": true,
+                "lazyLoad": "progressive",
+                "variableWidth": true
+              }
+            }
+          ]
+        }
+      {% endcapture %}
+
+      {% if home_title != blank %}
+        <h2 class="slider__title slider__title js-slider-title">{{ home_title }}</h2>
+      {% endif %}
+
+      <div class="slider__container js-slider slider" data-slider='{{ sliderConfig | h }}'>
+        {% if enable_product_limit %}
+          {% for product in selected_collection.products limit: product_limit %}
+            <a href="{{ product.url }}" class="slider__slide slider__slide" title="{{ product.title }}">
+              <picture class="slider__image slider__image {% if restrict_height %}has-limit-height{% endif %}">
+                <source srcset="{{ product.featured_image | img_url: '213x' }}, {{ product.featured_image | img_url: '427x' }} 2x"
+                        media="(max-width: 640px)">
+                <source srcset="{{ product.featured_image | img_url: '427x' }}, {{ product.featured_image | img_url: '854x' }} 2x"
+                        media="(max-width: 1280px)">          
+                <source srcset="{{ product.featured_image | img_url: '533x' }}, {{ product.featured_image | img_url: '1067x' }} 2x"
+                        media="(max-width: 1600px)"> 
+                <img class="slider__image slider__image {% if restrict_height %}has-limit-height{% endif %}" src="{{ product.featured_image | img_url: '640x' }}" alt="{{ alt }}"
+                    srcset="{{ product.featured_image | img_url: '1280x' }} 2x">
+              </picture>            
+            </a>
+          {% endfor %}
+        {% else %}
+          {% for product in selected_collection.products %}
+            <a href="{{ product.url }}" class="slider__slide slider__slide" title="{{ product.title }}">
+              <picture class="slider__image slider__image {% if restrict_height %}has-limit-height{% endif %}">
+                <source srcset="{{ product.featured_image | img_url: '213x' }}, {{ product.featured_image | img_url: '427x' }} 2x"
+                        media="(max-width: 640px)">
+                <source srcset="{{ product.featured_image | img_url: '427x' }}, {{ product.featured_image | img_url: '854x' }} 2x"
+                        media="(max-width: 1280px)">          
+                <source srcset="{{ product.featured_image | img_url: '533x' }}, {{ product.featured_image | img_url: '1067x' }} 2x"
+                        media="(max-width: 1600px)"> 
+                <img class="slider__image slider__image {% if restrict_height %}has-limit-height{% endif %}" src="{{ product.featured_image | img_url: '640x' }}" alt="{{ alt }}"
+                    srcset="{{ product.featured_image | img_url: '1280x' }} 2x">
+              </picture>       
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>

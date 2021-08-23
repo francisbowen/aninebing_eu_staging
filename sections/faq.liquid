@@ -1,0 +1,100 @@
+{%- assign category_filters = section.blocks | where: 'type', 'q_n_a' | map: 'settings' | map: 'title' | uniq -%} {%- comment -%} Creates an array containing all categories {%- endcomment -%}
+
+<h1 class="faq__title heading--1">{{ page.title }}</h1>
+
+<div class="faq__header">
+  {%- comment -%} ISP automatically hooks onto any input type text or search, so textarea had to be used to circumvent that and prevent ISP from taking over... {%- endcomment -%}
+  <input type="textarea" class="faq__search heading--3 js-faq-search" aria-label="{{ 'faq.search' | t }}" placeholder="{{ 'faq.search' | t }}" />
+  <div class="faq__filter-wrapper">
+    <div class="faq__filter">
+      <button class="faq__filter__header uppercase-text js-accordion" data-toggle='{ "target": "FaqFilterList", "closeOnUnfocus": "true" }' aria-expanded="false">
+        <span class="heading--3 js-faq-filter-header">{{ 'faq.select_category' | t }}</span>
+        <span class="faq__filter__icon" aria-hidden="true">
+          {% include 'icons' with selected_icon: 'plus-sign', icon_class: 'faq__filter__icon__plus', icon_fill: '#000000', icon_stroke: '#000000' %}
+          {% include 'icons' with selected_icon: 'minus-sign', icon_class: 'faq__filter__icon__minus', icon_fill: '#000000', icon_stroke: '#000000' %}
+        </span>
+        </button>
+        <div class="faq__filter__list" id="FaqFilterList" aria-hidden="true">
+            <button class="faq__filter__list__item uppercase-text js-faq-filter" data-category="All" tabindex="-1">{{ 'faq.all_categories' | t }}</button>
+          {% for filter in category_filters %}
+            <button class="faq__filter__list__item uppercase-text js-faq-filter" data-category="{{ filter }}" tabindex="-1">{{ filter }}</button>
+          {% endfor %}
+        </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="faq__search-error js-faq-search-error"><p>{{ 'faq.search_error' | t }}</p></div>
+
+<div class="faq__content js-faq-content">
+  {% for filter in category_filters %}
+    {%- assign category = section.blocks | where: 'type', 'q_n_a' | map: 'settings' | where: 'title', filter -%} {%- comment -%} Creates an array containing all blocks.settings of a category {%- endcomment -%}
+    {%- assign half = category | size | divided_by: 2.0 | ceil -%}
+
+  
+    <div class="faq__category js-faq-category" data-category="{{ filter }}">
+      <div class="faq__category__left-column">
+        {% for block in category limit: half %}
+          <div class="faq__block js-faq-block">
+            <button class="faq__block__question uppercase-text js-accordion" data-toggle='{ "target": "{{ block.title }}-{{ forloop.index }}", "group": "FAQ" }' aria-expanded="false">
+              <span class="faq__block__question__text heading--3" >{{ block.question }}</span>
+              <span class="faq__block__icon" aria-hidden="true">
+                {% include 'icons' with selected_icon: 'plus-sign', icon_class: 'faq__block__icon__plus', icon_fill: '#000000', icon_stroke: '#000000' %}
+                {% include 'icons' with selected_icon: 'minus-sign', icon_class: 'faq__block__icon__minus', icon_fill: '#000000', icon_stroke: '#000000' %}
+              </span>
+            </button>
+            <div class="faq__block__answer" id="{{ block.title }}-{{ forloop.index }}" aria-hidden="true"><div class="accordion__content">{{ block.answer }}</div></div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="faq__category__right-column">
+        {% for block in category offset: half %}
+          <div class="faq__block js-faq-block">
+            <button class="faq__block__question uppercase-text js-accordion" data-toggle='{ "target": "{{ block.title }}-{{ forloop.index | plus: half }}", "group": "FAQ" }' aria-expanded="false">
+              <span class="faq__block__question__text heading--3">{{ block.question }}</span>
+              <span class="faq__block__icon" aria-hidden="true">
+                {% include 'icons' with selected_icon: 'plus-sign', icon_class: 'faq__block__icon__plus', icon_fill: '#000000', icon_stroke: '#000000' %}
+                {% include 'icons' with selected_icon: 'minus-sign', icon_class: 'faq__block__icon__minus', icon_fill: '#000000', icon_stroke: '#000000' %}
+              </span>
+            </button>
+            <div class="faq__block__answer" id="{{ block.title }}-{{ forloop.index | plus: half }}" aria-hidden="true"><div class="accordion__content body-copy-text">{{ block.answer }}</div></div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+{% schema %}
+{
+  "name" :"FAQ",
+  "class": "faq",
+  "tag": "section",
+  "blocks": [
+    {
+      "name": "Q & A",
+      "type": "q_n_a",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category",
+          "info": "e.g. Payment, Products, Privacy, etc."
+        },
+        {
+          "type": "textarea",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+<div class="careers__jobs__values">
+  <h2 class="careers__jobs__values__title uppercase-text">{{ section.settings.values_title }}</h2>
+  <p class="careers__jobs__values__text">{{ section.settings.values_text }}</p>
+  <div class="careers__jobs__values__list">
+    {%- assign values = section.blocks | where: 'type', 'value' -%}
+    {% for value in values %}
+      <div class="careers__block">
+        <p class="careers__block__title uppercase-text">{{ value.settings.title }}</p>
+        <p class="careers__block__text">{{ value.settings.text }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="careers__jobs__benefits">
+  <h2 class="careers__jobs__benefits__title uppercase-text">{{ section.settings.benefits_title }}</h2>
+  <div class="careers__jobs__benefits__list">
+    {%- assign benefits = section.blocks | where: 'type', 'benefit' -%}
+    {% for benefit in benefits %}
+      <div class="careers__block">
+        <p class="careers__block__title uppercase-text">{{ benefit.settings.title }}</p>
+        <p class="careers__block__text">{{ benefit.settings.text }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="careers__jobs__description">
+  <p class="careers__jobs__body-text">{{ section.settings.body_text }}</p>
+  <h1 class="careers__jobs__title uppercase-text">{{ section.settings.title }}</h1>
+</div>
+
+<iframe class="careers__jobs__iframe" id="hire_widget_iframe_0" allowtransparency="true" frameborder="0" height="987px" width="100%" scrolling="no" src="https://hire.withgoogle.com/public/jobs/aninebingcom?background=rgba(0%2C%200%2C%200%2C%200)&amp;no_padding=1"></iframe>
+
+{% schema %}
+  {
+    "name": "Careers jobs",
+    "class": "careers__jobs",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Values"
+      },
+      {
+        "type": "text",
+        "id": "values_title",
+        "label": "Values text"
+      },
+      {
+        "type": "textarea",
+        "id": "values_text",
+        "label": "Values text"
+      },
+      {
+        "type": "header",
+        "content": "Benefits"
+      },
+      {
+        "type": "text",
+        "id": "benefits_title",
+        "label": "Benefits title"
+      },
+      {
+        "type": "textarea",
+        "id": "body_text",
+        "label": "Values last paragraph"
+      },
+      {
+        "type": "header",
+        "content": "Job Listing"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Value",
+        "type": "value",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Value"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "name": "Benefit",
+        "type": "benefit",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Benefit"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

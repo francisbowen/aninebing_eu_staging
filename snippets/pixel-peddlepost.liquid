@@ -1,0 +1,19 @@
+<!-- PEBBLEPOST -->  
+  <script> 
+  window._pp = window._pp || [];
+  _pp.siteId = "1529";
+  _pp.siteUId = "{{ checkout.customer.id }}";
+  _pp.email = "{{ checkout.email }}";
+  _pp.orderValue = "{{ checkout.total_price | money_without_currency }}";
+  _pp.orderId = "{{ checkout.order_id }}";
+  (function() {
+    var ppjs = document.createElement('script');
+    ppjs.type = 'text/javascript';
+    ppjs.async = true;
+    ppjs.src = ('https:' == document.location.protocol ? 'https:' : 'http:') +
+    '//cdn.pbbl.co/r/' + _pp.siteId + '.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ppjs, s);
+  })(); 
+  </script>  
+  <!--// END PEBBLEPOST -->  

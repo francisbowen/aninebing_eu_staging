@@ -1,0 +1,19 @@
+{% if content_for_header contains 'easygdpr.b-cdn.net' %}
+
+  {% assign settings = shop.metafields.easy-gdpr.egSettings %}
+
+  {% if content_for_header contains 'adminBarInjector' or content_for_header contains 'previewBarInjector'  %}
+    {% assign isAdmin = true %}
+  {% else %}
+    {% assign isAdmin = false %}
+  {% endif %}
+
+  {% if settings != '-' and isAdmin == false %}
+    <script type="text/javascript">
+      try {
+        window.EasyGdprSettings = {{ settings | json }};
+      } catch (error) {}
+    </script>
+  {% endif %}
+
+{% endif %}

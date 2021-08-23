@@ -1,0 +1,40 @@
+{%- for link in linklists[menu].links -%}
+  {% comment %} Skips loyalty link if the setting is not checked or if the user is not logged in {% endcomment %}
+  {%- if link.handle contains 'loyalty' -%}
+    {%- if customer -%}
+      {%- unless section.settings.show_loyalty -%}
+        {% continue %}
+      {%- endunless -%}
+    {%- else -%}
+      {% continue %}
+    {%- endif -%}
+  {%- endif -%}
+  <li class="menu__item {% if link.links.size > 0%}has-menu js-menu-item{% elsif menu_level == 'parent' %}no-menu{% endif %}">
+    <a href="{% if link.levels > 0 %}#{% else %}{{ link.url }}{% endif %}" class="{% if link.levels > 0 %}heading--3 menu__categories{% else %}heading--4 menu__subcategories{% endif %}" title="{{ link.title }}">
+      {{ link.title }}
+      {%- if link.links.size > 0 -%}
+        <div class="menu__item-icons">
+          <span class="menu__open js-item-open">
+            {%- include 'icons' with selected_icon: 'plus-sign', icon_class: 'icon-plus', icon_fill: 'none', icon_stroke: '#000000', title: 'general.menu.open', desc: 'general.menu.toggle_item' -%}
+          </span>
+          <span class="menu__close js-item-close hide">
+            {%- include 'icons' with selected_icon: 'minus-sign', icon_class: 'icon-minus' icon_fill: 'none', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+          </span>
+        </div>
+      {%- endif -%}
+    </a>
+    {%- if link.links.size > 0 -%}
+      <div class="{{ wrapper_classes }}">
+        <div class="menu__nested-items">
+          <div class="menu__nested-items-wrapper">
+            <ul class="menu__items {{ menu_classes }}">
+              {%- include 'menu-items' with menu: link.handle, wrapper_classes: 'menu__items--wrapper hide js-menu-wrapper', menu_classes: 'menu__items--nested', menu_level: 'child' -%}
+            </ul>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </li>
+{%- endfor -%}
+
+

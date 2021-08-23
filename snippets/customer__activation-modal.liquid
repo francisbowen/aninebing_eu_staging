@@ -1,0 +1,19 @@
+<section class="customer-activation-modal modal-content modal-content--customer-activation" id="thank-you-registration">
+
+  <button type="button" class="modal-close js-close-modal modal-close--account" name="close" role="button" aria-label="button">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+
+  <div class="customer-activation-modal__content">
+    <div class="customer__logo">
+      <img src="{{ settings.logo | img_url: '200x' }}" alt="{{ shop.name }}" />
+    </div>
+
+    <div class="customer-activation-modal__message">
+      <p class="uppercase-text customer-activation-modal__title">{{ 'customer.activate_account.modal_title' | t }}</p>
+      <p class="input-text customer-activation-modal__subtext">{{ 'customer.activate_account.modal_subtext' | t }}</p>
+      <a href="#" class="link link--primary js-close-modal" title="{{ 'products.modal.continue_shopping' | t }}">{{ 'customer.activate_account.modal_continue_shopping' | t }}</a>
+    </div>
+  </div>
+
+</section>

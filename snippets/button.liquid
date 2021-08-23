@@ -1,0 +1,62 @@
+{% assign button_text = button_text | default: blank %}
+{% assign button_url = button_url | default: blank %}
+{% assign button_style = button_style | default: blank %}
+{% assign class = class | default: blank %}
+
+{% comment %}
+  The 'use_as_span_tag' option gives the option of using a '<span>' tag instead of an '<a>' use_as_span_tag.
+  This is necessary to avoid nested links - You can't have an anchor tag inside another anchor tag.
+{% endcomment %}
+{% assign use_as_span_tag = use_as_span_tag | default: false %}
+
+{%- capture button_tag -%}
+  {%- if use_as_span_tag -%}
+     span
+  {%- else -%}
+     a
+  {%- endif -%}
+{%- endcapture -%}
+
+{% comment %} Assign button style {% endcomment %}
+{% case button_style %}
+  {% when 'button_primary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="button button--primary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% when 'button_secondary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="button button--secondary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% when 'button_tertiary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="button button--tertiary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% when 'button_quaternary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="button button--quaternary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% when 'link_primary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="link link--primary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% when 'link_secondary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="link link--secondary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% when 'link_no_style_primary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="h1 link link--no-style-primary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% when 'link_no_style_secondary' %}
+    {% capture cta %}
+      <{{ button_tag }}{% unless use_as_span_tag %} href="{{ button_url }}"{% endunless %} class="h1 link link--no-style-secondary {% if class %}{{ class }}{% endif %}">{{ button_text }}</{{ button_tag }}>
+    {% endcapture %}
+  {% else %}
+    {% capture cta %}
+    {% endcapture %}
+{% endcase %}
+
+{% assign button_text = blank %}
+{% assign button_url = blank %}
+{% assign button_style = blank %}
+{% assign class = blank %}

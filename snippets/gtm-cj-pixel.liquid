@@ -1,0 +1,28 @@
+{% comment %} 
+  <script>
+    var dataLayer = window.dataLayer = window.dataLayer || []; 
+    var discountAMT = Shopify.checkout.discount ? Shopify.checkout.discount.amount : ""
+    var couponCode = Shopify.checkout.discount ? Shopify.checkout.discount.code : "" 
+    
+    dataLayer.push({
+        "ecommerce": {
+          "purchase": {
+            "actionField": {
+              "OID": "{{ order_number }}",
+              "COUPON": "{{ checkout.discounts[0].code }}",
+              "DISCOUNT": "{{ checkout.discounts[0].amount | money_without_currency }}"
+            },
+            "products": [
+              {% for line_item in line_items %}
+                {
+                  "ITEM": "{{ line_item.sku }}",
+                  "AMT": {{ line_item.price | times: 0.01 }},
+                  "QTY": {{ line_item.quantity }}
+                },
+              {% endfor %}
+            ]
+          }
+        }
+      });
+  </script> 
+{% endcomment %}

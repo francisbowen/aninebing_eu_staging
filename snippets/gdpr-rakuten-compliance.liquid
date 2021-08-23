@@ -1,0 +1,89 @@
+<script type="text/javascript">
+
+  function rakConsent() {
+    window.__rmuspc = 'YN';
+
+    function isl_rc(n) {
+      for (var r = n + "=", t = document.cookie.split(";"), e = 0; e < t.length; e++) {
+        for (var i = t[e]; " " == i.charAt(0); )
+          i = i.substring(1, i.length);
+        if (0 == i.indexOf(r))
+          return i.substring(r.length, i.length)
+      }
+    return null
+    }
+
+    // Default is no purposes
+    var GDPRpurposes = [];
+    // function that allows to add GDPR purposes selectively to array
+    var addGDPRpurposes = function (purpArray) {
+      var purposeIDs = purpArray || [];
+      var tmpRMCP = [];
+      if (purposeIDs.length !== 0) {
+        tmpRMCP = GDPRpurposes || [];
+        for (var i = 0; i < purposeIDs.length; i++) {
+          // Only add purpose if it not already exists
+          if (tmpRMCP.indexOf(purposeIDs[i]) === -1) {
+            tmpRMCP.push(purposeIDs[i]);
+          }
+        }
+        GDPRpurposes = tmpRMCP.sort();
+      }
+    };
+
+    var cookieconsent_status = isl_rc('cookieconsent_status');
+
+    if (cookieconsent_status == 'accept_all') {
+      window.__rmcp2 = [1,2,3,4,5,6,7,8,9,10];
+    } else if (cookieconsent_status == 'allow') {
+      window.__rmcp2 = [1,2,3,4,5,6,7,8,9,10];
+    } else if (cookieconsent_status == 'accept_selected') {
+
+      var cookieconsent_preferences_disabled = decodeURIComponent(isl_rc('cookieconsent_preferences_disabled')).slice(0, -1);
+      var cookieconsent_preferences_disabled_split = cookieconsent_preferences_disabled.split(',') || [];
+      var consent_analytics = true;
+      var consent_marketing = true;
+      var consent_functionality = true;
+
+      //detect disabled purposes
+      for(var i = 0; i < cookieconsent_preferences_disabled_split.length; i++) {
+        if(cookieconsent_preferences_disabled_split[i] === 'functionality') {
+          consent_functionality = false;
+        }
+        else if(cookieconsent_preferences_disabled_split[i] === 'marketing'){
+          consent_marketing = false;
+          window.__rmuspc = 'YY';
+        }
+        else if(cookieconsent_preferences_disabled_split[i] === 'analytics'){
+          consent_analytics = false;
+        }
+      }
+
+      // If consent for analytics allow purposes 1,7,8,10
+      if (consent_analytics) {
+        addGDPRpurposes([1, 7, 8, 10]);
+      }
+      // If consent for marketing allow purposes 1,2,3,4,7,9,10
+      if (consent_marketing) {
+        addGDPRpurposes([1, 2, 3, 4, 7, 9, 10]);
+      }
+      // If consent for functionality allow purposes 1,5,6,10
+      if (consent_functionality) {
+        addGDPRpurposes([1, 5, 6, 10]);
+      }
+
+      window.__rmcp2 = GDPRpurposes.sort(function(a, b){return a-b});
+    }
+  };
+
+    rakConsent();
+
+  jQuery(document).on("click", ".cc-allow, .cc-btn-accept-all", function () {
+    rakConsent();
+  });
+
+  /// when the user clicks Prefreences but just closes the popup without selecting anything.
+  jQuery(document).on("click", ".cc-btn-accept-selected", function () {
+    rakConsent();
+  });
+</script>

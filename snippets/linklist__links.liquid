@@ -1,0 +1,18 @@
+{%- comment -%}
+
+Default link list level renderer.
+Initially called by a link list, it is also used by each link with levels.
+
+Objects Referenced:
+ • link https://help.shopify.com/en/themes/liquid/objects/link
+ • linklist https://help.shopify.com/en/themes/liquid/objects/linklist
+
+{%- endcomment -%}
+
+{%- assign linklist_level = linklist_level | plus: 1 -%}
+
+<ul class="linklist__links linklist__links--level{{ linklist_level }}">
+  {% render 'link' for links as link, linklist_level: linklist_level %}
+</ul>
+
+{%- assign linklist_level = linklist_level | minus: 1 -%}

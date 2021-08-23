@@ -1,0 +1,29 @@
+{%- comment -%}
+
+Line item property renderer.
+
+Objects Referenced:
+ • line_item.properties https://help.shopify.com/en/themes/liquid/objects/line_item#line_item-properties
+
+{%- endcomment -%}
+
+{%- assign property_size = properties | size -%}
+{%- if property_size > 0 -%}
+  <ul class="line-item__properties">
+    {% for property in properties %}
+      {% if p.last == blank %}
+        {% continue %}
+      {% endif %}
+      <li class="property">
+        <span class="property__key">{{ p.first }}</span>
+        {% if p.last contains '/uploads/' %}
+          <a class="property__value property__value--upload" href="{{ p.last }}">
+            {{- p.last | split: '/' | last -}}
+          </a>
+        {% else %}
+          <span class="property__value">{{ p.last }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{%- endif -%}

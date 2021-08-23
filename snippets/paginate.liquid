@@ -1,0 +1,32 @@
+{%- comment -%}
+
+Default pagination.
+
+Objects Referenced:
+ • paginate https://help.shopify.com/en/themes/liquid/objects/paginate
+ • part     https://help.shopify.com/en/themes/liquid/objects/paginate
+
+{%- endcomment -%}
+
+{% if paginate.pages > 1 %}
+
+  {%- if template.name == 'addresses' or template.name == 'account' or template.name == 'blog' -%}
+    {%- assign pagination_output = paginate.pages-%}
+  {%- else -%}
+    {%- assign pagination_output = paginate.items-%}
+  {%- endif -%}
+
+  <div class="pagination pagination--{{ template.name }}">
+    <div class="pagination__container">
+      {% if paginate.previous %}
+        <a class="pagination__link pagination__link--previous" href="{{ paginate.previous.url }}" title="{{ 'general.pagination.previous' | t }}"></a>
+      {% endif %}
+
+      <p class="pagination__pages">{{ 'general.pagination.current_page' | t: current: paginate.current_page, total:  pagination_output }}</p>
+
+      {% if paginate.next %}
+        <a class="pagination__link pagination__link--next" href="{{ paginate.next.url }}" title="{{ 'general.pagination.next' | t }}"></a>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,388 @@
+{%- comment -%}
+
+Main Checkout
+
+When working on dev EU/US, please replace this file with the "checkout--dev.liquid", so that pixels won't get run.
+
+{%- endcomment -%}
+
+{% assign us_store = 'www.aninebing.com' %}
+{% assign dev_store = 'anine-bing-dev01-us.myshopify.com' %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    {% include 'google-optimize' %}
+    {% include 'google-tag-manager' %}
+    {% include 'monetate-head' %}
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+
+    <link rel="stylesheet" href="{{ 'css_vendors.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'scss_checkout.scss.css' | asset_url }}">
+
+    {% if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' %}
+      {% comment %} North America {% endcomment %}
+      {% include 'ls-direct-marketing-head' %}
+      {% include 'hotjar-script-us' %}
+      {% include 'bouncex-script-us' %}
+      {% include 'globale-js-include' %}
+      {% include 'attentive-us' %}
+    {% else %}
+      {% include 'hotjar-script' %}
+      {% include 'bouncex-script-eu' %}
+    {% endif %}
+
+    {% include 'pixel-heap' %}
+    {% include 'pixel-pebblepost' %}
+    {% include 'google-adwords' %}
+    {% include 'js_global' %}
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MTX78V9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    {% if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' %}
+      {% include 'ls-direct-marketing-body' %}
+    {% endif %}
+
+    {{skip_to_content_link}}
+
+    {{ content_for_logo }}
+
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content="data-content">
+      <div class="header">
+          {{ breadcrumb }}
+      </div>
+
+      <div class="checkout-marketing--mobile">
+        {% include 'checkout-marketing' %}
+      </div>
+
+      <div class="wrap">
+        <div class="main" role="main">
+          <div class="main__header">
+
+            {{ alternative_payment_methods }}
+
+            <!--  -->
+            {% comment %}
+            <div data-alternative-payments="">
+                <div class="alt-payment-list-container">
+                    <ul class="alt-payment-list ">
+                        <li class="alt-payment-list__item alt-payment-list__item--paypal">
+                            <a
+                                class="alt-payment-list__item__link"
+                                id="paypal-express-checkout-btn"
+                                href="https://aninebing.myshopify.com/1501528/checkouts/c1dbe2e6b0b1bc9b172ce1c6c3e02326/express/redirect">
+                                <img
+                                    alt="Checkout with: PayPal"
+                                    class="alt-payment-list__item__logo"
+                                    src="//cdn.shopify.com/s/assets/checkout/easy-checkout-btn-paypal-9835af2c2b0e2a543b2905789a7f08b678d62de2c77c1b0d16fd7689aff463f3.png">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div
+                    class="alternative-payment-separator"
+                    data-alternative-payment-separator="">
+                    <span class="alternative-payment-separator__content">
+                        OR
+                    </span>
+                </div>
+            </div>
+            {% endcomment %}
+            <!--  -->
+          </div>
+          {% comment %} Identify if any item in cart has excluded tag for specific zone {% endcomment %}
+          {%- assign cart_contains_product_exclusion = false -%}
+          {%- for item in checkout.line_items -%}
+            {%- if item.product.tags contains 'product-zone-exclusion' -%}
+              {%- assign cart_contains_product_exclusion = true -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <div class="main__content js-main-content" data-product-exclusion="{{ cart_contains_product_exclusion }}">
+
+            <!-- ISQ -->
+            <div id="is_Business" class="checkbox-wrapper">
+              <div class="checkbox__input"><p><input class="input-checkbox" type="checkbox" name="isBusiness" id="isBusiness"  /></div>
+              <label for="isBusiness" class="checkbox__label">{{ settings.shipping_business_accept_text }}</label> </p>
+            </div>
+            <!---- END ISQ ----->
+            
+            <div>{{ content_for_layout }}</div>
+
+            {% if request.host == us_store or request.host == dev_store %}
+              <div id="attentiveOptIn" class="fieldset-description" data-buyer-accepts-marketing-attentive="" aria-label="Phone Sign Up">
+                <div class="section__content section__content__attentive">
+                    <div class="checkbox-wrapper content-box content-box__row--secondary">
+                        <div class="checkbox__input">
+                            <input name="attributes[buyer_accepts_marketing_attentive]" type="hidden" value="0">
+                            <input class="input-checkbox" data-backup="buyer_accepts_marketing" type="checkbox" value="1" name="attributes[buyer_accepts_marketing_attentive]" id="checkout_buyer_accepts_marketing_attentive">
+                        </div>
+                        <div class="checkbox__label checkbox__label__attentive">
+                          <div class="checkbox__label__attentive__subheader">{{ settings.checkout_email_accept }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section__footer__attentive">{{ settings.checkout_email_info }}</div>
+              </div> 
+            {% endif %}
+
+            <script>
+              var elementExists = document.getElementsByClassName("section--shipping-address")[0];
+              var node = document.getElementById("check_sms");
+              var sms_consent = false;
+              //	jQuery.post('/cart/update.js', { attributes: {'sms_consent': sms_consent}});
+              if (elementExists == null){
+                if (document.getElementById("check_sms")) {
+                  document.getElementById("check_sms").style.display = 'none';
+                }
+                document.getElementById("is_Business").style.display = 'none';
+              } else if (node) {
+                document.getElementsByClassName("section--shipping-address")[[document.getElementsByClassName("section--shipping-address").length - 1]].appendChild(node);
+              }
+            </script>
+            {%- if settings.show_zone_product_exclusion -%}
+              <div class="js-exception-message hidden" data-country-code="{{ checkout.shipping_address.country_code }}" data-province-code="{{ checkout.shipping_address.province_code }}">
+                <div class="field__message field__message--error field__message--error-shown js-field-error">
+                  {%- if shop.domain == 'eu.aninebing.com' -%}
+                    {{ settings.checkout_excluded_zone_message_eu }}
+                  {%- else -%}
+                    {{ settings.checkout_excluded_zone_message }}
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+            
+            <div class="main_message">
+              {{ settings.checkout_help_contact }}
+            </div>
+          </div>
+        </div>
+        
+        <div class="sidebar order-summary--is-collapsed" role="complementary" data-order-summary>
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+
+          <div class="sidebar__content">
+            {% include 'checkout-marketing' %}
+            <p class="order-details">{{ settings.shipping_order_details_title }}</p>
+            {{ content_for_order_summary }}
+          </div>
+        </div>     
+      </div>
+      <div class="wrap">
+        <div class="main__footer">
+          {{ content_for_footer }}
+        </div>
+      </div>
+    </div>
+
+    {{ tracking_code }}
+    
+    <script
+      src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+      crossorigin="anonymous">
+    </script>
+  
+    {{ 'pobox.js'  | asset_url | script_tag }}
+    {{ 'checkout.js'  | asset_url | script_tag }}
+    {{ 'sailthru.js'  | asset_url | script_tag }}
+  
+    <script>
+      (function(){
+        var order_summary = document.querySelector('.sidebar__content .order-summary');
+        order_summary.removeAttribute('data-order-summary');
+        order_summary.classList.remove('order-summary--is-collapsed')
+      })();
+    </script>
+    
+    <script type="text/javascript">
+      jQuery(document).ready(function(){
+        jQuery( "#is_Business" ).appendTo( ".section--shipping-address .section__header" );
+          jQuery('#accepts_sms').change(function(){
+            if (jQuery(this).prop('checked')) {
+              jQuery('#sms_value').val('true');
+            } else {
+              jQuery('#sms_value').val('false');
+            }
+          });
+
+          /**** ISQ ************/				 
+          jQuery("form").submit(function(e){
+          
+            if (jQuery('#isBusiness').prop('checked')) {
+              if(jQuery('#checkout_shipping_address_company').val()=="") {	
+                jQuery('.field--optional').each(function() {
+                  if(jQuery(this).data("address-field")=="company") {
+                    jQuery(this).addClass("field--error");
+                    jQuery(this).append('<p class="field__message field__message--error" id="error-for-first_name">Enter a Company name</p>');
+                    e.preventDefault();
+                    return false;
+                  }
+                });
+              } else {
+                jQuery('.field--optional').each(function() 
+                {
+                  if(jQuery(this).data("address-field")=="company")
+                  {
+                    jQuery(this).removeClass("field--error");					
+                  }
+                });
+		          }
+	          }
+	        });
+
+          jQuery('#isBusiness').change(function(){
+            if (jQuery(this).prop('checked')) {
+              jQuery('#checkout_shipping_address_company').addClass("required");
+              jQuery('#checkout_shipping_address_company').attr("required", true);
+              jQuery('.field--optional label').each(function() {
+                if (jQuery(this).attr("for")=="checkout_shipping_address_company") {				
+                  jQuery(this).html("Company");
+                }
+              });
+              jQuery('#checkout_shipping_address_company').attr("placeholder","Company");
+            } else {
+              jQuery('#checkout_shipping_address_company').removeClass("required");	
+              jQuery('#checkout_shipping_address_company').attr("required", false);			
+              jQuery('.field--optional label').each(function() {
+                if(jQuery(this).attr("for")=="checkout_shipping_address_company") {				
+                  jQuery(this).html("Company (optional)");
+                }
+              });
+              
+              jQuery('#checkout_shipping_address_company').attr("placeholder","Company (optional)");
+            }
+          });
+        /*******************************/
+              
+      });
+    </script>
+
+
+    <!--SteelHouse Tracking Pixel-->
+    <!-- INSTALL ON ALL PAGES OF SITE-->
+    <script type="text/javascript">
+      (function(){"use strict";var e=null,b="4.0.0",
+      n="30816",
+      additional="term=value",
+      t,r,i;try{t=top.document.referer!==""?encodeURIComponent(top.document.referrer.substring(0,2048)):""}catch(o){t=document.referrer!==null?document.referrer.toString().substring(0,2048):""}try{r=window&&window.top&&document.location&&window.top.location===document.location?document.location:window&&window.top&&window.top.location&&""!==window.top.location?window.top.location:document.location}catch(u){r=document.location}try{i=parent.location.href!==""?encodeURIComponent(parent.location.href.toString().substring(0,2048)):""}catch(a){try{i=r!==null?encodeURIComponent(r.toString().substring(0,2048)):""}catch(f){i=""}}var l,c=document.createElement("script"),h=null,p=document.getElementsByTagName("script"),d=Number(p.length)-1,v=document.getElementsByTagName("script")[d];if(typeof l==="undefined"){l=Math.floor(Math.random()*1e17)}h="dx.steelhousemedia.com/spx?"+"dxver="+b+"&shaid="+n+"&tdr="+t+"&plh="+i+"&cb="+l+additional;c.type="text/javascript";c.src=("https:"===document.location.protocol?"https://":"http://")+h;v.parentNode.insertBefore(c,v)})()
+    </script>
+
+    <script>
+    /*** CONTINUE SHOPPING BUTTON AT THANK YOU PAGE ***/
+      let thankYouHeader = document.querySelector('.os-header');
+      if(thankYouHeader) {
+        let btn = document.createElement('a');
+        btn.classList.add('btn');
+        btn.href="{{ routes.root_url }}";
+        btn.innerText="Keep shopping";
+        thankYouHeader.appendChild(btn);
+      }
+    </script>
+
+    <script>
+      // Sailthru check on accepts marketing and adding to master_list as well as check whether they're opt in
+      const sailthruAJAX = function (url, data) {
+        $.ajax({
+          url: url,
+          type: 'POST',
+          data: data
+        }).done(function(res) {
+          console.log(res);
+        }).fail(function(err) {
+          console.log(err);
+        });
+      };
+
+      const sailthruCheckoutCustomerCreation = function (eventName, params) {
+        const newsletterCheckbox = '{{ checkout.buyer_accepts_marketing | json }}';
+
+        if (newsletterCheckbox == 'true') {
+          const hasAgreedToSubscription = true;
+          const $firstname = Shopify.Checkout.customer.first_name;
+          const $lastname = Shopify.Checkout.customer.last_name;
+          const $fullname = $firstname + ' ' + $lastname;
+          const $email = Shopify.Checkout.customer.email;
+          const $birthday = '';
+          const source = params();
+          const shopifyCustomerId = Shopify.Checkout.customer_id;
+
+          const formData = {
+            email: $email,
+            options: {
+              key: 'email',
+              vars: {
+                full_name: $fullname,
+                first_name: $firstname,
+                last_name: $lastname,
+                birth_date: $birthday,
+                reg_source: eventName,
+                campaign_source: source,
+                shopify_customer_id: shopifyCustomerId,
+                email_permission_status: hasAgreedToSubscription
+              },
+              lists: {master_list: 1}
+            }
+          };
+          
+          sailthruAJAX('/apps/api-1/v1/create_user', formData);
+        }
+      };
+
+      if ($('.step[data-step=thank-you]').length || Shopify.Checkout && Shopify.Checkout.page === 'thank_you' || Shopify.Checkout && Shopify.Checkout.step === 'thank_you') {
+        const sailthruParams = function () {
+          const url = new URL(window.location.href);
+          return url.searchParams.get("utm_source");
+        };
+
+        sailthruCheckoutCustomerCreation('user creation - thank you page', sailthruParams);
+      }
+    </script>
+
+    <!-- Start Monetate -->
+    <script>
+      if (Shopify.Checkout && !Shopify.Checkout.isOrderStatusPage) {
+        // addCartRows Example
+        window.monetateQ = window.monetateQ || [];
+
+        window.monetateQ.push([
+          "addCartRows", [
+            {% for line_item in checkout.line_items %} {
+              "productId": "{{ line_item.product.id }}",
+              "quantity": "{{ line_item.quantity }}",
+              "unitPrice": "{{ line_item.price | money_without_currency | replace: ',', '' }}",
+              "currency": "{{ shop.currency }}"
+            }{% if checkout.line_items.last != line_item %},{% endif %}
+            {% endfor %}
+          ]
+        ]);
+
+        window.monetateQ.push(["setPageType", "checkout"]);
+        
+        window.monetateQ.push(["trackData"]);
+      }
+    </script>
+    <!-- End Monetate -->
+
+  </body>
+</html>

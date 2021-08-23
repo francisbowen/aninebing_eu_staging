@@ -1,0 +1,51 @@
+{%- comment -%}
+
+Shop schema.
+
+Objects Referenced:
+ • page https://help.shopify.com/en/themes/liquid/objects/page
+ • settings https://help.shopify.com/en/themes/liquid/objects#settings
+ • shop https://help.shopify.com/en/themes/liquid/objects/shop
+ • template https://help.shopify.com/en/themes/liquid/objects/template
+
+{%- endcomment -%}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  {% if settings.logo %}
+    {% assign image_size = settings.logo.width | append: 'x' %}
+    "logo": {{ settings.logo | img_url: image_size | prepend: 'https:' | json }},
+  {% endif %}
+  "sameAs": [
+    {{ settings.social_twitter_link | json }},
+    {{ settings.social_facebook_link | json }},
+    {{ settings.social_pinterest_link | json }},
+    {{ settings.social_instagram_link | json }},
+    {{ settings.social_tumblr_link | json }},
+    {{ settings.social_snapchat_link | json }},
+    {{ settings.social_youtube_link | json }},
+    {{ settings.social_vimeo_link | json }}
+  ],
+  "url": {{ shop.url | append: page.url | json }}
+}
+</script>
+
+{% if template.name == 'index' %}
+  {% assign potential_action_target = shop.url | append: "/search?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{% endif %}

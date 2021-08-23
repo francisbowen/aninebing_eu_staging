@@ -1,0 +1,33 @@
+{% assign menu = menu %}
+{% assign menu_title = menu_title %}
+{% assign class = class %}
+
+{% if menu != blank %}
+  {% assign selected_nav = linklists[menu] %}
+
+  <div class="footer-menu__container {{ class }}">
+    {% if menu_title != blank %}
+      <p class="footer-menu__title heading--3">{{ menu_title }}</p>
+    {% endif %}
+    <ul class="footer-menu" role="menu">
+      {% if selected_nav.links.size > 0 %}
+        {% for link in selected_nav.links %}
+          <li class="footer-menu__items footer-menu__items-{{ link.title | downcase }}" role="menuitem">
+            <a class="footer-menu__items-link heading--4" href="{{ link.url }}">{{ link.title }}</a>
+            {%- if link.title == section.settings.accessibility_menu_title -%}
+              {%- if section.settings.accessibility_logo_link and section.settings.accessibility_logo != blank -%}
+                <a href="{{ section.settings.accessibility_logo_link }}" aria-label="Accessibility Logo" class="accessible-360">
+                  <img src="{{ section.settings.accessibility_logo | img_url: '45x' }}" alt="{{ section.settings.accessibility_logo.alt | default: 'Reviewed by Accessible360' }}">
+                </a>
+              {%- elsif section.settings.accessibility_logo != blank -%}
+                <div class="accessible-360">
+                  <img src="{{ section.settings.accessibility_logo | img_url: '45x' }}" alt="{{ section.settings.accessibility_logo.alt | default: 'Reviewed by Accessible360' }}">
+                </div>
+              {%- endif -%}
+            {%- endif -%}
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}

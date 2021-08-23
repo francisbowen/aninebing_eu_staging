@@ -1,0 +1,61 @@
+{% include 'home-slider' %}
+
+{% schema %}
+{
+	"name": "Home Slider",
+  "class": "slider home-slider",
+  "tag": "section",
+  "settings" : [
+    {
+      "type": "text",
+      "id": "slider_unique_identifier",
+      "label": "Unique ID Identifier",
+      "info": "Make sure that this is unique, filled out if the slider is visible, and that the number remains consistent. For example, if it's the only slider on the page or it's the bottom slider, keep it as slider-1. Start off with 'slider-' and end it with a number. Ex: slider-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "home specific",
+      "settings": [
+        {
+          "type": "text",
+          "id": "home_title",
+          "label": "home Title"
+        },
+        {
+          "type": "checkbox",
+          "id": "restrict_height",
+          "label": "Restrict height of images"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_product_limit",
+          "label": "Enable Product Limit",
+          "info": "If enabled, products displayed in slider will be restricted to the amount specified below.",
+          "default": true
+        },
+        {
+          "type":      "range",
+          "id":        "product_limit",
+          "min":       5,
+          "max":        500,
+          "step":       5,
+          "label":     "Number of product to display in slider",
+          "default":   10
+        },
+        {
+          "type": "collection",
+          "id": "selected_collection",
+          "label": "Select the collection to display."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Choose the url you want this home to show in."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,80 @@
+{% assign product_details_class = product_details_class %}
+{% assign size = size %}
+
+{% include 'product__handles' %}
+
+{%- assign genericProductTitle = product.title | split: '- ' -%}
+
+<div class="product__keep-in-view js-keep-in-view {{ product_details_class }}">
+  {% capture productInfo %}
+    <div class="product__header">
+      <h1 class="product__title heading--2">
+        {%- if genericProductTitle.size > 1 -%}
+          {{ genericProductTitle[0] }}
+        {%- else -%}
+          {{ product.title }}
+        {%- endif -%}
+      </h1>
+      {%- include 'product__pricing' with template_class: 'js-product-pricing' -%} 
+    </div>
+
+    {% comment %} Geotargetly {% endcomment %}
+    <div class="geotargetlygeocontent1600729262304_content_1 geotargetlygeocontent1600729262304_content_2 geotargetlygeocontent1600729262304_content_3" style='display:none;'>
+      <div class="heading--4 product__ship-exception-message">
+        {%- if shop.domain == 'eu.aninebing.com' -%}
+          {{ section.settings.specific_product_zone_text_eu }}
+        {%- else -%}
+          {{ section.settings.specific_product_zone_text }}
+        {%- endif -%}
+      </div>
+    </div>
+
+    {% include 'product__tags' %}
+
+    {%- unless shop.domain == 'eu.aninebing.com' -%}
+      <!-- Placement v2 -->
+      {% comment %} Geotargetly to prevent Klarna message from showing up anywhere other than US {% endcomment %}
+      <span class="geotargetlygeocontent1594765329414_content_1" style='display:none;'> 
+        <klarna-placement
+          class="js-product-klarna-message"
+          data-key="credit-promotion-standard"
+          data-locale="en-US"
+          data-purchase-amount="{{ product.price }}"
+        ></klarna-placement>
+      </span>
+      <!-- end Placement -->
+    {%- endunless -%}
+  {% endcapture %}
+
+  {% unless type == 'bundle' %}
+    {{ productInfo }}
+    {% include 'form--product' with size: size %}
+  {% else %}
+    {% if type == 'bundle' and access == 'second' %}
+      {%- assign form_id = 'ProductForm' | append: '--AddToCartBundle' -%}
+      {%- assign form_class = 'form form--product ' -%}
+      {% form 'product', product, id: form_id, class: form_class %}
+        <section class="product-bundle__individual-scroll js-product-bundle-wrapper">
+          {% include 'product__attributes' %}
+          {{ productInfo }}
+          <div class="product-bundle__content js-product-bundle"></div>
+        </section>
+        <div class="product-bundle__sticky-info">
+          <button type="submit" class="button button-text button--secondary button--atc js-product-bundle-atc" disabled>
+            {{- 'products.product.select_sizes' | t -}}
+          </button>
+        </div>
+        <div class="product-bundle__description">
+          {{ product.description }}
+          {%- if settings.shipping_return_link != blank -%}
+            <div class="product__shipping-return product__link">
+              <a href="{{ settings.shipping_return_link }}" class="link link--primary" title="{{ 'products.product.shipping_return_action' | t }}" target="_blank">
+                {{ settings.shipping_return }}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      {% endform %}
+    {% endif %}
+  {% endunless %}
+</div>

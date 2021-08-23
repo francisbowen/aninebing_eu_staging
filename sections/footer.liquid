@@ -1,0 +1,214 @@
+{% assign footer_logo = section.settings.footer_logo %}
+
+<section class="footer-top-container">
+  {% include 'footer-newsletter' %}
+  {% include 'social-media-icons' %}
+</section>
+<nav class="footer-navigations">
+  {% for block in section.blocks %}
+    {% assign regular_menu = block.settings.regular_menu %}
+    {% assign regular_menu_title = block.settings.regular_menu_title %}
+    {% assign legal_menu = block.settings.legal_menu %}
+
+    {% if block.type == 'footer_regular_menu' %}
+      {% if forloop.first %}
+        <div class="divider">
+      {% endif %}
+      {% if forloop.index == 3 %}
+        </div>
+        <div class="divider">
+      {% endif %}
+        {% include 'footer-menu' with menu: regular_menu, menu_title: regular_menu_title, class: 'footer-menu__regular' %}
+      {% if forloop.index == 4 %}
+        </div>
+      {% endif %}
+    {% else %}
+      {% include 'footer-menu' with menu: legal_menu, menu_title: '', class: 'footer-menu__legal' %}
+    {% endif %}
+  {% endfor %}
+
+  {% if footer_logo %}
+    <img src="{{ footer_logo | img_url: 'master' }}" class="footer-navigations__logo" alt="{{ footer_logo.alt }}"/>
+  {% endif %}
+</nav>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "class": "footer",
+    "tag": "footer",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Legal Information - Accessibility"
+      },
+      {
+        "type": "paragraph",
+        "content": "Please make sure that the accessibility menu link title is the same to the accessibility title."
+      },
+      {
+        "type": "text",
+        "id": "accessibility_menu_title",
+        "label": "Accessibility Menu Link Title Match",
+        "default": "Accessibility"
+      },
+      {
+        "type": "image_picker",
+        "id": "accessibility_logo",
+        "label": "Accessibility Logo"
+      },
+      {
+        "type": "url",
+        "id": "accessibility_logo_link",
+        "label": "Accessiblity Logo Link"
+      },
+      {
+        "type": "header",
+        "content": "Footer Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "footer_logo",
+        "label": "Footer Logo"
+      },
+      {
+        "type": "header",
+        "content": "Facebook settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_facebook",
+        "label": "Select to show"
+      },
+      {
+        "type": "url",
+        "id": "facebook_link",
+        "label": "Facebook link"
+      },
+      {
+        "type": "text",
+        "id": "facebook_alt",
+        "label": "Facebook Icon Alt Text",
+        "default": "Facebook Social Media Icon"
+      },
+      {
+        "type": "header",
+        "content": "Instagram settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_instagram",
+        "label": "Select to show"
+      },
+      {
+        "type": "url",
+        "id": "instagram_link",
+        "label": "Instagram link"
+      },
+      {
+        "type": "text",
+        "id": "instagram_alt",
+        "label": "Instagram Icon Alt Text",
+        "default": "Instagram Social Media Icon"
+      },
+      {
+        "type": "header",
+        "content": "Pinterest settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_pinterest",
+        "label": "Select to show"
+      },
+      {
+        "type": "url",
+        "id": "pinterest_link",
+        "label": "Pinterest link"
+      },
+      {
+        "type": "text",
+        "id": "pinterest_alt",
+        "label": "Pinterest Icon Alt Text",
+        "default": "Pinterest Social Media Icon"
+      },
+      {
+        "type": "header",
+        "content": "Twitter settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_twitter",
+        "label": "Select to show"
+      },
+      {
+        "type": "url",
+        "id": "twitter_link",
+        "label": "Twitter link"
+      },
+      {
+        "type": "text",
+        "id": "twitter_alt",
+        "label": "Twitter Icon Alt Text",
+        "default": "Twitter Social Media Icon"
+      },
+      {
+        "type": "header",
+        "content": "Youtube settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_youtube",
+        "label": "Select to show"
+      },
+      {
+        "type": "url",
+        "id": "youtube_link",
+        "label": "Youtube link"
+      },
+      {
+        "type": "text",
+        "id": "youtube_alt",
+        "label": "Youtube Icon Alt Text",
+        "default": "Youtube Social Media Icon"
+      }
+    ],
+    "max_blocks": 5,
+    "blocks": [
+      {
+        "type": "footer_regular_menu", 
+        "name": "Regular Menu List", 
+        "settings": [
+          {
+            "type": "header",
+            "content": "Navigation menu selection"
+          },
+          {
+            "type": "text",
+            "id": "regular_menu_title",
+            "label": "Regular Menu Title"
+          },
+          {
+            "type": "link_list",
+            "id": "regular_menu",
+            "label": "Menu"
+          }
+        ]
+      },
+      {
+        "type": "footer_legal_menu", 
+        "name": "Legal Menu List", 
+        "settings": [
+          {
+            "type": "header",
+            "content": "Navigation menu selection"
+          },
+          {
+            "type": "link_list",
+            "id": "legal_menu",
+            "label": "Menu"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

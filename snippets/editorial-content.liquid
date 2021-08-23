@@ -1,0 +1,49 @@
+<div class="classics__content">
+  <img class="classics__content__logo" src="{{ section.settings.logo | img_url: 'master' }}" alt="{{ section.settings.logo.alt }}" 
+    style="
+      --logo-width-desktop: {{- section.settings.logo_size_desktop -}}px;
+      --logo-width-mobile: {{- section.settings.logo_size_mobile -}}px;
+    " 
+  />
+  <div class="classics__content__text" tabindex="0">{{ section.settings.text }}</div>
+
+  {% include 'button' with button_style: section.settings.button_style, button_text: section.settings.button_text, button_url: section.settings.button_url, class: "classics__content__button" %}
+  {{ cta }}
+</div>
+
+{% for block in section.blocks %}
+  <div class="classics__gallery {{ block.settings.position }}">
+    {% if block.type == 'two_images' %}
+      <div class="classics__gallery__first-image">
+        {%- if block.settings.first_image_url != blank -%}
+        <a href="{{ block.settings.first_image_url }}" role="link">
+        {%- endif -%}
+          <img class="classics__gallery__image" src="{{ block.settings.first_image | img_url: 'master' }}" alt='{% if block.settings.first_image.alt != "" %}{{ block.settings.first_image.alt }}{% else %}{{ block.settings.first_image_caption }}{% endif %}' />
+          <div class="classics__gallery__caption">{{ block.settings.first_image_caption }}</div>
+        {%- if block.settings.first_image_url != blank -%}
+        </a>
+        {%- endif -%}
+      </div>
+      <div class="classics__gallery__second-image">
+        {%- if block.settings.second_image_url != blank -%}
+        <a href="{{ block.settings.second_image_url }}" role="link">
+        {%- endif -%}
+          <img class="classics__gallery__image" src="{{ block.settings.second_image | img_url: 'master' }}" alt='{% if block.settings.first_image.alt != "" %}{{ block.settings.second_image.alt }}{% else %}{{ block.settings.second_image_caption }}{% endif %}' />
+          <div class="classics__gallery__caption">{{ block.settings.second_image_caption }}</div>
+        {%- if block.settings.second_image_url != blank -%}
+        </a>
+        {%- endif -%}
+      </div>
+    {% else %}
+      {%- if block.settings.first_image_url != blank -%}
+      <a href="{{ block.settings.image_url }}" role="link">
+      {%- endif -%}
+        <img class="classics__gallery__image" src="{{ block.settings.image | img_url: '1440x720', crop: 'top' }}" alt='{% if block.settings.first_image.alt != "" %}{{ block.settings.image.alt }}{% else %}{{ block.settings.image_caption }}{% endif %}' />
+        <div class="classics__gallery__caption">{{ block.settings.image_caption }}</div>
+      {%- if block.settings.image_url != blank -%}
+      </a>
+      {%- endif -%}
+    {% endif %}
+
+  </div>
+{% endfor %}

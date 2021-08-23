@@ -1,0 +1,70 @@
+{%- comment -%}
+
+Comment form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#new_comment
+
+Objects Referenced:
+ • blog https://help.shopify.com/en/themes/liquid/objects/blog
+ • comment https://help.shopify.com/en/themes/liquid/objects/comment
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+
+{%- assign form_id = 'Comment' -%}
+{%- assign form_class = 'form form--comment' -%}
+
+{% form 'new_comment', article, id: form_id, class: form_class %}
+  {%- assign post_message = 'blogs.comments.success' -%}
+  {%- if blog.moderated? and comment.status == 'pending' -%}
+    {%- assign post_message = 'blogs.comments.success_moderated' -%}
+  {%- elsif comment.status == 'unapproved' or comment.status == 'spam' -%}
+    {%- assign post_message = 'blogs.comments.unapproved' -%}
+  {%- endif -%}
+  {% include 'form__status', form_id: form_id, success_message: post_message %}
+
+  <div class="form__field form__field--author">
+    {% assign field_id = form_id | append: '-author' %}
+    <label for="{{ field_id }}">{{ 'blogs.comments.name' | t }}</label>
+    <input type="text"
+      name="comment[author]"
+      id="{{ field_id }}"
+      class="input{% if form.errors contains 'author' %} input--error{% endif %}"
+      placeholder="{{ 'blogs.comments.name' | t }}"
+      value="{{ form.author }}"
+      autocapitalize="words">
+  </div>
+
+  <div class="form__field form__field--email">
+    {% assign field_id = form_id | append: '-email' %}
+    <label for="{{ form_id }}">{{ 'blogs.comments.email' | t }}</label>
+    <input type="email"
+      name="comment[email]"
+      id="{{ form_id }}"
+      class="input{% if form.errors contains 'email' %} input--error{% endif %}"
+      placeholder="{{ 'blogs.comments.email' | t }}"
+      value="{{ form.email }}"
+      spellcheck="false"
+      autocorrect="off"
+      autocapitalize="off">
+  </div>
+
+  <div class="form__field form__field--message">
+    {% assign field_id = form_id | append: '-body' %}
+    <label for="{{ form_id }}">{{ 'blogs.comments.message' | t }}</label>
+    <textarea
+      name="comment[body]"
+      id="{{ form_id }}"
+      class="input{% if form.errors contains 'body' %} input--error{% endif %}"
+      placeholder="{{ 'blogs.comments.message' | t }}"
+      >{{ form.body }}</textarea>
+  </div>
+
+  {% if blog.moderated? %}
+    <p class="form__note">{{ 'blogs.comments.moderated' | t }}</p>
+  {% endif %}
+
+  <div class="form__actions">
+    <button type="submit">{{ 'blogs.comments.post' | t }}</button>
+  </div>
+{% endform %}

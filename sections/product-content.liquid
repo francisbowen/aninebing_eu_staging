@@ -1,0 +1,282 @@
+{% comment %} Colors {% endcomment %}
+{% assign background_color = section.settings.background_color %}
+{% assign text_color = section.settings.text_color %}
+{% comment %} Media {% endcomment %}
+{% assign background_image_desktop = section.settings.background_image_desktop %}
+{% assign background_image_desktop_2x = section.settings.background_image_desktop_2x %}
+{% assign background_image_mobile = section.settings.background_image_mobile %}
+{% assign background_image_mobile_2x = section.settings.background_image_mobile_2x %}
+{% assign video_filename = section.settings.video_filename %}
+{% comment %} Cta {% endcomment %}
+{% assign button_style = section.settings.button_style %}
+{% assign cta_text = section.settings.cta_text %}
+{% assign cta_link = section.settings.cta_link %}
+{% comment %} Content {% endcomment %}
+{% assign content_title = section.settings.content_title %}
+{% assign content_body = section.settings.content_body %}
+{% comment %} Content Settings {% endcomment %}
+{% assign full_width_d = section.settings.full_width_d %}
+{% assign full_width_t = section.settings.full_width_t %}
+{% assign full_width = section.settings.full_width %}
+{% assign has_content_below_image_mobile = section.settings.has_content_below_image_mobile %}
+{% assign aligned_center = section.settings.aligned_center %}
+{% comment %} Content Alignment {% endcomment %}
+{% comment %} Desktop {% endcomment %}
+{% assign top_d = section.settings.top_d %}
+{% assign right_d = section.settings.right_d %}
+{% assign bottom_d = section.settings.bottom_d %}
+{% assign left_d = section.settings.left_d %}
+{% comment %} Tablet {% endcomment %}
+{% assign top_t = section.settings.top_t %}
+{% assign right_t = section.settings.right_t %}
+{% assign bottom_t = section.settings.bottom_t %}
+{% assign left_t = section.settings.left_t %}
+{% comment %} Mobile {% endcomment %}
+{% assign top_m = section.settings.top_m %}
+{% assign right_m = section.settings.right_m %}
+{% assign bottom_m = section.settings.bottom_m %}
+{% assign left_m = section.settings.left_m %}
+{% comment %} Container Height {% endcomment %}
+{% assign height_d = section.settings.height_d %}
+{% assign height_t = section.settings.height_t %}
+{% assign height_m = section.settings.height_m %}
+
+{% include 'content-section-template' %}
+
+{% schema %}
+  {
+    "name" :"Content",
+    "class": "content-container",
+    "tag": "section",
+    "settings" : [
+      {
+        "type": "header",
+        "content": "Container settings",
+        "info": "If there are no images and no video, you will need to determine the height of your container for Desktop, Tablet and Mobile. If you leave the tablet height empty, for example, the desktop height will apply. The height is determined in pixels."
+      },
+      {
+        "type": "text",
+        "id": "height_d",
+        "label": "Container Height - [Desktop]"
+      },
+      {
+        "type": "text",
+        "id": "height_t",
+        "label": "Container Height - [Tablet]"
+      },
+      {
+        "type": "text",
+        "id": "height_m",
+        "label": "Container Height - [Mobile]"
+      },
+      {
+        "type": "header",
+        "content": "background medias & color",
+        "info": "If a video is present, the video will overwrite everything else. If there is no video but there are one or more images, the images will show on top of background color. If there is no video and no images, the background color will show entirely."
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_desktop",
+        "label": "Background Image - [Desktop]",
+        "info": "upload with aspect ratio of 16:9 to achieve best result"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_desktop_2x",
+        "label": "Background Image - [Desktop] - 2x (Retina)"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_mobile",
+        "label": "Background Image - [Mobile]",
+        "info": "upload with aspect ratio of 2:3 to achieve best result"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_mobile_2x",
+        "label": "Background Image - [Mobile] - 2x (Retina)"
+      },
+      {
+        "type": "text",
+        "id": "video_filename",
+        "label": "Video Filename e.g: Video.mp4",
+        "info": "To import your video please go to Settings > Files > Upload Files"
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color"
+      },
+      {
+        "type": "checkbox",
+        "id": "aligned_center",
+        "label": "Align Content Center"
+      },
+      {
+        "type": "text",
+        "id": "full_width_d",
+        "label": "Determine content width - [Desktop]",
+        "info": "e.g: 100%, 500px, 60vw, etc"
+      },
+      {
+        "type": "text",
+        "id": "full_width_t",
+        "label": "Determine content width - [Tablet]"
+      },
+      {
+        "type": "text",
+        "id": "full_width",
+        "label": "Determine content width - [Mobile]"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_content_below_image_mobile",
+        "label": "Make content fall under image - [Mobile Only]"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color"
+      },
+      {
+        "type": "header",
+        "content": "Button Style"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "options": [
+            { "value": "button_primary", "label": "Button Primary"},
+            { "value": "button_secondary", "label": "Button Secondary"},
+            { "value": "button_tertiary", "label": "Button Tertiary"},
+            { "value": "button_quaternary", "label": "Button Quaternary"},
+            { "value": "link_primary", "label": "Link Primary"},
+            { "value": "link_secondary", "label": "Link Secondary"},
+            { "value": "link_no_style_primary", "label": "Link - No Style Primary"},
+            { "value": "link_no_style_secondary", "label": "Link - No Style Secondary"}
+        ],
+        "label": "Choose the button style"
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "text",
+        "id": "content_title",
+        "label": "Content Title"
+      },
+      {
+        "type": "richtext",
+        "id": "content_body",
+        "label": "Content Body"
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "Cta Text"
+      },
+      {
+        "type": "url",
+        "id": "cta_link",
+        "label": "Cta Link"
+      },
+      {
+        "type": "header",
+        "content": "Content Alignment",
+        "info": "Push the content from the TOP, RIGHT, LEFT, BOTTOM. E.g: 55px, 100%, etc. Is it important to use only 2 of the 4 values. Top/right, Top/Left, Bottom/Left or Bottom/Right. Also, to change value between Desktop, Tablet or Mobile you can reset the previous value by passing the string initial to it. Finally, if you want to align horizontally, pass in top: 50% or bottom: 50%. To align vertically, pass in left: 50% or right: 50%. To align dead center, pass in Top/Bottom: 50% and Left/Right: 50%"
+      },
+      {
+        "type": "header",
+        "content": "Desktop",
+        "info": "From highest screensize width to 996px"
+      },
+      {
+        "type": "text",
+        "id": "top_d",
+        "label": "Top Position - [Desktop]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "right_d",
+        "label": "Right Position - [Desktop]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "bottom_d",
+        "label": "Bottom Position - [Desktop]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "left_d",
+        "label": "Left Position - [Desktop]",
+        "default": "initial"
+      },
+      {
+        "type": "header",
+        "content": "Tablet",
+        "info": "From 996px width to 640px"
+      },
+      {
+        "type": "text",
+        "id": "top_t",
+        "label": "Top Position - [Tablet]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "right_t",
+        "label": "Right Position - [Tablet]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "bottom_t",
+        "label": "Bottom Position - [Tablet]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "left_t",
+        "label": "Left Position - [Tablet]",
+        "default": "initial"
+      },
+      {
+        "type": "header",
+        "content": "Mobile",
+        "info": "From 640px width to 0px"
+      },
+      {
+        "type": "text",
+        "id": "top_m",
+        "label": "Top Position - [Mobile]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "right_m",
+        "label": "Right Position - [Mobile]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "bottom_m",
+        "label": "Bottom Position - [Mobile]",
+        "default": "initial"
+      },
+      {
+        "type": "text",
+        "id": "left_m",
+        "label": "Left Position - [Mobile]",
+        "default": "initial"
+      }
+    ]  
+  }
+{% endschema %}

@@ -1,0 +1,19 @@
+{%- assign currentProduct_color = '' -%}
+{%- assign current_product_title = product.title | split: '- ' -%}
+{%- if current_product_title.size > 1 -%}
+  {%- assign current_product_color = current_product_title[1] -%}
+{%- endif -%}
+
+<div class="color-swatch form--product__field">
+  {%- if current_product_title.size > 1 -%}
+    <div class="color-swatch__name-wrapper">
+      <span class="label label--has-value">
+        <span class="color-swatch__name text-title-space js-color-name">{{ current_product_color | downcase }}</span>
+      </span>
+    </div>
+  {%- endif -%}
+  <fieldset class="fieldset--hidden">
+    <legend class="visually-hidden">Available colors</legend>
+    <div class="color-swatch__wrapper form--product__colors js-form-colors"></div>
+  </fieldset>
+</div>

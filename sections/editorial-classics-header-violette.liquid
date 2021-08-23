@@ -1,0 +1,115 @@
+{%- include 'editorial-header' -%}
+
+{% schema %}
+  {
+    "name": "Classics header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header"
+      },  
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Fallback background color"
+      },
+      {
+        "type": "url",
+        "id": "image_url",
+        "label": "Image Link"
+      },
+      {
+        "type": "header",
+        "content": "Desktop Media"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "[Desktop] Background image (*)"
+      },
+      {
+        "type": "paragraph",
+        "content": "Alignments select where the image zooms"
+      },
+      {
+        "type": "range",
+        "id": "alignment",
+        "label": "[Desktop] Image alignment Horizontally",
+        "info": "Default: 50%",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Mobile Media"
+      },
+      {
+        "type": "paragraph",
+        "content": "If there is no mobile image, then it will be dependent on the 'Desktop Media' on mobile screen sizing."
+      },
+      {
+        "type": "paragraph",
+        "content": "Alignments select where the image zooms"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_mobile",
+        "label": "[Mobile] Background image"
+      },
+      {
+        "type": "range",
+        "id": "image_mobile_height",
+        "min": 200,
+        "max": 1000,
+        "step": 10,
+        "label": "[Mobile] Image Height",
+        "default": 600
+      },
+      {
+        "type": "range",
+        "id": "alignment_vertical_mobile",
+        "label": "[Mobile] Image alignment Vertically",
+        "info": "Default: 0",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 0,
+        "unit": "%"
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  .classics__header {
+    background-color: {{ section.settings.color }};
+    {% if section.settings.image %}
+      background-image: url("{{ section.settings.image | img_url: 'master' }}");
+      background-position: {{ section.settings.alignment }}% 0;
+    {% endif %}
+  }
+
+  {% if section.settings.image_mobile != blank %}
+    @media only screen and (max-width: 640px) {
+      .classics__header {
+        background-image: url("{{ section.settings.image_mobile | img_url: 'master' }}");
+        background-position: 0 {{ section.settings.alignment_vertical_mobile }}%;
+        height: {{ section.settings.image_mobile_height }}px;
+        min-height: fit-content;
+      }
+    }
+  {% endif %}
+</style>

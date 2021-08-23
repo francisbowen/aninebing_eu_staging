@@ -1,0 +1,9 @@
+{% unless template.name == 'collection' %}
+  <div id="isp_search_box_container" class="isp_search_box_container isp_center_container_position">
+    <form action="/pages/search-results" onsubmit="return false;" method="get">
+      <span role="status" aria-live="polite" class="isp_polite_powered_by_id ui-helper-hidden-accessible"></span>
+      <input type="search" id="isp_main_search_box" class="isp_search_box ui-autocomplete-input" data-placeholder-live="false" placeholder="" value="" autocomplete="OfF" autocorrect="off" autocapitalize="off" isp_ac="OfF">
+      <a target="_blank" rel="nofollow" href="https://www.instantsearchplus.com/instantsearchplus-autocomplete-shopify?src=shopify_fulltextsearch" class="isp_watermark" style="display:none" aria-hidden="true">ISP Watermark</a>
+    </form>
+  </div>
+{% endunless %}

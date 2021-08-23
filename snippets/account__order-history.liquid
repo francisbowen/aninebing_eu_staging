@@ -1,0 +1,53 @@
+{% comment %} To switch Dashboard and Order History to the RHS on Desktop  {% endcomment %}
+
+{%- if account_template == 'recent-order' and settings.account_dashboard_switch_side -%}
+  {%- assign account_switch_side = 'account__orders-wrapper--right-side' -%}
+{%- elsif account_template == 'recent-order' -%}
+  {%- assign account_switch_side = 'account__orders-wrapper--left-side' -%}
+{%- endif -%}
+
+<!-- globale_my_account_globale_orders_list_include -->
+{% include 'globale-orders-list' %}
+
+<div class="account__orders-wrapper account__orders-wrapper--{{ account_template }} {{ account_switch_side }}">
+  <h2 class="account__subtitle account__subtitle--{{ account_template }}">
+    {%- if account_template == 'recent-order' -%}
+      {{- 'customer.orders.title' | t -}}
+    {% elsif account_template == 'full-order' %}
+      {{- 'customer.orders.title_full_order' | t -}}
+    {%- endif -%}
+  </h2>
+  <div class="account__orders table-responsive{% if customer.orders.size == 0 %} account__orders--empty{% endif %}">
+    {% if customer.orders.size > 0 %}
+      {% paginate customer.orders by orders_per_page %}
+        <table class="account__orders-table table-responsive__wrapper">
+          <thead class="account__orders-head table-responsive__header hide-until@md">
+            <tr class="account__orders-row">
+              <th class="account__orders-title table-responsive__name heading--3" scope="col">{{ 'customer.orders.order_number' | t }}</th>
+              <th class="account__orders-title table-responsive__name heading--3" scope="col">{{ 'customer.orders.date' | t }}</th>
+              <th class="account__orders-title table-responsive__name heading--3" scope="col">{{ 'customer.orders.payment_status' | t }}</th>
+              <th class="account__orders-title table-responsive__name heading--3" scope="col">{{ 'customer.orders.fulfillment_status' | t }}</th>
+              <th class="account__orders-title table-responsive__name heading--3" scope="col">{{ 'customer.orders.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody class="account__orders-summary table-responsive__body">
+            {%- if account_template == 'recent-order' -%}
+              {% for order in customer.orders limit: 3 %}
+                {% include 'order__summary' with account_template: account_template %}
+              {% endfor %}
+            {%- else -%}
+              {% for order in customer.orders %}
+                {% include 'order__summary' with account_template: account_template %}
+              {% endfor %}
+            {%- endif -%}
+          </tbody>
+        </table>
+        {%- unless account_template == 'recent-order' -%}
+          {% include 'paginate' %}
+        {%- endunless -%}
+      {% endpaginate %}
+    {% else %}
+      <p>{{ 'customer.orders.none' | t }}</p>
+    {% endif %}
+  </div>
+</div>

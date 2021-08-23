@@ -1,0 +1,63 @@
+{%- comment -%}
+
+Contact form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#contact
+
+Objects Referenced:
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+
+{%- assign form_id = 'ContactForm' -%}
+{%- assign form_class = 'form form--contact' -%}
+
+{% form 'contact', id: form_id, class: form_class %}
+  {% include 'form__status', form_id: form_id %}
+
+  <div class="form__field">
+    {% assign field_id = form_id | append: '-name' %}
+    <label for="{{ field_id }}">{{ 'contact.form.name' | t }}</label>
+    <input type="text"
+      name="contact[name]"
+      id="{{ field_id }}"
+      value="{{ form.name | default: customer.name }}">
+  </div>
+
+  <div class="form__field">
+    {% assign field_id = form_id | append: '-email' %}
+    <label for="{{ field_id }}">{{ 'contact.form.email' | t }}</label>
+    <input
+      type="email"
+      id="{{ field_id }}"
+      name="contact[email]"
+      autocorrect="off"
+      autocapitalize="off"
+      value="{{ form.email | default: customer.email }}"
+      aria-required="true">
+  </div>
+
+  <div class="form__field">
+    {% assign field_id = form_id | append: '-phone' %}
+    <label for="{{ field_id }}">{{ 'contact.form.phone' | t }}</label>
+    <input type="tel"
+      name="contact[phone]"
+      id="{{ field_id }}"
+      pattern="[0-9\-]*"
+      value="{{ form.phone | default: customer.phone }}">
+  </div>
+
+  <div class="form__field">
+    {% assign field_id = form_id | append: '-body' %}
+    <label for="{{ field_id }}">{{ 'contact.form.message' | t }}</label>
+    <textarea name="contact[body]"
+      id="{{ field_id }}"
+      rows="10">
+        {{- form.body -}}
+      </textarea>
+  </div>
+
+  <div class="form__actions">
+    <button type="submit">{{ 'contact.form.submit' | t }}</button>
+  </div>
+{% endform %}

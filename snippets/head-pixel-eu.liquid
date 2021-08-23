@@ -1,0 +1,73 @@
+<!-- Sailthru -->
+  <script src="https://ak.sail-horizon.com/spm/spm.v1.min.js"></script>
+	{% comment %} <script>Sailthru.init({ customerId: 'd72ba4417c61520d38339c9df74ad55d' });</script> {% endcomment %}
+
+  {% comment %} {{ 'sailthru.js'  | asset_url | script_tag }} {% endcomment %}
+<!-- End Sailthru -->
+
+<!-- Start Heap Code -->
+  <script type="text/javascript">
+    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+    heap.load("148200200");
+
+    {% if customer %}   
+      heap.addEventProperties({'Order Count': {{ customer.orders_count }} }); 
+      
+      /** Heap Identity call  **/
+      var customerEmail = '{{ customer.email }}' || '{{ checkout.email }}';
+      heap.identify(customerEmail);
+      heap.addUserProperties({'Name': '{{ customer.name }}','email': customerEmail,'CustomerID':'{{ customer.id }}','TotalSpent':'{{ customer.total_spent }}'});   
+      /***/
+                                  
+      /*** GTM Customer Email push   */
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({'customerEmail': customerEmail});
+
+    {% endif %}
+  </script>
+<!-- End Heap Code -->
+
+<!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-TZP79G5');</script>
+<!-- End Google Tag Manager -->
+
+<!-- FuelX -->
+<script type="text/javascript">
+  (function(e,t,u,n,f){
+      "use strict";
+      e.fx||(e.fuelxEQ=e.fuelxEQ?e.fuelxEQ:[],e.fuelx=function(){e.fuelxP&&e.fuelxP.fuelx?e.fuelxP.handleEvent(arguments):e.fuelxEQ.push(arguments)},
+      f=e.document.createElement(t),f.async=!0,f.src=u,n=e.document.getElementsByTagName(t)[0],n.parentNode.insertBefore(f,n))
+  })(window,"script","https://cdn.fuelx.com/js/tr.js?v1");
+</script>
+<script type="text/javascript">
+  fuelx("init", "29a1c542c79221c02e0488412c679ef2", "I2dTfkAIP%2BDuyBVdknMZQQ%3D%3D");
+  fuelx("pageview");
+</script>
+<!-- End FuelX -->
+
+
+<!-- Global Site Tag (gtag.js) - Google AdWords: 820623664 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-820623664"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-820623664', {'send_page_view': false});
+  </script>
+<!-- End Global Site Tag (gtag.js) - Google AdWords: 820623664 -->
+
+<!-- ISQ SET Cart Attributes For CJ Pixel  -->
+<script>
+  (function () {
+    var utm_channel_match = /utm_source=([^&]*)(?:&.*)?$/.exec(window.location.search);
+
+    if (utm_channel_match) {
+      $.post('/cart/update.js', { attributes: { source: utm_channel_match[1] } });
+    }
+  })();
+</script>
+<!-- END -->

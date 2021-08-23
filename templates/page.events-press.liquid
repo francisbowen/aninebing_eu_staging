@@ -1,0 +1,11 @@
+<div class="blog">
+  {%- unless blogs.events.articles < 1 and blogs.press.articles.size < 1 -%}
+    {%- section 'blog-header-events-press' -%}
+    {%- section 'blog-body-events' -%}
+    {%- section 'blog-body-press' -%}
+  {%- else -%}
+    <div class="blog__empty">
+      <p>{{ 'blogs.articles.empty' | t }}</p>
+    </div>
+  {%- endunless -%}
+</div>

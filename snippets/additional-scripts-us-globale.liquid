@@ -1,0 +1,343 @@
+// US
+// Start YOTPO
+try {
+  (function e(){var e=document.createElement("script");e.type="text/javascript",e.async=true,e.src="//staticw2.yotpo.com/PROzW4b465I9n5LmsIeARiCOAHvgJRUYkDTpY76F/widget.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();
+
+  yotpoTrackConversionData = {orderId: data.OrderId, orderAmount: subtotal_price, orderCurrency: data.details.currency}
+} catch {
+  console.log('Yotpo failed!');
+}
+// End YOTPO
+
+// Start HEAP
+try {
+  heap.identify(data.details.customerEmail);
+  heap.addUserProperties({'Name': customerShopifyName || data.details.customerName,'Email': customerShopifyEmail || data.details.customerEmail, 'Tags': customerShopifyTags,'CustomerID': customerShopifyId,'Order Count': customerShopifyOrderCount,'Total Spent': customerShopifyTotalSpent});
+  heap.track('Purchase', {'Total Price': total_price,'Tax Price': data.details.totalVAT,'Subtotal Price': subtotal_price,'Shipping Price': data.details.discountedShippingPrice,'Order Email': customerShopifyEmail || data.details.customerEmail,'Shipping Address': data.details.CustomerInfo.ShippingAddress,'Order ID': data.OrderId,'Order Name': data.OrderId,'Accepts Marketing?': dataCheckoutBuyerMarketing,'Discount Amount': totalOriginalCartDiscount,'Discounts': totalDiscount,'Order Count': customerShopifyOrderCount,'Tags': customerShopifyTags,'Shipping Method': data.details.shippingServiceName, 'Total Spent': customerShopifyTotalSpent});
+} catch {
+  console.log('Heap failed!');
+}
+// End HEAP
+
+// Start SHARESALE
+var sku_list_shareasale = '';
+var price_list_shareasale = '';
+var quantity_list_shareasale = '';
+var discounts_shareasale = '';
+
+try {
+  for (i = 0; i < data.details.products.length; i++) {
+    if (sku_list_shareasale != '') {
+      sku_list_shareasale = sku_list_shareasale + ',' + data.details.products[i].sku;	
+    } else {
+      sku_list_shareasale = data.details.products[i].sku;
+    }
+  
+    if (theme.cart._object.total_discount > 0 && +data.details.products[i].price > 0) {
+      const B4_discount_subtotal = theme.cart._object.items_subtotal_price - theme.cart._object.total_discount;
+      const percent_of_discount = (+data.details.products[i].price * 10000) / B4_discount_subtotal;
+      const share_of_discount = (percent_of_discount * theme.cart._object.total_discount) / 10000;
+      const final_item_price = data.details.products[i].price + share_of_discount;
+  
+      if (price_list_shareasale != '') {
+        price_list_shareasale = price_list_shareasale + ',' + final_item_price;		
+      } else {
+        price_list_shareasale = final_item_price;
+      }
+    } else {
+      if (price_list_shareasale != '') {
+        price_list_shareasale = price_list_shareasale + ',' + data.details.products[i].price;		
+      } else {
+        price_list_shareasale = data.details.products[i].price;
+      }
+    }
+  
+    if (quantity_list_shareasale != '') {
+      quantity_list_shareasale = quantity_list_shareasale + ',' + data.details.products[i].quantity;		
+    } else {
+      quantity_list_shareasale = data.details.products[i].quantity;
+    }
+  }
+  
+  
+  for (i = 0; i < data.details.discounts.length; i++) {
+    if (data.details.discounts[i].discountTypeId == 1) {
+      if (discounts_shareasale != '') {
+        discounts_shareasale = discounts_shareasale + ',' + data.details.discounts[i].code;		
+      } else {
+        discounts_shareasale = data.details.discounts[i].code;
+      }
+    }
+  }
+  
+  let customerStatus;
+  if (customerShopifyOrderCount > 1) {
+    customerStatus = '&newcustomer=0';
+  } else if (customerShopifyOrderCount <= 1) {
+    customerStatus = '&newcustomer=1';
+  } else {
+    customerStatus = '&newcustomer=';
+  }
+  
+  document.write('<img src="https://shareasale.com/sale.cfm?amount=' + subtotal_price + '&tracking=' + data.OrderId +
+  '&transtype=sale&merchantID=51124&currency=' + data.details.currency + '&skulist=' + sku_list_shareasale + '&pricelist=' + price_list_shareasale+ '&quantitylist=' + quantity_list_shareasale + '&couponcode=' + discounts_shareasale + customerStatus + ' width="1" height="1"');
+} catch {
+  console.log('Sharesale failed!')
+}
+// End SHARESALE
+
+// Shared Items Forloop
+var criteo_items = []; // CRITEO
+var pintrk_items = []; // PINTRK
+var rakuten_items = []; // RAKUTEN
+let rakuten_is_clearance = 'N';
+for(i=0; i < data.details.products.length; i++){
+  if (data.details.products[i].Brand.Name == 'ANINE BING SALE' || data.details.products[i].Brand.Name == 'BING KIDS SALE') {
+    rakuten_is_clearance = 'T';
+  }
+  criteo_items.push({id : data.details.products[i].productGroupCode, price : data.details.products[i].price,quantity : data.details.products[i].quantity });
+  pintrk_items.push({product_id: data.details.products[i].productGroupCode});
+  rakuten_items.push({optionalData: {cat: productShopifyProductTypes[i], brand: data.details.products[i].Brand.Name, isclearance: rakuten_is_clearance }});
+}
+// End Shared Items Forloop
+
+// Start CRITEO
+// REQUIRE
+try {
+  var deviceType = /iPad/.test(navigator.userAgent) ? "t" : /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(navigator.userAgent) ? "m" : "d";
+  window.criteo_q = window.criteo_q || [];
+  window.criteo_q.push(
+    { event: "setAccount", account: 26845},
+    { event: "setSiteType", type: deviceType},
+    { event: "setHashedEmail", email: customerShopifyEmail || data.details.customerEmail},
+    { event: "trackTransaction", id: data.OrderId, product: criteo_items});
+} catch {
+  console.log('Criteo failed!');
+}
+// End CRITEO
+
+// Start PINTRK
+try {
+  !function(e){if(!window.pintrk){window.pintrk=function()
+    {window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+    n=window.pintrk;n.queue=[],n.version="3.0";var
+    t=document.createElement("script");t.async=!0,t.src=e;var
+    r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}
+    ("https://s.pinimg.com/ct/core.js");
+    
+    pintrk('load','2613667945459', { em: customerShopifyEmail || data.details.customerEmail }); 
+    pintrk('page');
+    
+    pintrk('track', 'checkout',{
+      value: total_price, 
+      order_quantity: 1,
+      line_items: pintrk_items
+    }); 
+} catch {
+  console.log('Pintrk failed!');
+}
+// End PINTRK
+
+// Google Code for Sales Confirmation Conversion Page - US
+try {
+  /* <![CDATA[ */
+  var google_conversion_id = 969851850;
+  var google_conversion_language = "en";
+  var google_conversion_format = "3";
+  var google_conversion_color = "ffffff";
+  var google_conversion_label = "WHgFCOuXtJ4BEMqHu84D";
+  if (subtotal_price) { var google_conversion_value = subtotal_price; }
+  var google_remarketing_only = false;
+  /* ]]> */
+} catch {
+  console.log('Google Code for Sales Confirmation Conversion Page failed!');
+}
+// End Google Code for Sales Confirmation Conversion Page - US
+
+// Start HEAP TRACK
+try {
+  for(i=0; i < data.details.products.length; i++){
+    purchase ={
+    "purchase_order_id": data.OrderId,
+    "purchase_order_name": data.OrderId,
+    "purchase_product_id": data.details.products[i].productGroupCode,
+    "purchase_variant_id": data.details.products[i].cartItemId,
+    "purchase_product_name": data.details.products[i].name,
+    "purchase_product_quantity": data.details.products[i].quantity,
+    "purchase_product_price": data.details.products[i].price,
+    "purchase_product_currency": data.details.currency,
+    "purchase_customer_email": customerShopifyEmail || data.details.customerEmail
+    }; 
+    heap.track('Purchase Item', purchase);
+  }
+  
+  // SteelHouse Conversion Pixel INSTALL ONLY ON CONVERSION page/event
+  (function(){
+  var k = '';
+  var g = '';
+  var j = '';
+  for(i=0;i<data.details.products.length;i++){
+    if (k != '') {
+      k = k + ',' + data.details.products[i].id;
+    } else {
+      k = data.details.products[i].id;
+    } 
+  
+    if (g != '') {
+      g = g + ',' + data.details.products[i].quantity;
+    } else {
+      g = data.details.products[i].quantity;
+    }
+  
+    if (j != '') {
+      j = j + ',' + data.details.products[i].price;
+    } else {
+      j = data.details.products[i].price;
+    }
+  }
+  
+  var x=null,p,q,m,
+  o="30816",
+  l=data.OrderId,
+  i=total_price,
+  c="",
+  u="",
+  shadditional="";
+  try{p=top.document.referer!==""?encodeURIComponent(top.document.referrer.substring(0,512)):""}catch(n){p=document.referrer!==null?document.referrer.toString().substring(0,512):""}try{q=window&&window.top&&document.location&&window.top.location===document.location?document.location:window&&window.top&&window.top.location&&""!==window.top.location?window.top.location:document.location}catch(b){q=document.location}try{m=parent.location.href!==""?encodeURIComponent(parent.location.href.toString().substring(0,512)):""}catch(z){try{m=q!==null?encodeURIComponent(q.toString().substring(0,512)):""}catch(h){m=""}}var A,y=document.createElement("script"),w=null,v=document.getElementsByTagName("script"),t=Number(v.length)-1,r=document.getElementsByTagName("script")[t];if(typeof A==="undefined"){A=Math.floor(Math.random()*100000000000000000)}w="dx.steelhousemedia.com/spx?conv=1&shaid="+o+"&tdr="+p+"&plh="+m+"&cb="+A+"&shoid="+l+"&shoamt="+i+"&shocur="+c+"&shopid="+k+"&shoq="+g+"&shoup="+j+"&shpil="+u+shadditional;y.type="text/javascript";y.src=("https:"===document.location.protocol?"https://":"http://")+w;r.parentNode.insertBefore(y,r)}());
+  
+  window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+  heap.load("148200200");
+  var customerEmail = customerShopifyEmail || data.details.customerEmail;
+  heap.identify(customerEmail);
+  heap.addUserProperties({'Name': customerShopifyName || data.details.customerName,'email': customerShopifyEmail || customerEmail,'CustomerID': customerShopifyId,'TotalSpent': customerShopifyTotalSpent}); 
+  
+  heap.track('Purchase', {'Total Price': total_price, 'Order Email': customerShopifyEmail || customerEmail,'Order ID': data.OrderId,'Order Name': data.OrderId,'Discount': totalDiscount,'Discount Amount': totalOriginalCartDiscount,'Order Count': customerShopifyOrderCount,'Tags': customerShopifyTags,'Shipping Method': data.details.shippingServiceName,'Shipping Address': data.details.CustomerInfo.ShippingAddress});
+} catch {
+  console.log('Heap track failed!');
+}
+// End HEAP TRACK
+
+// Start ISQ Below code for CJ Pixel
+var items_emjcd = '';
+var discounts_emjcd = '';
+var checkout_attributes = document.body.getAttribute('data-cart-attribute');
+var checkout_attributes_pagination =  document.body.getAttribute('data-cart-pagination-attribute');
+
+try {
+  for (i = 0; i < data.details.products.length; i++){
+    items_emjcd = items_emjcd + '&ITEM' + (i + 1) + '=' + data.details.products[i].sku + '&AMT' + (i + 1) + '=' + data.details.products[i].price + '&QTY' + (i + 1) + data.details.products[i].quantity;
+  }
+  
+  for (i = 0; i < data.details.discounts.length; i++){
+    if (data.details.discounts[i].discountTypeId == 1){
+      discounts_emjcd = discounts_emjcd + 'DISCOUNT=' + data.details.discounts[i].price + '&COUPON' + data.details.discounts[i].name;
+    }
+  }
+  
+  document.write('<iframe frameborder="0" scrolling="no" src="https://www.emjcd.com/tags/c?containerTagId=30587&CID=1552703&TYPE=410597&CURRENCY=' + theme.shop.currency +'&OID=' + data.OrderId + '&' + items_emjcd +'&' + discounts_emjcd + 'cjevent=' + checkout_attributes_pagination + '&channel=' + checkout_attributes +'&channel_ts=' + shopShopifyDateNow +' height="1"width="20" /></iframe>');
+} catch {
+  console.log('ISQ Below code for CJ Pixel failed!');
+}
+// End ISQ Below Code for CJ Pixel
+
+// Start DATA LAYER
+var items_data_layer = window.dataLayer || [];
+
+try {
+  for (i=0; i < data.details.products.length; i++){
+    var item = new Object();
+    item.ITEM = data.details.products[i].sku
+    item.AMT = data.details.products[i].price;
+    item.QTY = data.details.products[i].quantity;
+    items_data_layer.push(item);
+  }
+  
+  var dataLayer = window.dataLayer = window.dataLayer || [];
+  var discountAMT = data.details.discounts.length > 0 ? totalOriginalCartDiscount : "";
+  var couponCode = data.details.discounts.length > 0 ? totalDiscount : ""; // NEED TO FIX
+  
+  dataLayer.push({
+    'ecommerce' : {
+      'purchase': {
+        'actionField': {
+          'OID': data.OrderId,
+          'COUPON': couponCode,
+          'DISCOUNT': discountAMT
+        },
+        'products': items_data_layer
+      }
+    }
+  });
+} catch {
+  console.log('Data Layer failed!');
+}
+// End DATA LAYER
+
+// Start GOOGLE TAG MANAGER
+try {
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MTX78V9');
+
+  __attentive_domain="aninebing.attn.tv",function(){window.__attentive={invoked:!1,show:function(){this.invoked=!0}};var t=!1,e=function(){if(document.readyState&&!/loaded|complete/.test(document.readyState))return void setTimeout(e,10);if(!t)return t=!0,void setTimeout(e,50);var n=document.createElement("script");n.setAttribute("async","true"),n.type="text/javascript",n.src="https://cdn.attn.tv/loader.js",((document.getElementsByTagName("head")||[null])[0]||document.getElementsByTagName("script")[0].parentNode).appendChild(n)};if(document.readyState && /loaded|complete/.test(document.readyState))e();else window.addEventListener?window.addEventListener("load",e,!1):window.attachEvent("onload",e)}(),window.__attentive.show();
+} catch {
+  console.log('Google Tag Manager failed!');
+}
+// End GOOGLE TAG MANAGER
+
+
+// Start BOUNCEX Conversion MultiPixel. Put this in the Additional scripts box in Settings > Checkout
+try {
+  document.write('<img height="1" width="1" border="0" style="display:none;" src="//api.bounceexchange.com/capture/convert2.gif?website_id=3907&order_id="'+ data.OrderId + '"&email=' + data.details.customerEmail + '&amount='+ total_price + '"&currency='+ data.details.currency + '"&goal=purchase" />');
+
+  var items_bouncex = [];
+
+  for(i=0;i<data.details.products.length;i++){
+    var item = new Object();
+    item.sku = data.details.products[i].cartItemId;
+    item.product_id = data.details.products[i].productGroupCode;
+    item.price = data.details.products[i].price;
+    item.quantity = data.details.products[i].quantity;
+    items_bouncex.push(item);
+  }
+
+  // {{ order.location }} not available in Global-e objects
+  window.top.bouncex = window.top.bouncex || [];
+  window.top.bouncex.push(["conversion", {
+    "order_id": data.OrderId,
+    "email": data.details.customerEmail ,
+    "phone": data.details.CustomerInfo.BillingAddress.Phone1,
+    "goal": "purchase",
+    "transaction_origin": "Online", // order.location
+    "currency": data.details.currency,
+    "coupon": data.details.discounts,
+    "total_discount": totalOriginalCartDiscount,
+    "tax": data.details.totalVAT,
+    "shipping": data.details.discountedShippingPrice,
+    "amount": total_price,
+    "item": items_bouncex
+  }]);
+// End BOUNCEX 
+} catch {
+  console.log('BounceX Conversion Multipixel failed!');
+}
+
+// Start of Rakuten Advertising Additional Fields
+let rakutenAdv_customerStatus = 'New';
+
+try {
+  if (customerOrderCount > 1) {
+    rakutenAdv_customerStatus = 'Existing';
+  }
+  
+  window.rm_Shopify = {
+    customerStatus: rakutenAdv_customerStatus,
+    orderName: data.OrderId,
+    line_items: rakuten_items
+  };
+} catch {
+  console.log('Rakuten Pixel failed!');
+}
+// End of Rakuten Advertising Additional Fields

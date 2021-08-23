@@ -1,0 +1,56 @@
+{%- comment -%}
+
+Address renderer.
+
+Objects Referenced:
+ • address https://help.shopify.com/en/themes/liquid/objects/address
+ {{ address | format_address }}
+
+{%- endcomment -%}
+
+<div class="address__info">
+
+  {% if address == customer.default_address and template.name != 'account' %}
+    <p class="address__type address-line heading--4">{{ 'customer.addresses.default' | prepend: ml_t | t }}</p>
+  {% endif %}
+
+  {% if address.name != blank %}
+    <p class="address__name address-line">{{ address.name }}</p>
+  {% endif %}
+
+  {% if template.name == 'order' and order.email != '' %}
+    <p class="address__email address-line">{{ order.email }}</p>
+  {% endif %}
+
+  {% if address.company != blank %}
+    <p class="address__company address-line">{{ address.company }}</p>
+  {% endif %}
+
+  {% if address.address1 != blank %}
+    <p class="address__address1 address-line">{{ address.address1 }}</p>
+  {% endif %}
+
+  {% if address.address2 != blank %}
+    <p class="address__address2 address-line">{{ address.address2 }}</p>
+  {% endif %}
+
+  {% if address.city != blank or address.province_code != blank %}
+    <p class="address__city-province address-line">
+      <span class="address__city">{{ address.city }}{% if address.province_code != blank && address.city != blank %},{% endif %}</span>
+      <span class="address__province">{{ address.province_code }}</span>
+    </p>
+  {% endif %}
+
+  {% if address.country_code != blank or address.zip != blank %}
+    <p class="address__country-zip address-line">
+      <span class="address__country">{{ address.country_code }}</span>
+      <span class="address__zip">{{ address.zip }}</span>
+    </p>
+  {% endif %}
+
+  {% if address.phone != blank %}
+    <p class="address__phone address-line">
+      <span class="address__number">{{ address.phone }}</span>
+    </p>
+  {% endif %}
+</div>

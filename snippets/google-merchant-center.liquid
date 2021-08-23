@@ -1,0 +1,10 @@
+<script>
+  const params = window.location.search;
+  const urlParams = new URLSearchParams(params);
+  
+  if (urlParams.get('source') === 'shoppingads' && !urlParams.get('glCountry') && !urlParams.get('glCurrency')) {
+    urlParams.append('glCountry', 'EU');
+    urlParams.append('glCurrency', 'EUR');
+    window.location.href = `${theme.shop.url}${theme.shop.request_path}?${urlParams}`;
+  } 
+</script>

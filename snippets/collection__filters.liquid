@@ -1,0 +1,41 @@
+<section class="collection__filters-banner js-collection__filters-banner {% if collection.image %}has-image{% endif %}">
+  <div class="collection__filters-banner--left">
+    {% unless collection.image %}
+      <h1 class="collection__title heading--3" data-collection-handle="{{ collection.handle }}">{{ collection.title }}</h1>
+    {% endunless %}
+    <span class="collection__filter heading--4 js-collection-filter">
+      {{ 'collections.filters.title' | t }}
+      <span class="current-active-filters js-current-active-filters"></span>
+      <span class="clear-active-filters js-clear-active-filters"></span>
+    </span>
+    <span class="collection__sort heading--4 js-collection-sort">{{ 'collections.sorting.title' | t }}</span>
+
+    <div class="grid-views">
+      {%- include 'icons' with selected_icon: '1-product-view', icon_class: 'icon-grid-view-single js-grid-view js-grid-view-single', icon_fill: 'none', icon_stroke: '#000000', title: 'collections.grid.single_view', desc: 'collections.grid.single_view_desc' -%}
+      {%- include 'icons' with selected_icon: '2-products-view', icon_class: 'icon-grid-view-double js-grid-view js-grid-view-double', icon_fill: 'none', icon_stroke: '#000000', title: 'collections.grid.double_view', desc: 'collections.grid.double_view_desc' -%}
+    </div>
+  </div>
+
+  <div class="collection__filters-banner--right">
+    <div id="filter-dropdown" class="filter-dropdown js-filter-dropdown">
+      {% comment %} Close Trigger {% endcomment %}
+      <span class="filter-dropdown__close js-filter-dropdown-close" role="button"></span>
+
+      {% comment %} Sorts {% endcomment %}
+      <div class="sort-dropdown__content js-sort-dropdown-content">
+        <h2 class="filter-dropdown__content-title uppercase-text heading--4">{{ 'collections.sorting.title' | t }}</h2>
+        {% include 'collection-sort' %}
+        <button class="filter-dropdown__content-submit button button--primary js-apply-sort">{{ 'collections.sorting.apply' | t }}</button>
+      </div>
+
+      {% comment %} Filters {% endcomment %}
+      <div class="filter-dropdown__content js-filter-dropdown-content">
+        <div class="filter-dropdown__content-btns">
+          <button class="button button--secondary filter-banner__clear-btn js-filter-banner__clear-btn js-filter-banner-btns js-clear-active-filters">{{ 'collections.filters.clear' | t }}</button>
+          <button class="button button--secondary filter-banner__apply-btn js-filter-banner__apply-btn js-filter-banner-btns">{{ 'collections.filters.done' | t }}</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

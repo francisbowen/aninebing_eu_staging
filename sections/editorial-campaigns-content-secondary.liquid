@@ -1,0 +1,138 @@
+
+
+<div class="campaigns__content">
+    <img class="campaigns__content__logo" src="{{ section.settings.logo | img_url: '45x45' }}" alt="{{ section.settings.logo.alt }}" />
+    <div class="campaigns__content__text">{{ section.settings.text }}</div>
+  
+    {% include 'button' with button_style: section.settings.button_style, button_text: section.settings.button_text, button_url: section.settings.button_url, class: "campaigns__content__button" %}
+    {{ cta }}
+  </div>
+  
+  {% for block in section.blocks %}
+    <div class="campaigns__gallery {{ block.settings.position }}">
+      {% if block.type == 'two_images' %}
+        <div class="campaigns__gallery__first-image">
+          <img class="campaigns__gallery__image" src="{{ block.settings.first_image | img_url: 'master' }}" alt="{{ block.settings.first_image.alt }}" />
+          <div class="campaigns__gallery__caption text-small">{{ block.settings.first_image_caption }}</div>
+        </div>
+        <div class="campaigns__gallery__second-image">
+          <img class="campaigns__gallery__image" src="{{ block.settings.second_image | img_url: 'master' }}" alt="{{ block.settings.second_image.alt }}" />
+          <div class="campaigns__gallery__caption text-small">{{ block.settings.second_image_caption }}</div>
+        </div>
+      {% else %}
+        <img class="campaigns__gallery__image" src="{{ block.settings.image | img_url: '1440x720', crop: 'top' }}" alt="{{ block.settings.image.alt }}" />
+        <div class="campaigns__gallery__caption text-small">{{ block.settings.image_caption }}</div>
+      {% endif %}
+  
+    </div>
+  {% endfor %}
+  
+  {% schema %}
+    {
+      "name": "Campaigns content",
+      "class": "campaigns",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Content block"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "options": [
+            { "value": "button_primary", "label": "Button Primary"},
+            { "value": "button_secondary", "label": "Button Secondary"},
+            { "value": "button_tertiary", "label": "Button Tertiary"},
+            { "value": "button_quaternary", "label": "Button Quaternary"},
+            { "value": "link_primary", "label": "Link Primary"},
+            { "value": "link_secondary", "label": "Link Secondary"},
+            { "value": "link_no_style_primary", "label": "Link - No Style Primary"},
+            { "value": "link_no_style_secondary", "label": "Link - No Style Secondary"}
+          ],
+          "label": "Choose the button style"
+        }
+      ],
+      "blocks": [
+        {
+          "name": "Two images",
+          "type": "two_images",
+          "settings": [
+            {
+              "type": "select",
+              "id": "position",
+              "options": [
+                { "value": "campaigns__gallery--two-first-variant", "label": "Primary"},
+                { "value": "campaigns__gallery--two-second-variant", "label": "Secondary"}
+              ],
+              "label": "Images positions"
+            },
+            {
+              "type": "image_picker",
+              "id": "first_image",
+              "label": "First image"
+            },
+            {
+              "type": "richtext",
+              "id": "first_image_caption",
+              "label":"First image caption"
+            },
+            {
+              "type": "image_picker",
+              "id": "second_image",
+              "label": "Second image"
+            },
+            {
+              "type": "richtext",
+              "id": "second_image_caption",
+              "label":"Second image caption"
+            }
+          ]
+        },
+        {
+          "name": "Single image",
+          "type": "single_image",
+          "settings": [
+            {
+              "type": "select",
+              "id": "position",
+              "options": [
+                { "value": "campaigns__gallery--single-first-variant", "label": "Primary"},
+                { "value": "campaigns__gallery--single-second-variant", "label": "Secondary"}
+              ],
+              "label": "Image position"
+            },
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+            },
+            {
+              "type": "richtext",
+              "id": "image_caption",
+              "label":"Image caption"
+            }
+          ]
+        }
+      ]
+    }
+  {% endschema %}

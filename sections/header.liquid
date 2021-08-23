@@ -1,0 +1,124 @@
+{%- include 'header' -%}
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Store Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "header",
+        "content": "Navigation Menu"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_desktop",
+        "label": "[Desktop] Main Navigation menu"
+      },
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "[Mobile] Main Navigation menu"
+      },
+      {
+        "type": "link_list",
+        "id": "single_menu",
+        "label": "Secondary navigation menu"
+      },
+      {
+        "type": "header",
+        "content": "[US Store] Country Selector"
+      },
+      {
+        "type": "text",
+        "id": "country_title_USA",
+        "label": "[US Store] Specify which country store to relocate to.",
+        "default": "Europe"
+      },
+      {
+        "type": "url",
+        "id": "country_link_USA",
+        "label": "[US Store] Specify link for country relocation."
+      },
+      {
+        "type": "text",
+        "id": "country_abbr_USA",
+        "label": "[US Store] Specify abbreviation for referring country(e.g. eu, us)."
+      },
+      {
+        "type": "header",
+        "content": "[EU Store] Country Selector"
+      },
+      {
+        "type": "text",
+        "id": "country_title_EU",
+        "label": "[EU Store] Specify which country store to relocate to.",
+        "default": "USA"
+      },
+      {
+        "type": "url",
+        "id": "country_link_EU",
+        "label": "[EU Store] Specify link for country relocation."
+      },
+      {
+        "type": "text",
+        "id": "country_abbr_EU",
+        "label": "[EU Store] Specify abbreviation for referring country(e.g. eu, us)."
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_loyalty",
+        "label": "Show Loyalty Link",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Dropdown Menu Image",
+        "type": "header_menu_image",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Handleize the parent link title",
+            "info": "For example, 'New Arrival' will become 'new-arrival'"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Aspect Ratio of 16:9, for example 1612 x 906.75"
+          },
+          {
+            "type": "url",
+            "id": "image_link",
+            "label": "Image Link"
+          },
+          {
+            "type": "text",
+            "id": "image_title",
+            "label": "Image Title",
+            "info": "Will appear bottom center of the image."
+          },
+          {
+            "type": "color",
+            "id": "image_title_color",
+            "label": "Image Text Color",
+            "default": "#000000"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

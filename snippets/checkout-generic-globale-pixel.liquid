@@ -1,0 +1,60 @@
+{% if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' %}
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-969851850"></script>
+  {% comment %} PINTEREST {% endcomment %}
+  <noscript> 
+    <img height="1" width="1" style="display:none;" alt="" src="https://ct.pinterest.com/v3/?tid=2613667945459&noscript=1" /> 
+  </noscript>
+  <noscript>
+    <img height="1" width="1" style="display:none;" alt="" src="https://ct.pinterest.com/v3/?tid=2613667945459&event=checkout&noscript=1"/>
+  </noscript>
+
+  {% comment %} Google Ads Services {% endcomment %}
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+  </script>
+
+  {% comment %} Added to additional script but it's no script {% endcomment %}
+  <div style="display:inline;">
+    <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/969851850/?value={{ cart.items_subtotal_price | divided_by: 100 }}&label=WHgFCOuXtJ4BEMqHu84D&guid=ON&script=0"/>
+  </div>
+
+  {% comment %} Anti-flicker snippet (recommended) {% endcomment %}
+  <style>.async-hide { opacity: 0 !important} </style>
+  <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+  h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+  (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+  })(window,document.documentElement,'async-hide','dataLayer',4000,
+  {' GTM-MTPHK6L':true});</script>
+
+  <script async src="https://www.googleoptimize.com/optimize.js?id=GTM-MTPHK6L" onerror="dataLayer.hide.end && dataLayer.hide.end()"></script>
+
+  {% comment %} Yotpo No Script {% endcomment %}
+  <noscript><img src="//api.yotpo.com/conversion_tracking.gif?app_key= PROzW4b465I9n5LmsIeARiCOAHvgJRUYkDTpY76F&order_id={{order_name|handleize}}&order_amount={{ cart.items_subtotal_price |money_without_currency }}&order_currency={{ shop.currency }}" width="1" height="1"></noscript>
+
+{% else %}
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-820623664"></script>
+  {% comment %} Google Tag Manager noscript {% endcomment %}
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MTX78V9" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+
+  {% comment %} Criteo {% endcomment %}
+  <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script>
+
+  {% comment %} Google Ads Services {% endcomment %}
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>
+  {% comment %} Added to additional script but it's no script {% endcomment %}
+  <noscript>
+    <div style="display:inline;">
+      <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/820623664/?value={{ cart.items_subtotal_price | divided_by: 100 }}&label=oRZECKLEzrkBELDypocD&guid=ON&script=0"/>
+    </div>
+  </noscript>
+
+  {% comment %} Anti-flicker snippet (recommended) {% endcomment %}
+  <style>.async-hide { opacity: 0 !important} </style>
+  <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};(a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;})(window,document.documentElement,'async-hide','dataLayer',4000,{'GTM-NC7HQHL':true});</script>
+  <script async src="https://www.googleoptimize.com/optimize.js?id=GTM-NC7HQHL" onerror="dataLayer.hide.end && dataLayer.hide.end()"></script>
+
+  <script async src="https://www.googleoptimize.com/optimize.js?id=GTM-NC7HQHL" onerror="dataLayer.hide.end && dataLayer.hide.end()"></script>
+{% endif %}

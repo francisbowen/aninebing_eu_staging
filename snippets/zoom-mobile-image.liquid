@@ -1,0 +1,9 @@
+<div class="modal-content modal-content--image-zoom" id="zoom-modal">
+  <button type="button" class="modal-close js-close-modal" name="close" role="button" aria-label="button">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+  <img class="js-img-zoom-modal" alt="{{ 'general.zoom.image' | t }}">
+</div>
+<button class="js-open-modal btn-img-zoom hide" data-modal-target="#zoom-modal" aria-label="{{ 'general.zoom.trigger' | t }}">{{ 'general.zoom.trigger' | t }}</button>
+
+

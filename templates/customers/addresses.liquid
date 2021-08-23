@@ -1,0 +1,87 @@
+{%- comment -%}
+
+Default collection template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/customers-addresses
+
+Objects Referenced:
+ • customer_address https://help.shopify.com/en/themes/liquid/objects/customer-address
+ • settings https://help.shopify.com/en/themes/liquid/objects#settings
+
+{%- endcomment -%}
+
+{%- include 'breadcrumb' -%}
+
+<article class="addresses {{ template.name }} js-{{ template.name }}">
+  
+  <h1 class="addresses__title">{{ 'customer.addresses.title' | t }}</h1>
+
+  {%- include 'customer__address-modal-form' with modal_id: 'add-address-modal' -%}
+
+  <div class="addresses__content">
+    {%- if customer.addresses_count > 0 -%}
+      {%- paginate customer.addresses by settings.addresses_page_size -%}
+        <div class="addresses__list">
+          <div class="address address--default" id="CustomerAddress{{ customer.default_address.id }}">
+
+            {%- include 'address' with customer.default_address -%}
+
+            <div class="address__actions">
+
+              <button class="address__action address__action--edit link link--primary js-open-modal" data-modal-target="#edit-address-{{ customer.default_address.id }}-modal" role="button" aria-label="button">
+                {{- 'customer.addresses.edit' | t -}}
+              </button>
+              <button class="address__action address__action--delete link link--primary js-open-modal"
+                data-modal-target="#delete-address-{{ customer.default_address.id }}-modal"
+                data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+                {{- 'customer.addresses.delete' | t -}}
+              </button>
+
+            </div>
+
+            {%- assign edit_address_id = 'edit-address-' | append: customer.default_address.id | append: '-modal'  -%}
+            {%- assign delete_address_id = 'delete-address-' | append: customer.default_address.id | append: '-modal' -%}
+
+            {%- include 'customer__address-modal-form' with address: customer.default_address, modal_id: edit_address_id -%}
+            {%- include 'customer__delete-address' with address: customer.default_address -%}
+
+          </div>
+          {%- for address in customer.addresses -%}
+
+            {%- unless address == customer.default_address -%}
+              <div class="address address--other" id="CustomerAddress{{ address.id }}">
+
+                {%- include 'address' -%}
+
+                <div class="address__actions">
+
+                  <button class="address__action address__action--edit link link--primary js-open-modal" data-modal-target="#edit-address-{{ address.id }}-modal" role="button" aria-label="button">
+                    {{- 'customer.addresses.edit' | t -}}
+                  </button>
+                  <button class="address__action address__action--delete link link--primary js-open-modal"
+                    data-modal-target="#delete-address-{{ address.id }}-modal"
+                    data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+                    {{- 'customer.addresses.delete' | t -}}
+                  </button>
+
+                </div>
+
+                {%- assign edit_address_id = 'edit-address-' | append: address.id | append: '-modal' -%}
+                {%- assign delete_address_id = 'delete-address-' | append: address.id | append: '-modal' -%}
+
+                {%- include 'customer__address-modal-form' with address: address, modal_id: edit_address_id -%}
+                {%- include 'customer__delete-address' with address: address -%}
+
+              </div>
+            {%- endunless -%}
+              
+          {%- endfor -%}
+        </div>
+        {%- include 'paginate' -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+  <div class="addresses__add-new-wrapper">
+    <button class="addresses__add-new-address button button--secondary js-open-modal" id="add-new-address" data-modal-target="#add-address-modal" role="button">{{ 'customer.addresses.add_new' | t }}</button>
+  </div>
+</article>

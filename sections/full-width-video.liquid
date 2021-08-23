@@ -1,0 +1,851 @@
+{% assign gap_under_content = section.settings.gap_under_content %}
+{% assign gap_under_content_mobile = section.settings.gap_under_content_mobile %}
+{% assign content_unique_identifier = section.settings.content_unique_identifier %}
+{% assign content_unique_identifier_id = section.settings.content_unique_identifier_id %}
+
+{% comment %} Media {% endcomment %}
+{% assign video_filename = section.settings.video_filename %}
+{% assign video_filename_mobile = section.settings.video_filename_mobile %}
+
+{% comment %} Generic Content Width {% endcomment %}
+{% assign full_width_d = section.settings.full_width_d %}
+{% assign full_width_t = section.settings.full_width_t %}
+{% assign full_width = section.settings.full_width %}
+
+{% comment %} Generic Content Alignments {% endcomment %}
+{% assign aligned_center = section.settings.aligned_center %}
+{% assign aligned_center_mobile = section.settings.aligned_center_mobile %}
+{% assign alignment_top_desktop = section.settings.alignment_top_desktop %}
+{% assign alignment_left_desktop = section.settings.alignment_left_desktop %}
+{% assign alignment_top_tablet = section.settings.alignment_top_tablet %}
+{% assign alignment_left_tablet = section.settings.alignment_left_tablet %}
+{% assign alignment_top_mobile = section.settings.alignment_top_mobile %}
+{% assign alignment_left_mobile = section.settings.alignment_left_mobile %}
+
+{% comment %} Specific Content Alignments {% endcomment %}
+{% assign individual_alignment = section.settings.individual_alignment %}
+{% assign image_alignment_top_desktop = section.settings.image_alignment_top_desktop %}
+{% assign image_alignment_left_desktop = section.settings.image_alignment_left_desktop %}
+{% assign title_alignment_top_desktop = section.settings.title_alignment_top_desktop %}
+{% assign title_alignment_left_desktop = section.settings.title_alignment_left_desktop %}
+{% assign body_alignment_top_desktop = section.settings.body_alignment_top_desktop %}
+{% assign body_alignment_left_desktop = section.settings.body_alignment_left_desktop %}
+{% assign button_alignment_top_desktop = section.settings.button_alignment_top_desktop %}
+{% assign button_alignment_left_desktop = section.settings.button_alignment_left_desktop %}
+{% assign image_alignment_top_tablet = section.settings.image_alignment_top_tablet %}
+{% assign image_alignment_left_tablet = section.settings.image_alignment_left_tablet %}
+{% assign title_alignment_top_tablet = section.settings.title_alignment_top_tablet %}
+{% assign title_alignment_left_tablet = section.settings.title_alignment_left_tablet %}
+{% assign body_alignment_top_tablet = section.settings.body_alignment_top_tablet %}
+{% assign body_alignment_left_tablet = section.settings.body_alignment_left_tablet %}
+{% assign button_alignment_top_tablet = section.settings.button_alignment_top_tablet %}
+{% assign button_alignment_left_tablet = section.settings.button_alignment_left_tablet %}
+{% assign image_alignment_top_mobile = section.settings.image_alignment_top_mobile %}
+{% assign image_alignment_left_mobile = section.settings.image_alignment_left_mobile %}
+{% assign title_alignment_top_mobile = section.settings.title_alignment_top_mobile %}
+{% assign title_alignment_left_mobile = section.settings.title_alignment_left_mobile %}
+{% assign body_alignment_top_mobile = section.settings.body_alignment_top_mobile %}
+{% assign body_alignment_left_mobile = section.settings.body_alignment_left_mobile %}
+{% assign button_alignment_top_mobile = section.settings.button_alignment_top_mobile %}
+{% assign button_alignment_left_mobile = section.settings.button_alignment_left_mobile %}
+
+{% comment %} Mobile Content Alignments  {% endcomment %}
+{% assign add_content_under_image_mobile = section.settings.add_content_under_image_mobile %}
+{% comment %} {% assign mobile_content_alignment = section.settings.mobile_content_alignment %} {% endcomment %}
+{% assign content_mobile_height = section.settings.content_mobile_height %}
+{% comment %} {% assign content_mobile_width = section.settings.content_mobile_width %} {% endcomment %}
+{% assign content_mobile_background_color = section.settings.content_mobile_background_color %}
+
+{% comment %} Content Title {% endcomment %}
+{% assign content_title_font_size_desktop = section.settings.content_title_font_size_desktop %}
+{% assign content_title_font_size_mobile = section.settings.content_title_font_size_mobile %}
+{% assign content_title_text_color_desktop = section.settings.content_title_text_color_desktop %}
+{% assign content_title_text_color_mobile = section.settings.content_title_text_color_mobile %}
+{% assign content_title = section.settings.content_title %}
+
+{% comment %} Content Body {% endcomment %}
+{% assign content_body_font_size_desktop = section.settings.content_body_font_size_desktop %}
+{% assign content_body_font_size_mobile = section.settings.content_body_font_size_mobile %}
+{% assign content_body_text_color_desktop = section.settings.content_body_text_color_desktop %}
+{% assign content_body_text_color_mobile = section.settings.content_body_text_color_mobile %}
+{% assign background_color = section.settings.background_color %}
+{% assign content_body = section.settings.content_body %}
+{% assign content_body_margin_top = section.settings.content_body_margin_top %}
+
+{% comment %} Content Logo {% endcomment %}
+{% assign content_image = section.settings.content_image %}
+{% assign content_image_width = section.settings.content_image_width %}
+{% assign content_image_visibility = section.settings.content_image_visibility %}
+
+{% comment %} Content Button {% endcomment %}
+{% assign content_cta_text_color_desktop = section.settings.content_cta_text_color_desktop %}
+{% assign content_cta_text_color_mobile = section.settings.content_cta_text_color_mobile %}
+{% assign content_cta_font_size_desktop = section.settings.content_cta_font_size_desktop %}
+{% assign content_cta_font_size_mobile = section.settings.content_cta_font_size_mobile %}
+{% assign cta_link_container = section.settings.cta_link_container %}
+{% assign cta_email_container = section.settings.cta_email_container %}
+{% assign button_style_desktop = section.settings.button_style_desktop %}
+{% assign button_style_mobile = section.settings.button_style_mobile %}
+{% assign cta_text = section.settings.cta_text %}
+{% assign content_cta_margin_top = section.settings.content_cta_margin_top %}
+
+{%- include 'full-width-video-content' -%}
+
+{% schema %}
+  {
+    "name" :"Full Width Video",
+    "class": "content-container content-container--homepage",
+    "tag": "section",
+    "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "The title of your section"
+      },
+      {
+        "type": "text",
+        "id": "content_unique_identifier",
+        "label": "Unique Class Identifier",
+        "info": "Make sure that this is unique, filled out if the section is visible, and is in ascending order. Start off with 'homepage-section-' and end it with a number. Ex: homepage-section-8"
+      },
+      {
+        "type": "text",
+        "id": "content_unique_identifier_id",
+        "label": "Unique ID Identifier",
+        "info": "Make sure that this is unique, and filled out if the section is visible. Please keep it handleized. For example: gift-guide"
+      },
+      {
+        "type": "header",
+        "content": "Video",
+        "info": "To import your video please go to Settings > Files > Upload Files"
+      },
+      {
+        "type": "range",
+        "id": "gap_under_content",
+        "label": "[Desktop] Gap under section",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 4,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "gap_under_content_mobile",
+        "label": "[Mobile] Gap under section",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "default": 0,
+        "unit": "px"
+      },
+      {
+        "type": "text",
+        "id": "video_filename",
+        "label": "[Desktop] Video Filename e.g: Video.mp4 (*)"
+      },
+      {
+        "type": "text",
+        "id": "video_filename_mobile",
+        "label": "[Mobile] Video Filename e.g: Video.mp4"
+      },
+      {
+        "type": "header",
+        "content": "Content Logo"
+      },
+      {
+        "type": "select",
+        "id": "content_image_visibility",
+        "options": [
+            { "value": "mobile_and_desktop", "label": "Mobile & Desktop"},
+            { "value": "mobile_only", "label": "Mobile only"},
+            { "value": "desktop_only", "label": "Desktop only"},
+            { "value": "none", "label": "None"}
+        ],
+        "label": "Content Logo Visibility"
+      },
+      {
+        "type": "image_picker",
+        "id": "content_image",
+        "label": "Logo Image"
+      },
+      {
+        "type": "range",
+        "id": "content_image_width",
+        "label": "Content Logo Image Size",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 45,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Content Title"
+      },
+      {
+        "type": "richtext",
+        "id": "content_title",
+        "label": "Content Title"
+      },
+      {
+        "type": "range",
+        "id": "content_title_font_size_desktop",
+        "label": "[Desktop] Content Title Font Size",
+        "info": "Default: 24px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 24,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "content_title_font_size_mobile",
+        "label": "[Mobile] Content Title Font Size",
+        "info": "Default: 22px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "content_title_text_color_desktop",
+        "label": "[Desktop] Content Title Text Color",
+        "default": "#333333"
+      },
+      {
+        "type": "color",
+        "id": "content_title_text_color_mobile",
+        "label": "[Mobile] Content Title Text Color",
+        "default": "#333333"
+      },
+      {
+        "type": "header",
+        "content": "Content Body"
+      },
+      {
+        "type": "richtext",
+        "id": "content_body",
+        "label": "Content Body"
+      },
+      {
+        "type": "range",
+        "id": "content_body_font_size_desktop",
+        "label": "[Desktop] Content Body Font Size",
+        "info": "Default: 16px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 16,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "content_body_font_size_mobile",
+        "label": "[Mobile] Content Body Font Size",
+        "info": "Default: 16px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 16,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "content_body_text_color_desktop",
+        "label": "[Desktop] Content Body Text Color",
+        "default": "#333333"
+      },
+      {
+        "type": "color",
+        "id": "content_body_text_color_mobile",
+        "label": "[Mobile] Content Body Text Color",
+        "default": "#333333"
+      },
+      {
+        "type": "range",
+        "id": "content_body_margin_top",
+        "label": "Margin top above the body text",
+        "info": "Default: 25px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 25,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Content Button",
+        "info": "The following CTA Text Colors will ONLY take effect when the button style is set to 'Link - No Style Primary' OR 'Link - No Style Secondary'."
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "CTA Text"
+      },
+      {
+        "type": "paragraph",
+        "content": "CTA Email still requires CTA Text to be filled out, but if it is not empty, it will take precedence over the CTA Link. Precedence: CTA Email - Container > CTA Link - Container > empty"
+      },
+      {
+        "type": "textarea",
+        "id": "cta_email_container",
+        "label": "CTA Email - Container",
+        "info": "[Example](https://css-tricks.com/snippets/html/mailto-links/): mailto:someone@yoursite.com?cc=someoneelse@theirsite.com, another@thatsite.com, me@mysite.com&bcc=lastperson@theirsite.com&subject=Big%20News&body=Body-goes-here"
+      },
+      {
+        "type": "url",
+        "id": "cta_link_container",
+        "label": "CTA Link - Container"
+      },
+      {
+        "type": "select",
+        "id": "button_style_desktop",
+        "options": [
+            { "value": "button_primary", "label": "Button Primary"},
+            { "value": "button_secondary", "label": "Button Secondary"},
+            { "value": "button_tertiary", "label": "Button Tertiary"},
+            { "value": "button_quaternary", "label": "Button Quaternary"},
+            { "value": "link_primary", "label": "Link Primary"},
+            { "value": "link_secondary", "label": "Link Secondary"},
+            { "value": "link_no_style_primary", "label": "Link - No Style Primary"},
+            { "value": "link_no_style_secondary", "label": "Link - No Style Secondary"}
+        ],
+        "label": "[Desktop] Choose the button style"
+      },
+      {
+        "type": "select",
+        "id": "button_style_mobile",
+        "options": [
+            { "value": "button_primary", "label": "Button Primary"},
+            { "value": "button_secondary", "label": "Button Secondary"},
+            { "value": "button_tertiary", "label": "Button Tertiary"},
+            { "value": "button_quaternary", "label": "Button Quaternary"},
+            { "value": "link_primary", "label": "Link Primary"},
+            { "value": "link_secondary", "label": "Link Secondary"},
+            { "value": "link_no_style_primary", "label": "Link - No Style Primary"},
+            { "value": "link_no_style_secondary", "label": "Link - No Style Secondary"}
+        ],
+        "label": "[Mobile] Choose the button style"
+      },
+      {
+        "type": "range",
+        "id": "content_cta_font_size_desktop",
+        "label": "[Desktop] Content CTA Font Size",
+        "info": "Default: 14px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "content_cta_font_size_mobile",
+        "label": "[Mobile] Content CTA Font Size",
+        "info": "Default: 14px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "content_cta_text_color_desktop",
+        "label": "[Desktop] CTA Text Color",
+        "default": "#333333"
+      },
+      {
+        "type": "color",
+        "id": "content_cta_text_color_mobile",
+        "label": "[Mobile] CTA Text Color",
+        "default": "#333333"
+      },
+      {
+        "type": "range",
+        "id": "content_cta_margin_top",
+        "label": "Margin top above the button / link",
+        "info": "Default: 25px",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 25,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Generic Content Width",
+        "info": "Maximum width of the content block."
+      },
+      {
+        "type": "range",
+        "id": "full_width_d",
+        "label": "[Desktop] Content Width",
+        "min": 10,
+        "max": 100,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "full_width_t",
+        "label": "[Tablet] Content Width",
+        "min": 10,
+        "max": 100,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "full_width",
+        "label": "[Mobile] Content Width",
+        "min": 10,
+        "max": 100,
+        "step": 5,
+        "default": 100,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Generic Content Alignments",
+        "info": "Vertical alignment of 100% will be at the bottom of the container. Horizontal alignment of 100% will be at the right of the container."
+      },
+      {
+        "type": "checkbox",
+        "id": "aligned_center",
+        "label": "[Desktop] Align All Text Center",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "aligned_center_mobile",
+        "label": "[Mobile] Align All Text Center",
+        "default": true
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Desktop =========="
+      },
+      {
+        "type": "range",
+        "id": "alignment_top_desktop",
+        "label": "[Desktop] Content alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "alignment_left_desktop",
+        "label": "[Desktop] Content alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Tablet =========="
+      },
+      {
+        "type": "range",
+        "id": "alignment_top_tablet",
+        "label": "[Tablet] Content alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "alignment_left_tablet",
+        "label": "[Tablet] Content alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Mobile =========="
+      },
+      {
+        "type": "range",
+        "id": "alignment_top_mobile",
+        "label": "[Mobile] Content alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "alignment_left_mobile",
+        "label": "[Mobile] Content alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Individual Content Alignments",
+        "info": "Vertical alignment of 100% will be at the bottom of the container. Horizontal alignment of 100% will be at the right of the container."
+      },
+      {
+        "type": "checkbox",
+        "id": "individual_alignment",
+        "label": "Enable Title/Content/CTA individual alignment",
+        "info": "If checked, will disregard ALL the generic range alignments as well as the generic widths above."
+      },
+      {
+        "type": "paragraph",
+        "content": "CONTENT LOGOS"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Desktop =========="
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_top_desktop",
+        "label": "[Desktop] Logo alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_left_desktop",
+        "label": "[Desktop] Logo alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Tablet =========="
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_top_tablet",
+        "label": "[Tablet] Logo alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_left_tablet",
+        "label": "[Tablet] Logo alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Mobile =========="
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_top_mobile",
+        "label": "[Mobile] Logo alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_left_mobile",
+        "label": "[Mobile] Logo alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "CONTENT TITLE"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Desktop =========="
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_top_desktop",
+        "label": "[Desktop] Title alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_left_desktop",
+        "label": "[Desktop] Title alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Tablet =========="
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_top_tablet",
+        "label": "[Tablet] Title alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_left_tablet",
+        "label": "[Tablet] Title alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Mobile =========="
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_top_mobile",
+        "label": "[Mobile] Title alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_left_mobile",
+        "label": "[Mobile] Title alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "CONTENT BODY"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Desktop =========="
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_top_desktop",
+        "label": "[Desktop] Body alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_left_desktop",
+        "label": "[Desktop] Body alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Tablet =========="
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_top_tablet",
+        "label": "[Tablet] Body alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_left_tablet",
+        "label": "[Tablet] Body alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Mobile =========="
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_top_mobile",
+        "label": "[Mobile] Body alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_left_mobile",
+        "label": "[Mobile] Body alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "CONTENT BUTTON"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Desktop =========="
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_top_desktop",
+        "label": "[Desktop] Button alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_left_desktop",
+        "label": "[Desktop] Button alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Tablet =========="
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_top_tablet",
+        "label": "[Tablet] Button alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_left_tablet",
+        "label": "[Tablet] Button alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "paragraph",
+        "content": "========== Mobile =========="
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_top_mobile",
+        "label": "[Mobile] Button alignment - Vertical",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_left_mobile",
+        "label": "[Mobile] Button alignment - Horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Mobile Content Alignments",
+        "info": "By default, the content is on top of the image. Skip this section if that is the desired outcome."
+      },
+      {
+        "type": "checkbox",
+        "id": "add_content_under_image_mobile",
+        "label": "Make content block visible under image"
+      },
+      {
+        "type": "color",
+        "id": "content_mobile_background_color",
+        "label": "Content Background Color"
+      },
+      {
+        "type": "range",
+        "id": "content_mobile_height",
+        "label": "Height of the content under the image",
+        "min": 0,
+        "max": 500,
+        "default": 0,
+        "step": 10,
+        "unit": "px"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Full Width Video",
+        "category": "Full Width Video"
+      }
+    ]      
+  }
+{% endschema %}

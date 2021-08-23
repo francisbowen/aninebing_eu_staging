@@ -1,0 +1,240 @@
+{% for block in section.blocks %}
+  {% assign match_url = block.settings.url %}
+  {% if block.settings.menu != blank and match_url == request.path %}
+    <section class="collection__quick-links hide-from@md">
+      <ul class="collection__quick-links__wrapper">
+        {% assign links = linklists[block.settings.menu].links %}
+        {% assign links_size = 4 %}
+        {% if links.size < 4 %}
+          {% assign links_size = links.size %}
+        {% endif %}
+        {% for link in links limit: links_size %}
+          <li class="collection__quick-links__link collection__quick-links__link-{{ block.id }}">
+            <a class="collection__quick-links__url" href="{{ link.url }}">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  <section class="collection__banner">
+    {% assign text_color = block.settings.text_color %}
+    {% assign banner_url = block.settings.url_link_to %}
+    {% comment %} Desktop {% endcomment %}
+    {% assign alignment_top_desktop = block.settings.alignment_top_desktop %}
+    {% assign alignment_left_desktop = block.settings.alignment_left_desktop %}
+    {% comment %} Tablet {% endcomment %}
+    {% assign alignment_top_tablet = block.settings.alignment_top_tablet %}
+    {% assign alignment_left_tablet = block.settings.alignment_left_tablet %}
+    {% comment %} Mobile {% endcomment %}
+    {% assign alignment_top_mobile = block.settings.alignment_top_mobile %}
+    {% assign alignment_left_mobile = block.settings.alignment_left_mobile %}
+    {% comment %} Images {% endcomment %}
+    {% assign desktop_image = block.settings.desktop_image %}
+    {% assign mobile_image = block.settings.mobile_image %}
+
+      {% if match_url == request.path and desktop_image and mobile_image %}
+        {% if banner_url %}
+        <a class="collection__banner__wrapper" href="{{ banner_url }}">
+        {% endif %}
+          <div class="collection__banner--content js-collection-content">
+            {% assign collection_title = block.settings.collection_title %}
+            {% assign hide_title = block.settings.hide_title %}
+            
+            {% unless hide_title %}
+              <h1 class="collection__title js-collection-title collection__title--{{ block.id }}" data-collection-handle="{{ collection.handle }}">{% if collection_title != blank %}{{ collection_title }}{% else %}{{ collection.title }}{% endif %}</h1>
+            {% endunless %}
+
+            {% if section.blocks.size > 0 %}
+              {% style %}
+
+                #shopify-section-{{ section.id }} .collection__title.collection__title {
+                  {% if text_color %}color: {{ block.settings.text_color }}{% endif %}
+                }
+
+                #shopify-section-{{ section.id }} .collection__banner--content  {
+                  position: absolute;
+                  top: {{ block.settings.alignment_top_desktop }}%;
+                  left: {{ block.settings.alignment_left_desktop }}%;
+                  transform: translate(-{{ block.settings.alignment_left_desktop }}%, -{{ block.settings.alignment_top_desktop }}%);
+                }
+
+                @media only screen and (max-width: 996px) {
+                  #shopify-section-{{ section.id }} .collection__banner--content  {
+                    position: absolute;
+                    top: {{ block.settings.alignment_top_tablet }}%;
+                    left: {{ block.settings.alignment_left_tablet }}%;
+                    transform: translate(-{{ block.settings.alignment_left_tablet }}%, -{{ block.settings.alignment_top_tablet }}%);
+                  }
+                }
+
+                @media only screen and (max-width: 640px) {
+                  #shopify-section-{{ section.id }} .collection__banner--content  {
+                    position: absolute;
+                    top: {{ block.settings.alignment_top_mobile }}%;
+                    left: {{ block.settings.alignment_left_mobile }}%;
+                    transform: translate(-{{ block.settings.alignment_left_mobile }}%, -{{ block.settings.alignment_top_mobile }}%);
+                  }
+                }
+
+              {% endstyle %}
+            {% endif %}
+          </div>
+        {% if banner_url %}
+        </a>
+        {% endif %}
+        
+        {% include 'image--responsive-no-max' with image: desktop_image, wrapper_class: 'collection__image hide-until@sm' %} 
+        {% include 'image--responsive-no-max' with image: mobile_image, wrapper_class: 'collection__image hide-from@sm' %} 
+
+      {% break %}
+    {% endif %}
+  </section>
+{% endfor %}
+
+{% schema %}
+{
+	"name": "Collection Banner",
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "collection specific",
+      "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Collection Name",
+            "info": "To differentiate the different blocks."
+          },
+          {
+            "type": "header",
+            "content": "Quick Links"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Quick Link Menu",
+            "info": "Max of 4 links will show up only."
+          },
+          {
+            "type": "header",
+            "content": "Container Background"
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_title",
+            "label": "Check to hide the title"
+          },
+          {
+            "type": "richtext",
+            "id": "collection_title",
+            "label": "Collection Title"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Choose the url you want this collection to show in."
+          },
+          {
+            "type": "url",
+            "id": "url_link_to",
+            "label": "Location of Banner Link"
+          },
+          {
+            "type": "range",
+            "id": "alignment_top_desktop",
+            "label": "Text alignment - Top - [Desktop]",
+            "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 50,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "alignment_left_desktop",
+            "label": "Text alignment - Left - [Desktop]",
+            "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 50,
+            "unit": "%"
+          },
+          {
+            "type": "header",
+            "content": "Tablet",
+            "info": "From 996px width to 640px"
+          },
+          {
+            "type": "range",
+            "id": "alignment_top_tablet",
+            "label": "Text alignment - Top - [Tablet]",
+            "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 50,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "alignment_left_tablet",
+            "label": "Text alignment - Left - [Tablet]",
+            "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 50,
+            "unit": "%"
+          },
+          {
+            "type": "header",
+            "content": "Mobile",
+            "info": "From 640px width to 0px"
+          },
+          {
+            "type": "range",
+            "id": "alignment_top_mobile",
+            "label": "Text alignment - Top - [Mobile]",
+            "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 50,
+            "unit": "%"
+          },
+          {
+            "type": "range",
+            "id": "alignment_left_mobile",
+            "label": "Text alignment - Left - [Mobile]",
+            "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "default": 50,
+            "unit": "%"
+          },
+          {
+            "type": "color",
+            "id": "text_color",
+            "label": "Text Color"
+          },
+          {
+            "type": "image_picker",
+            "id": "desktop_image",
+            "label": "Desktop Image (*)"
+          },
+          {
+            "type": "image_picker",
+            "id": "mobile_image",
+            "label": "Mobile Image (*)"
+          }
+        ]
+      }
+    ]
+}
+{% endschema %}

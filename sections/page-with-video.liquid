@@ -1,0 +1,70 @@
+{% for block in section.blocks %}
+  {% if block.settings.page_url == page.url %}
+    {% assign video = block.settings %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{% if video and video.video_filename != blank %}
+  <video class="page-with-video__video" autoplay controls>
+      <source src="{{ video.video_filename | file_url }}" srclang="en" type="video/mp4">
+    {% if video.audio_description != blank %}
+      <track src="{{ video.audio_description | file_url }}" kind="descriptions" srclang="en" label="English">
+    {% endif %}
+    {% if video.caption != blank %}
+      <track src="{{ video.captions | file_url }}" kind="captions" srclang="en" label="English">
+    {% endif %}
+  </video>
+{% elsif video.fallback_image %}
+  <img class="page-with-video__image" src="{{ video.fallback_image | img_url: '1024x' }}" alt="{{ video.fallback_image.alt }}">
+{% endif %}
+
+{% schema %}
+{
+  "name": "Page video",
+  "class": "page-with-video",
+  "blocks": [
+    {
+      "name": "New page",
+      "type": "new_page",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Block title"
+        },
+        {
+          "type": "url",
+          "id": "page_url",
+          "label": "Page URL",
+          "info": "This needs to point to a page that uses page.with-video as their template suffix. A page suffix can be set in the shop admin under Sales Channels > Pages."
+        },
+        {
+          "type": "text",
+          "id": "video_filename",
+          "label": "Video filename e.g: Video.mp4",
+          "info": "To import your video please go to Settings > Files > Upload Files"
+        },
+        {
+          "type": "image_picker",
+          "id": "fallback_image",
+          "label": "Fallback image",
+          "info": "For when the video fails to load or when there is no video."
+        },
+        {
+          "type": "text",
+          "id": "captions",
+          "label": "Captions e.g: Captions.vtt",
+          "info": "Closed captions provide a transcription and possibly a description of some important audio cues. Suitable when the user is deaf and cannot hear the video. To import your video please go to Settings > Files > Upload Files."
+        },
+        {
+          "type": "text",
+          "id": "audio_description",
+          "label": "Audio description e.g: Descriptions.vtt",
+          "info": "Textual description of video content. Suitable when the user is blind and cannot see the video. To import your video please go to Settings > Files > Upload Files."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

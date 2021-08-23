@@ -1,0 +1,50 @@
+{%- assign gift_product_1 = all_products[settings.gift_product_1] -%}
+{%- assign gift_product_2 = all_products[settings.gift_product_2] -%}
+
+{%- if gift_product_1.available or gift_product_2.available -%}
+
+<div class="js-gift-open-modal js-open-modal" style="display: none" data-modal-target="#gift-modal"></div>
+
+<div class="modal-content" id="gift-modal">
+  <button type="button" class="modal-close js-gift-close-modal js-close-modal" name="close">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+  <section class="gift-modal js-gift-modal">
+
+    <img class="gift-modal__logo" src="{{ settings.logo | img_url: '45x' }}" alt="{{ settings.logo.alt }}" />
+
+    <p class="gift-modal__title uppercase-text">{{ 'gift_product.title' | t }}</p>
+    <p class="gift-modal__subtitle">{{ 'gift_product.subtitle' | t }}</p>
+
+    <div class="gift-modal__products">
+      {%- if gift_product_1 != blank -%}
+        <div class="gift-modal__product">
+          <img class="gift-modal__product__image" src="{{ gift_product_1.featured_image | img_url: '236x359', crop: 'center'}}" alt="{{ gift_product_1.title }} image"/>
+          <p class="gift-modal__product__title uppercase-text">{{ gift_product_1.title }}</p>
+          <button type="button" 
+            class="gift-modal__product__cta js-gift-add-button button button--secondary" 
+            data-variant-id="{{ gift_product_1.first_available_variant.id }}"
+            {% unless gift_product_1.available %}disabled{% endunless %}>
+            {% if gift_product_1.available %}{{ 'gift_product.call_to_action' | t }}{% else %}{{ 'gift_product.sold_out' | t}}{% endif %}
+          </button>
+        </div>
+      {%- endif -%}
+
+      {%- if gift_product_2 != blank -%}
+        <div class="gift-modal__product">
+          <img class="gift-modal__product__image" src="{{ gift_product_2.featured_image | img_url: '236x359', crop: 'center'}}" alt="{{ gift_product_2.title }} image"/>
+          <p class="gift-modal__product__title uppercase-text">{{ gift_product_2.title }}</p>
+          <button type="button" 
+            class="gift-modal__product__cta js-gift-add-button button button--secondary" 
+            data-variant-id="{{ gift_product_2.first_available_variant.id }}"
+            {% unless gift_product_2.available %}disabled{% endunless %}>
+            {% if gift_product_2.available %}{{ 'gift_product.call_to_action' | t }}{% else %}{{ 'gift_product.sold_out' | t}}{% endif %}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+
+  </section>
+</div>
+
+{%- endif -%}

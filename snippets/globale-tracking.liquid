@@ -1,0 +1,143 @@
+{% comment %} Include generic globale pixel on theme.liquid {% endcomment %}
+<script>
+  var cartAttributes;
+  var cartTotalWithoutCurrency;
+  var customerEmail;
+  var customerShopifyEmail = theme.customer ? theme.customer.email : '';
+  var customerShopifyId = theme.customer ? theme.customer.id : '';
+  var customerShopifyName = theme.customer ? theme.customer.name : '';
+  var customerShopifyTags = theme.customer? theme.customer.tags : '';
+  var customerShopifyTotalSpent = theme.customer ? theme.customer.total_spent : '';
+  var customerShopifyOrderCount = theme.customer ? theme.customer.orders_count : '';
+  var shopShopifyDateNow = theme.shop.date_now;
+  var productShopifyProductTypes = [];
+  var dataCheckoutBuyerMarketing = false; // {{ checkout.buyer_accepts_marketing }}
+  var glegem = glegem || function(){(window["glegem"].q = window["glegem"].q || []).push(arguments)};
+  window._pp = window._pp || [];
+
+  // Get pebblepost cart total for on load
+  $.get('/cart.json', function(cart) {
+    cartTotalWithoutCurrency = parseFloat(cart.total_price / 100).toFixed(2);
+
+    cart.items.forEach(item => {
+      productShopifyProductTypes.push(item.product_type);
+    });
+
+  });
+
+  glegem("OnClientEvent",function(source,data){            
+    switch(source){
+      case GEMerchantUtils.ClientEvents.INPUT_BLUR:
+        if (data.id == 'CheckoutData_Email' && data.value != '') {
+          // setting _pp.orderId for Pebblepost in checkout-globale-pixel.liquid
+          _pp.email = data.value; // Pebblepost
+          customerEmail = data.value; // Heap
+        }
+        break;
+      case GEMerchantUtils.ClientEvents.CHECKBOX_CHANGE:
+        if (data.id == 'CheckoutData_OffersFromMerchant') {
+          dataCheckoutBuyerMarketing = (data.checked) ? true : false;
+        }
+        break;
+    }
+  }); 
+
+  glegem("OnCheckoutStepLoaded",function(data){
+    
+    switch(data.StepId) {
+      case data.Steps.LOADED:
+        // checkout loaded - checkout-globale-pixel.liquid
+        break;
+
+      case data.Steps.CONFIRMATION:
+        if (data.IsSuccess) {
+          //{{ checkout.discounts }} – available only on confirmation in the data.details.discounts. Please make sure to use only discounts having discountTypeId == 1
+          var totalCartDiscount = 0;
+          var totalOriginalCartDiscount = 0;
+          var totalDiscount = [];
+          for(i=0; i < data.details.discounts.length; i++){
+            if (data.details.discounts[i].discountTypeId == 1){
+              totalDiscount.push(data.details.discounts[i]);
+              totalCartDiscount = totalCartDiscount + data.details.discounts[i].customerPrice;
+              totalOriginalCartDiscount = totalOriginalCartDiscount + data.details.discounts[i].price;
+            }
+          }
+          // Start of GA Ecommerce
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                                  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-30466083-1 ', 'auto');
+
+          ga('require','ecommerce');
+
+          ga('ecommerce:addTransaction', {
+            'id': data.OrderId,
+            'affiliation': 'Global-E',
+            'revenue': data.details.totalProductsPrice - totalOriginalCartDiscount,
+            'shipping': data.details.discountedShippingPrice,
+            'tax': data.details.totalVAT,
+            'currency': data.details.currency
+          });
+
+          for(i=0;i<data.details.products.length;i++){
+            ga('ecommerce:addItem', {
+              'id': data.OrderId,
+              'name': data.details.products[i].name,
+              'sku': data.details.products[i].sku,
+              'category': data.details.products[i].categories.length ? data.details.products[i].categories[0].name : '',
+              'price': data.details.products[i].price,
+              'quantity': data.details.products[i].quantity,
+              'currency': data.details.currency
+            });
+          }
+
+          ga('ecommerce:send');
+
+          // Monetate Thank you Page - Checkout
+          try {
+            var monetateT = new Date().getTime();
+            const monetateScript = document.createElement('script');
+            monetateScript.type = 'text/javascript';
+            monetateScript.src = '//se.monetate.net/js/2/a-bf9eebc7/d/anine-bing-dev01-us.myshopify.com/entry.js'; 
+            document.head.appendChild(monetateScript);
+            let productCartRows = [];
+
+            window.monetateQ = window.monetateQ || [];
+
+            for (i = 0; i < data.details.products.length; i++) {
+              const productId = data.details.products[i].productGroupCode;
+              const unitPrice = data.details.products[i].price;
+              const variantSku = data.details.products[i].sku;
+              const productQty = data.details.products[i].quantity;
+              const cartCurrency = data.details.currency;
+
+              productCartRows.push({ purchaseId: data.OrderId, productId, quantity: productQty, unitPrice, sku: variantSku, currency: cartCurrency});
+            }
+
+            window.monetateQ.push(["setPageType", 'thank_you']);
+
+            window.monetateQ.push(["addPurchaseRows", productCartRows]);
+            
+            window.monetateQ.push(["trackData"]);
+          } catch(e) {
+            console.log('error in monetate', e);
+          }
+          // End Monetate Checkout Thank you Page
+
+          // Start GA - New Customer Acquisition Tracking Snippet
+          try {
+            customerShopifyOrderCount += 1;
+            if(customerShopifyOrderCount === 1) {
+              ga('send', 'event', "New Customer");
+            }
+          } catch(e) {
+            console.log('error', e);
+          }
+          // End GA - New Customer Acquisition Tracking Snippet
+        // End of GA Ecommerce
+        }
+    }
+  });
+</script>

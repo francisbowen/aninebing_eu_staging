@@ -1,0 +1,165 @@
+{% assign sort_filters = section.blocks | map: 'settings' | map: 'region' | uniq %}
+
+<div class="store-grid__filter-wrapper">
+
+  {% if section.settings.store_title != blank %}
+    <h1 class="store-grid__title hide-from@md">{{ section.settings.store_title | upcase }}</h1>
+  {% endif %}
+
+  <div class="store-grid__filter">
+    <button class="store-grid__filter__header js-accordion" data-toggle='{ "target": "store-grid-filter-list", "closeOnUnfocus": "true" }'>
+      <div class="store-grid__filter__header__text button-text js-region-title heading--3">{{ 'stores.store_landing.filter_by_region' | t }}</div>
+      <div class="store-grid__filter__header__img">
+        {% include 'icons' with icon_class: 'store-grid__icon__inactive' selected_icon: 'plus-sign', icon_stroke: '#000000' %}
+        {% include 'icons' with icon_class: 'store-grid__icon__active' selected_icon: 'minus-sign', icon_stroke: '#000000' %}
+      </div>
+    </button>
+    <div class="store-grid__filter__list js-accordion-item" id="store-grid-filter-list">
+      <button class="store-grid__filter__region button-text js-region-show" ><span class="heading--3">{{ 'stores.store_landing.all_regions' | t }}</span></button>
+      {% for filter_list in sort_filters %}
+        <button class="store-grid__filter__region button-text js-region-filter" data-region='{{ filter_list | downcase }}'><span class="heading--3">{{ filter_list | upcase }}</span></button>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="store-grid__grid">
+  {% for block in section.blocks %}
+
+    {% unless block.type == 'store_rectangle' %}{% continue %}{% endunless %}
+
+    {% assign imageWidth = block.settings.image.width %}
+    {% assign imageHeight = block.settings.image.height %}
+    {% assign minHeight = 100 | times: imageHeight | divided_by: imageWidth %}
+
+    <div class="store-grid__rectangle {%- cycle ' store-grid__rectangle--odd', ' store-grid__rectangle--even' -%}">
+      <img class="store-grid__image store-grid__image js-region-item" data-region="{{ block.settings.region | downcase }}" src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.title }} image" />
+
+      <div class="store-grid__info-wrapper store-grid__info-wrapper{{ block.settings.colors }} js-region-item store-grid__info-wrapper--{{ forloop.index }}" data-region="{{ block.settings.region | downcase }}">
+        <div class="store-grid__info">
+          <p class="store-grid__info__title heading--1">{{ block.settings.title }}</p>
+          <p class="store-grid__info__location body-copy-text">{{ block.settings.location }}</p>
+          <p class="store-grid__info__link">
+            <a class="link link{{ block.settings.colors }}" href="{{ block.settings.details_url }}">{{ 'stores.store_landing.view_details' | t }}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {% style %}
+      {% if block.settings.image %}
+        @media only screen and (max-width: 996px) {
+          .store-grid__info-wrapper--{{ forloop.index }} {
+            min-height: {{ minHeight }}vw;
+          }
+        }
+      {% endif %}
+    {% endstyle %}
+
+  {% endfor %}
+  {% for block in section.blocks %}
+    {% unless block.type == 'store_square' %}{% continue %}{% endunless %}
+    <div class="store-grid__info-wrapper store-grid__info-wrapper{{ block.settings.colors }} js-region-item {%- cycle ' odd', ' even' -%}" data-region="{{ block.settings.region | downcase }}">
+      <div class="store-grid__info">
+        <p class="store-grid__info__title heading--1">{{ block.settings.title }}</p>
+        <p class="store-grid__info__location heading--5">{{ block.settings.location }}</p>
+        <p class="store-grid__info__link"><a href="{{ block.settings.details_url }}">{{ 'stores.store_landing.view_details' | t }}</a></p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Store Grid",
+  "tag": "section",
+  "class": "store-grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "store_title",
+      "label": "Directory Title"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Store with image",
+      "type": "store_rectangle",
+      "settings": [
+        {
+          "type": "text",
+          "id": "region",
+          "label": "Store region",
+          "info": "This is used by the region filter."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Store image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Store name"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Store location"
+        },
+        {
+          "type": "url",
+          "id": "details_url",
+          "label": "Store details URL"
+        },
+        {
+          "type": "select",
+          "id": "colors",
+          "label": "Grid color",
+          "options": [
+            { "value": "--primary", "label": "White on black" },
+            { "value": "--secondary", "label": "Black on white" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Store without image",
+      "type": "store_square",
+      "settings": [
+        {
+          "type": "text",
+          "id": "region",
+          "label": "Store region",
+          "info": "This is used by the region filter."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Store name"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Store location"
+        },
+        {
+          "type": "url",
+          "id": "details_url",
+          "label": "Store details URL"
+        },
+        {
+          "type": "select",
+          "id": "colors",
+          "label": "Grid color",
+          "options": [
+            { "value": "--primary", "label": "White on black" },
+            { "value": "--secondary", "label": "Black on white" }
+          ]
+        }
+      ]
+    }
+  ]
+  
+}
+{% endschema %}

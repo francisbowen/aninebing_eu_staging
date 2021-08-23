@@ -1,0 +1,113 @@
+{%- include 'sales-gateway' -%}
+
+{% schema %}
+  {
+    "name": "Sales Gateway",
+    "tag": "section",
+    "class": "sale-gateway js-sales-gateway",
+    "settings": [
+      {
+        "label": "Enable Sale Gateway",
+        "id": "enable",
+        "type": "checkbox"
+      },
+      {
+        "label": "Allow Email Duplication",
+        "id": "enable_email_duplication",
+        "type": "checkbox",
+        "default": true
+      },
+      {
+        "label": "Popup Title",
+        "id": "sales_gateway_title",
+        "type": "text"
+      },
+      {
+        "type": "collection",
+        "id": "shopify_collection",
+        "label": "Shopify Collection"
+      },
+      {
+        "label": "Popup Subtitle",
+        "id": "sales_gateway_subtitle",
+        "type": "textarea"
+      },
+      {
+        "label": "Slider Title",
+        "id": "slider_title",
+        "type": "text"
+      },
+      {
+        "label": "Center the title",
+        "id": "center_title",
+        "type": "checkbox"
+      },
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "label": "Mobile image",
+        "id": "image_mobile",
+        "type": "image_picker"
+      },
+      {
+        "label": "Desktop image",
+        "id": "image_desktop",
+        "type": "image_picker"
+      },
+      {
+        "type": "header",
+        "content": "Form"
+      },
+      {
+        "label": "Form image",
+        "id": "form_image",
+        "type": "image_picker"
+      },
+      {
+        "label": "Form Title",
+        "id": "sales_gateway_page_title",
+        "type": "text"
+      },
+      {
+        "type": "textarea",
+        "label": "Form Description",
+        "id": "form_description",
+        "default": "You can unsubscribe at any time."
+      },
+      {
+        "type": "text",
+        "label": "Button Title",
+        "id": "button_title",
+        "default": "Join Now"
+      },
+      {
+        "type": "richtext",
+        "label": "Form Disclaimer",
+        "id": "form_disclaimer"
+      },
+      {
+        "type": "header",
+        "content": "Redirection Settings"
+      },
+      {
+        "type": "url",
+        "id": "redirection_url_sales_up",
+        "label": "Redirection URL - When Sales are - [ON]"
+      },
+      {
+        "type": "url",
+        "id": "redirection_url_sales_down",
+        "label": "Redirection URL - When Sales are - [OFF]"
+      },
+      {
+        "type": "text",
+        "id": "form_submission_from",
+        "label": "Form Submission Source Name",
+        "info": "Where the Sale Gateway Submission is coming from.",
+        "default": "sale_gateway"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,79 @@
+<div class="mission__body__text_body">{{ section.settings.text_body }}</div>
+
+{% for block in section.blocks %}
+  {% if block.settings.image %}
+    <div class="mission__grid {{ block.settings.image_position }}">
+      <picture class="mission__grid__image">
+        <source media="(max-width: 996px)" srcset="{{ block.settings.image | img_url: '640x470', crop: 'center' }}x2, {{ block.settings.image | img_url: '320x235', crop: 'center' }} x1">
+        <source srcset="{{ block.settings.image | img_url: '1434x1120', crop: 'center' }} x2, {{ block.settings.image | img_url: '717x560', crop: 'center' }} x1">
+        <img src="{{ block.settings.image | img_url: '717x560', crop: 'center' }}" alt="{{ section.settings.image.alt }}">
+      </picture>
+      <div class="mission__grid__content">
+        <p class="mission__body__title uppercase-text">{{ block.settings.title }}</p>
+        <div class="mission__body__text">{{ block.settings.text }}</div>
+      </div>
+    </div>
+  {% else %}
+    <p class="mission__body__title uppercase-text">{{ block.settings.title }}</p>
+    <div class="mission__body__text">{{ block.settings.text }}</div>
+  {% endif %}
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "Mission body",
+    "class": "mission__body",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Body"
+      },  
+      {
+        "type": "richtext",
+        "id": "text_body",
+        "label": "Text body"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "mission_block",
+        "name": "New mission block",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Image"
+          },  
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Mission image",
+            "info": "Optional"
+          },
+          {
+            "type": "select",
+            "id": "image_position",
+            "options": [
+              { "value": "mission__grid--left", "label": "Left"},
+              { "value": "mission__grid--right", "label": "Right"}
+            ],
+            "label": "Image position"
+          },
+          {
+            "type": "header",
+            "content": "Content"
+          },  
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Mission title"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Mission text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

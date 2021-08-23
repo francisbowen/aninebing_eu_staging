@@ -1,0 +1,121 @@
+<a class="store-details__breadcrumb" href="{{ section.settings.breadcrumb_url }}">
+    {% include 'icons' with icon_class: 'store-details__breadcrumb__chevron store-details__breadcrumb__chevron--mobile' selected_icon: 'chevron-left-small', icon_fill: 'none', icon_stroke: '#000000' %}
+  {% include 'icons' with icon_class: 'store-details__breadcrumb__chevron store-details__breadcrumb__chevron--desktop' selected_icon: 'chevron-left', icon_fill: 'none', icon_stroke: '#000000' %}
+  <div class="store-details__breadcrumb__text heading--4">{{ section.settings.breadcrumb_text }}</div>
+</a>
+
+{% for block in section.blocks %}
+  {% if block.settings.store_url == page.url %}
+    {% assign store = block.settings %}
+  {% endif %}
+{% endfor %}
+
+{% if store %}
+  <div class="store-details__grid">
+    <img class="store-details__image" src="{{ store.image | img_url: 'master' }}" alt="{{ store.title }} store image"/>
+    <div class="store-details__content">
+
+      {% if store.title != blank %}
+        <h1 class="store-details__content__title heading--1">{{ store.title | upcase }}</h1>
+      {% endif %}
+
+      {% if store.location != blank %}
+        <p class="store-details__content__location heading--2">{{ store.location | upcase }}</p>
+      {% endif %}
+
+      {% if store.description != blank %}
+        <div class="store-details__content__description">{{ store.description }}</div>
+      {% endif %}
+
+      {% if store.address != blank %}
+        <div class="store-details__content__address heading--2">{{ store.address }}</div>
+      {% endif %}
+
+      {% if store.business_hours != blank %}
+        <div class="store-details__content__business-hours heading--2">{{ store.business_hours | upcase }}</div>
+      {% endif %}
+
+      {% if store.email != blank %}
+        <p class="store-details__content__email-address link link--primary"><a href="mailto:{{ store.email }}">{{ store.email }}</a></p>
+      {% endif %}
+
+      {% if store.phone_number != blank %}
+        <p class="store-details__content__phone-number"><a href="tel:{{ store.phone_number }}">{{ store.phone_number }}</a></p>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Store details",
+    "tag": "section",
+    "class": "store-details",
+    "settings": [
+      {
+        "type": "text",
+        "id": "breadcrumb_text",
+        "label": "Breadcrumb text"
+      },
+      {
+        "type": "url",
+        "id": "breadcrumb_url",
+        "label": "Breadcrumb URL"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Store",
+        "type": "store",
+        "settings": [
+          {
+            "type": "url",
+            "id": "store_url",
+            "label": "Store URL",
+            "info": "This needs to point to a page that uses page.store-details as their template suffix. A page suffix can be set in the shop admin under Sales Channels > Pages."
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Store image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Store name"
+          },
+          {
+            "type": "text",
+            "id": "location",
+            "label": "Store location"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Store description"
+          },
+          {
+            "type": "richtext",
+            "id": "address",
+            "label": "Store address"
+          },
+          {
+            "type": "richtext",
+            "id": "business_hours",
+            "label": "Business hours"
+          },
+          {
+            "type": "text",
+            "id": "email",
+            "label": "Email address"
+          },
+          {
+            "type": "text",
+            "id": "phone_number",
+            "label": "Phone number"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

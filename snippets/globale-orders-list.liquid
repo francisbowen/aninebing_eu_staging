@@ -1,0 +1,12 @@
+<script type="text/javascript"> var _ge_orders = {'orders':[]};
+  {% for order in customer.orders %}
+    {% if order.attributes and order.name contains 'GE' %}
+    var _ge_order = {'orderId':'{{ order.name }}'
+      {% for attribute in order.attributes %}{% if attribute.first == "Total order value(local currency)" %},'orderInternationalTotal':'{{ attribute | last }}'{% endif %}
+      {% if attribute.first == "Local currency used by customer" %},'currencyCode':'{{ attribute | last }}'{% endif %}
+      {% endfor %}
+    };
+    _ge_orders.orders.push(_ge_order);
+    {% endif %}
+  {% endfor %}
+</script>

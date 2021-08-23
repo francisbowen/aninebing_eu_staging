@@ -1,0 +1,65 @@
+{%- comment -%}
+
+Default link.
+
+Objects Referenced:
+ • link https://help.shopify.com/en/themes/liquid/objects/link
+
+{%- endcomment -%}
+
+{%- assign link_classes = 'linklist__link' | split: ' ' -%}
+{%- if link.active -%}
+  {%- assign link_classes = 'link--active' | concat: link_classes -%}
+{%- elsif link.child_active -%}
+  {%- assign link_classes = 'link--child-active' | concat: link_classes -%}
+{%- endif -%}
+{%- if link.current -%}
+  {%- assign link_classes = 'link--current' | concat: link_classes -%}
+{%- elsif link.child_current -%}
+  {%- assign link_classes = 'link--child-current' | concat: link_classes -%}
+{%- endif -%}
+{%- if link.levels > 0 -%}
+  {%- assign link_classes = 'link--has-children' | concat: link_classes -%}
+{%- endif -%}
+{%- assign link_classes = link.type | prepend: 'link--' | concat: link_classes -%}
+
+<li class="{{ link_classes | reverse | join: ' ' }} linklist__link--main heading--3">
+  {% unless link.url == '#' %}
+    <a href="{{ link.url }}" class="link__anchor">{{ link.title }}</a>
+  {% endunless %}
+  {% if link.levels > 0 %}
+    {% if linklist_level > 0 %}
+      <div class="{% if linklist_level == 1 %}megamenu{% endif %}">
+        {% if linklist_level == 1 %}
+        <div class="megamenu__wrapper">
+        {% endif %}
+          {% if link.url == '#' %}
+            <h4 class="linklist__label">{{ link.title }}</h4>
+          {% endif %}
+          {% render 'linklist__links' with linklist_level: linklist_level, links: link.links %}
+          {% if linklist_level == 1 %}
+            <div class="megamenu__image-wrapper">
+              {% assign link_title_handle = link.title | handleize %}
+              {% for block in section.blocks %}
+                {% if link_title_handle == block.settings.title %}
+                  {% if block.settings.image_link != blank %}
+                  <a href="{{ block.settings.image_link }}" class="megamenu__image-link">
+                  {% endif %}
+                    {% render 'image--responsive' with image: block.settings.image, wrapper_class: 'megamenu__image' %}
+                    {% if block.settings.image_title != blank and block.settings.image != blank %}
+                      <span class="megamenu__image-title" style="color: {{ block.settings.image_title_color }};">{{ block.settings.image_title }}</span>
+                    {% endif %}
+                  {% if block.settings.image_link != blank %}
+                  </a>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% if linklist_level == 1 %}
+        </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endif %}
+</li>

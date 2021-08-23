@@ -1,0 +1,61 @@
+<p class="not-found-recommend__title heading--2">You might be interested in</p>
+
+<div class="not-found-recommend__blocks">
+  {% for block in section.blocks %}
+    {% assign collection = collections[block.settings.collection] %}
+    <div class="not-found-recommend__block">
+      <a class="not-found-recommend__block__link" href="{{ collection.url }}">
+        <img class="not-found-recommend__block__image" src="{% if block.settings.image %}{{ block.settings.image | img_url: 'large' }}{% else %}{{ collection.image | img_url: 'large' }}{% endif %}" alt="{{ collection.title }} image"/>
+        <p class="not-found-recommend__block__text heading--2" style="color: {{ block.settings.color }}; left: {{ block.settings.alignment }}%;">{{ collection.title | upcase }}</p>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "404 Recommendations",
+    "tag": "section",
+    "class": "not-found-recommend",
+    "blocks": [
+      {
+        "name": "Recommendation",
+        "type": "recommendation",
+        "limit": 3,
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Recommended collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Replacement image",
+            "info": "Replaces the collection image. Leave blank if you want to use the default collection image. "
+          },
+          {
+            "type": "select",
+            "id": "color",
+            "label": "Text color",
+            "options": [
+              { "value": "black", "label": "Black" },
+              { "value": "white", "label": "White" }
+            ]
+          },
+          {
+            "type": "range",
+            "id": "alignment",
+            "label": "Text alignment",
+            "info": "Distance from the left edge of the image in percent.",
+            "min": 20,
+            "max": 80,
+            "step": 5,
+            "default": 50,
+            "unit": "%"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

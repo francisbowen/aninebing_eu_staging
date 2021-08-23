@@ -1,0 +1,18 @@
+{%- comment -%}
+
+Comment renderer.
+
+Objects Referenced:
+ • comment https://help.shopify.com/en/themes/liquid/objects/comment
+
+{%- endcomment -%}
+
+<article class="comment" id="{{ comment.id }}">
+  <header class="comment__meta">
+    <h3 class="comment__author">{{ comment.author }}</h3>
+    <span class="comment__date">{{ comment.created_at | time_tag: format: 'date' }}</span>
+  </header>
+  <div class="comment__content">
+    {{ comment.content }}
+  </div>
+</article>

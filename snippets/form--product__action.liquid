@@ -1,0 +1,100 @@
+<div class="form__actions">
+  {%- include 'swym-product-view', product: product -%}
+  {%- assign icon_classes_desk = 'icon-heart js-add-to-wishlist hide-until@md product_' | append: product.id -%}
+  <div class="form__atc-wishlist js-form-atc">
+    {% comment %} Add to cart button {% endcomment %}
+
+    {% comment %} Check Shopify Quantity {% endcomment %}
+    {%- if product.tags contains 'swym-comingsoon' -%}
+      {%- assign button_coming_class = '' -%}
+      {%- assign button_atc_class = 'hide' -%}
+      {%- assign button_oos_class = 'hide' -%}
+    {%- elsif product.available -%}
+      {%- assign button_coming_class = 'hide' -%}
+      {%- assign button_atc_class = '' -%}
+      {%- assign button_oos_class = 'hide' -%}
+    {%- else -%}
+      {%- assign button_coming_class = 'hide' -%}
+      {%- assign button_atc_class = 'hide' -%}
+      {%- assign button_oos_class = '' -%}
+    {%- endif -%}
+
+    {% comment %} Check if product is coming soon or out of stock {% endcomment %}
+    {%- if product.tags contains 'swym-comingsoon' -%}
+      {%- assign button_title = 'products.product.coming_soon' | t -%}
+      {%- assign button_type = '#coming-soon-modal' -%}
+    {%- else -%}
+      {%- assign button_title = 'products.product.out_of_stock' | t -%}
+      {%- assign button_type = '#my-signup-modal' -%}
+    {%- endif -%}
+
+    {% comment %} Check Gifts Options for ATC {% endcomment %}
+    {%- if settings.enable_gift_products and product.tags contains 'gift-fragrance' and settings.enable_gift_products_purchasable == false -%}
+      {%- assign atc_button_type = 'non-purchasable' -%}
+    {%- else -%}
+      {%- assign atc_button_type = 'purchasable' -%}
+    {%- endif -%}
+
+    {%- if atc_button_type == 'purchasable' -%}
+      <button type="submit" class="button button-text button--secondary button--atc js-product-atc js-{{ size }} {{ button_atc_class }}" id="{{ form_id }}-AddToCart" name="add" disabled data-variant-id="{{ product.variants.first.id }}">
+        {{- 'products.product.add_to_cart' | t -}}
+      </button>
+
+      <button type="button" class="button button-text button--secondary button--atc js-product-atc js-open-modal js-coming-soon js-out-of-stock {{ button_coming_class }}" data-modal-target="#coming-soon-modal" disabled name="modal" data-variant-id="{{ product.variants.first.id }}">
+        {{- 'products.product.coming_soon' | t -}}
+      </button>
+
+      <button type="button" class="button button-text button--secondary button--atc js-product-atc js-open-modal js-notify-me js-out-of-stock {{ button_oos_class }}" data-modal-target="#my-signup-modal" disabled name="modal" data-variant-id="{{ product.variants.first.id }}">
+        {{ 'products.product.out_of_stock' | t }}
+      </button>
+    {%- else -%}
+      <button type="button" class="button button-text button--secondary button--atc button--gift js-open-modal" disabled>
+        {{- 'gift_product.gift_atc' | t -}}
+      </button>
+    {%- endif -%}
+
+    {%- include 'icons' with selected_icon: 'heart', icon_class: icon_classes_desk, icon_fill: 'none', icon_stroke: '#000000', title: 'products.product.add_to_wishlist', desc: 'products.product.add_to_wishlist_desc' -%}
+  </div>
+
+  {% assign lowercase_product_type = product.type | downcase %}
+  {% assign lowercase_excluded_product_types = settings.excluded_product_types | downcase %}
+
+  {%- if product.tags contains 'swym-comingsoon' or variant_availability == false -%}
+    {%- assign messageExist = 'is-active'  -%}
+  {%- else -%}
+    {%- assign messageExist = '' -%}
+  {%- endif -%}
+  
+  <p class="product__out-of-stock-message js-product-message {{ messageExist }} hide-until@md">
+    {%- if product.tags contains 'swym-comingsoon' -%}
+      {{ settings.coming_soon_message }}
+    {%- elsif variant_availability == false -%}
+      {{ settings.out_of_stock_message }}
+    {%- endif -%}
+  </p>
+
+  
+</div>
+<div class="product__benefit">
+  {% comment %} Until Further notice {% endcomment %}
+  {% comment %} <div class="product__loyalty-points">
+    <a href="{% unless customer %}/account/login{% else %}{{ settings.loyalty_link }}{% endunless %}" class="link link--primary js-product-points" title="{{ 'general.loyalty.go_to_loyalty' | t }}">+ {{ product.price | divided_by: 100 | floor }}{{ 'products.product.loyalty_points' | t }}</a>
+  </div> {% endcomment %}
+  <div class="product__limited">
+    {%- include 'product__limited-quantity' with item_qty: product.variants.first.inventory_quantity  -%}
+    <span class="product__limit-qty-msg js-qty-limit {% unless show_limit_msg %}hidden{% endunless %}">{{ section.settings.limited_qty_text }}</span>
+  </div>
+  {% unless excluded_product_list contains excluded_product_type %}
+    <div class="product__link product__link--size hide-from@md">
+      <a href="#" role="button" class="link link--primary js-open-modal" data-modal-target="#size-guide-modal" title="{{ 'products.product.go_to_fit_guide' | t }}">{{- 'products.product.fit_guide' | t -}}</a>
+    </div>
+  {% endunless %}
+</div>
+
+{% assign complete_the_look = true %}
+{% if product.tags contains 'complete-the-look-exclusion' %}
+  {% assign complete_the_look = false %}
+{% endif %}
+<div class="product__complete-the-look heading--3 hide-until@md hidden js-complete-the-look" data-complete-the-look="{{ complete_the_look }}">
+  <a role="button" href="#findmine-module" title="{{ 'products.product.complete_look' | t }}" class="link link--primary">{{- 'products.product.complete_look' | t -}}</a>
+</div>

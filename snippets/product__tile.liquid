@@ -1,0 +1,23 @@
+{%- comment -%}
+
+Product tile renderer.
+
+Objects Referenced:
+ • product https://help.shopify.com/en/themes/liquid/objects/product
+
+{%- endcomment -%}
+
+{% include 'product__classes' with base_class: 'product-tile' %}
+<article class="{{ product_classes }}">
+  {% if product.featured_image %}
+    <a class="product-tile__link" href="{{ product.url | within: collection }}">
+      {% include 'image--responsive' with image: product.featured_image, wrapper_class: 'product-tile__image', max_width: settings.product_tile_image_max %}
+    </a>
+  {% endif %}
+  <h2 class="product-tile__title">
+    <a class="product-tile__link" href="{{ product.url | within: collection }}">{{ product.title }}</a>
+  </h2>
+  {% include 'product__pricing' %}
+  {% include 'product__availability' %}
+  {% include 'product__tags' %}
+</article>

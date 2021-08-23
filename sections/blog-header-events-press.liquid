@@ -1,0 +1,107 @@
+{%- include 'blog-check' -%}
+
+<a href="{% if show_exact_article %}{{ articles[section.settings.specific_article].url }}{% else %}{{ recent_articles.first.url }}{% endif %}">
+  <div class="blog__header{% if section.settings.video == '' or section.settings.video == blank %} blog__header--background-image{% else %} blog__header--background-video{% endif %}">
+    {%- unless section.settings.video == blank or section.settings.video == '' -%}
+      <video class="blog__header__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+        <source src="{{ section.settings.video }}" type="video/mp4">
+      </video>
+    {%- endunless -%}
+
+    {%- if show_exact_article -%}
+      {%- if section.settings.title != blank -%}
+        <h1 class="blog__header__title">{{ section.settings.title | upcase }}</h1>
+      {%- endif -%}
+      {%- if section.settings.caption != blank -%}
+        <p class="blog__header__caption">{{ section.settings.caption }}</p>
+      {%- endif -%}
+    {%- else -%}
+
+      {%- if recent_articles.first -%}
+        
+          <h1 class="blog__header__title">{{ recent_articles.first.title | upcase }}</h1>
+          <p class="blog__header__caption">{{ recent_articles.first.excerpt }}</p>
+        
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</a>
+  
+{% schema %}
+  {
+    "name": "Blog header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_specific_article",
+        "label": "Show Specific Article",
+        "info": "If not checked, it will take the latest article. Please check for each section.",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Fallback title color",
+        "default": "#000000"
+      },
+      {
+        "type": "article",
+        "id": "specific_article",
+        "label": "Pick specific article to display"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "caption",
+        "label": "Caption"
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Fallback background color"
+      },
+      {
+        "type": "text",
+        "id": "video",
+        "label": "Video Filename e.g: Video.mp4",
+        "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to only use an image."
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image"
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  {% if section.settings.show_specific_article %}
+    .blog__header--background-image {
+      background-color: {{ section.settings.color }};
+      {% if section.settings.image %}
+        background-image: url("{{ section.settings.image | img_url: 'x780' }}");
+      {% endif %}
+    }
+  {% else %}
+    {% if recent_articles.first %}
+      .blog__header--background-image {
+        background-color: {{ section.settings.color }};
+        background-image: url("{{ recent_articles.first.image | img_url: 'x780' }}");
+      }
+    {% endif %}
+  {% endif %}
+  
+  .blog__header__title,
+  .blog__header__caption {
+    color: {{ section.settings.title_color }};
+  }
+</style>

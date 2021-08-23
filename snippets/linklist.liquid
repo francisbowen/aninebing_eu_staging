@@ -1,0 +1,13 @@
+{%- comment -%}
+
+Default link list renderer.
+Used to render each level in the link list.
+
+Objects Referenced:
+ • linklist https://help.shopify.com/en/themes/liquid/objects/linklist
+
+{%- endcomment -%}
+
+<nav class="linklist linklist--{{ linklist.handle }} hide-until@md">
+  {% render 'linklist__links' with links: linklist.links, handle: linklist.handle %}
+</nav>

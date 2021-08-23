@@ -1,0 +1,24 @@
+{%- comment -%}
+
+Search form.
+
+Documentation: https://help.shopify.com/en/themes/customization/store/show-only-products-in-search-results
+
+Objects Referenced:
+ • search https://help.shopify.com/en/themes/liquid/objects/search
+
+{%- endcomment -%}
+
+{%- assign form_id = 'Search' -%}
+{%- assign form_class = 'form form--search' -%}
+
+<form class="{{ form_class }}" id="{{ form_id }}" action="/search" method="get" role="search">
+  {% assign field_id = form_id | append: '-Query' %}
+  <label for="{{ field_id }}" class="label-hidden">{{ 'general.search.placeholder' | t }}</label>
+  <input type="search"
+          name="q"
+          id="{{ field_id }}"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.placeholder' | t }}">
+  <button type="submit">{{ 'general.search.submit' | t }}</button>
+</form>

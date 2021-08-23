@@ -1,0 +1,234 @@
+{% for block in section.blocks %}
+  {% case block.type %}
+
+    {%- comment -%} START HEADER {%- endcomment -%}
+    {% when 'header' %}
+      <div class="muse__header">
+        {% if block.settings.video_filename != blank %}
+          <video class="muse__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+              <source src="{{ block.settings.video_filename | file_url }}" type="video/mp4">
+          </video>
+        {% else %}
+          <picture>
+              <source media="(max-width: 996px)" srcset="{{ block.settings.image_mobile | img_url: '640x'}} 2x, {{ block.settings.image_mobile | img_url: '320x'}} 1x">
+              <source srcset="{{ block.settings.image_desktop | img_url: '1440x'}} 2x, {{ block.settings.image_desktop | img_url: '720x'}} 1x">
+              <img class="muse__image" src="{{ block.settings.image_desktop | img_url: '720x'}}" alt="{{ block.settings.image_desktop.alt }}">
+          </picture>
+        {% endif %}
+        <div class="muse__content">
+          <p class="muse__content__title uppercase-text">{{ block.settings.title }}</p>
+          <a class="muse__content__link" href="{{ block.settings.link_url }}" title="Link to {{ block.settings.title }}">{{ block.settings.link_text }}</a>
+        </div>
+      </div>
+
+    {%- comment -%} START ONE_IMAGE {%- endcomment -%}
+    {% when 'one_image' %}
+      <div class="muse__one-image">
+        {% if block.settings.video_filename != blank %}
+          <video class="muse__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+              <source src="{{ block.settings.video_filename | file_url }}" type="video/mp4">
+          </video>
+        {% else %}
+          <picture>
+              <source media="(max-width: 996px)" srcset="{{ block.settings.image_mobile | img_url: '420x'}} 2x, {{ block.settings.image_mobile | img_url: '210x'}} 1x">
+              <source srcset="{{ block.settings.image_desktop | img_url: '1440x'}} 2x, {{ block.settings.image_desktop | img_url: '720x'}} 1x">
+              <img class="muse__image" src="{{ block.settings.image_desktop | img_url: '720x'}}" alt="{{ block.settings.image_desktop.alt }}">
+          </picture>
+        {% endif %}
+        <div class="muse__content">
+          <p class="muse__content__title uppercase-text">{{ block.settings.title }}</p>
+          <a class="muse__content__link" href="{{ block.settings.link_url }}" title="Link to {{ block.settings.title }}">{{ block.settings.link_text }}</a>
+        </div>
+      </div>
+
+    {%- comment -%} START TWO_IMAGES {%- endcomment -%}
+    {% when 'two_images' %}
+      <div class="muse__two-images">
+        {% if block.settings.video_filename1 != blank %}
+          <video class="muse__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+              <source src="{{ block.settings.video_filename1 | file_url }}" type="video/mp4">
+          </video>
+        {% else %}
+          <picture>
+              <source media="(max-width: 996px)" srcset="{{ block.settings.image_mobile1 | img_url: '640x'}} 2x, {{ block.settings.image_mobile1 | img_url: '320x'}} 1x">
+              <source srcset="{{ block.settings.image_desktop1 | img_url: '1440x'}} 2x, {{ block.settings.image_desktop1 | img_url: '720x'}} 1x">
+              <img class="muse__image" src="{{ block.settings.image_desktop1 | img_url: '720x'}}" alt="{{ block.settings.image_desktop1.alt }}">
+          </picture>
+        {% endif %}
+        {% if block.settings.video_filename2 != blank %}
+          <video class="muse__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+              <source src="{{ block.settings.video_filename2 | file_url }}" type="video/mp4">
+          </video>
+        {% else %}
+          <picture>
+              <source media="(max-width: 996px)" srcset="{{ block.settings.image_mobile2 | img_url: '640x'}} 2x, {{ block.settings.image_mobile2 | img_url: '320x' }} 1x">
+              <source srcset="{{ block.settings.image_desktop2 | img_url: '1440x'}} 2x, {{ block.settings.image_desktop2 | img_url: '720x'}} 1x">
+              <img class="muse__image" src="{{ block.settings.image_desktop2 | img_url: '720x'}}" alt="{{ block.settings.image_desktop2.alt }}">
+          </picture>
+        {% endif %}
+        <div class="muse__content">
+          <p class="muse__content__title uppercase-text">{{ block.settings.title }}</p>
+          <a class="muse__content__link" href="{{ block.settings.link_url }}" title="Link to {{ block.settings.title }}">{{ block.settings.link_text }}</a>
+        </div>
+      </div>
+
+  {% endcase %}
+{% endfor %}
+
+
+{% schema %}
+  {
+    "name": "Muse",
+    "tag": "section",
+    "class": "muse",
+    "blocks": [
+      {
+        "name": "Header",
+        "type": "header",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Header"
+          },
+          {
+            "type": "text",
+            "id": "video_filename",
+            "label": "Video filename e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Mobile image",
+            "id": "image_mobile",
+            "type": "image_picker"
+          },
+          {
+            "label": "Desktop image",
+            "id": "image_desktop",
+            "type": "image_picker"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "Link URL"
+          }
+        ]
+      },
+      {
+        "name": "One image",
+        "type": "one_image",
+        "settings": [
+          {
+            "type": "header",
+            "content": "One image"
+          },
+          {
+            "type": "text",
+            "id": "video_filename",
+            "label": "Video filename e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Mobile image",
+            "id": "image_mobile",
+            "type": "image_picker"
+          },
+          {
+            "label": "Desktop image",
+            "id": "image_desktop",
+            "type": "image_picker"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "Link URL"
+          }
+        ]
+      },
+      {
+        "name": "Two images",
+        "type": "two_images",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Two images"
+          },
+          {
+            "type": "header",
+            "content": "Image 1"
+          },
+          {
+            "type": "text",
+            "id": "video_filename1",
+            "label": "Video filename 1 e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Mobile image 1",
+            "id": "image_mobile1",
+            "type": "image_picker"
+          },
+          {
+            "label": "Desktop image 1",
+            "id": "image_desktop1",
+            "type": "image_picker"
+          },
+          {
+            "type": "header",
+            "content": "Image 2"
+          },
+          {
+            "type": "text",
+            "id": "video_filename2",
+            "label": "Video filename 2 e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Mobile image 2",
+            "id": "image_mobile2",
+            "type": "image_picker"
+          },
+          {
+            "label": "Desktop image 2",
+            "id": "image_desktop2",
+            "type": "image_picker"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text"
+          },
+          {
+            "type": "url",
+            "id": "link_url",
+            "label": "Link URL"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

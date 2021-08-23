@@ -1,0 +1,46 @@
+{%- include 'store-domain' -%}
+
+{%- if modal_type == 'coming-soon' -%}
+  {%- assign modal_title = 'LET ME KNOW WHEN THIS ITEM IS LAUNCHED' -%}
+  {%- assign modal_id = 'EmailComingSoon' -%}
+  {%- assign agree_name = 'coming-soon-terms' -%}
+  {%- assign agree_id = 'agree-coming-soon' -%}
+{%- else -%}
+  {%- assign modal_title = 'products.modal.title' | t -%}
+  {%- assign modal_id = 'EmailOutOfStock' -%}
+  {%- assign agree_name = 'modal-terms' -%}
+  {%- assign agree_id = 'agree' -%}
+{%- endif -%}
+
+<div class="js-out-of-stock-modal js-modal-click-exclude">
+  <button type="button" class="modal-close js-close-modal js-modal-click-exclude" name="close">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+  <div class="out-of-stock__wrapper js-form">
+    <div class="out-of-stock__logo">
+      <img src="{{ settings.out_of_stock_logo | img_url: '45x' }}" alt="{{ shop.name }}" />
+    </div>
+
+    <div class="out-of-stock__info">
+
+      <p class="out-of-stock__title button-text">{{ modal_title }}</p>
+      <p class="out-of-stock__prod-title js-out-of-stock-modal-prod-title">{{ product.title }}</p>
+
+      <p class="out-of-stock__size-wrapper input-text">
+        <span class="out-of-stock__size text-title-space js-out-size">{{ 'products.modal.size' | t }} <span class="js-option-title">{{ product.options_with_values[0].selected_value }}</span></span>
+      </p>
+
+      <label class="input-text" for="{{ modal_id }}">{{ 'products.modal.email_label' | t }}</label>
+      <input class="input input--out-of-stock input__textbox js-out-of-stock-email input-text js-input" placeholder="Enter Email" type="email" name="contact[email]" id="{{ modal_id }}" title="{{ 'general.footer.newsletter.placeholder' | t }}" value="">
+
+      <div class="out-of-stock__agree">
+        <input type="checkbox" id="{{ agree_id }}" name="{{ agree_name }}" {% if store_domain == 'USA' %}checked{% endif %}>
+        <label class="out-of-stock__label label-text h3" for="agree">{{ 'products.modal.checkbox_label' | t }}</label>
+      </div>
+      <button class="out-of-stock__submit button button--secondary js-out-of-stock-submit js-submit-btn js-modal-click-exclude" name="submit" type="submit" disabled>{{ 'products.modal.submit' | t }}</button>
+
+      <a href="#" class="link link--primary js-close-modal" title="{{ 'products.modal.continue_shopping' | t }}">{{ 'products.modal.continue_shopping' | t }}</a>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+{%- comment -%}
+  UNIQUE NUMBER
+  Uses a counter to create a unique number.
+  Useful when using the same snippet in multiple
+  areas of the site.
+
+  Optional variables:
+  - prefix
+    Define a string to be used before the number
+{%- endcomment -%}
+
+{%- assign counter = counter | default: 0 | plus: 1 -%}
+{{- 'now' | date: '%N' | append: counter | prepend: prefix -}}
+{%- assign prefix = '' -%}

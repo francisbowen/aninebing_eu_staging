@@ -1,0 +1,77 @@
+{% comment %}
+  By leaving the metafield header.article empty in the blog, it will automatically select the most recent article from the blog.
+
+  If we want the texts to appear on the video, the text color should contrast the initial video loader.
+
+  Blog Header Metafields have these options:
+  1. header.image (2)
+  2. header.color
+  3. header.background-color (3)
+  4. header.article - should be written like this blog-name/article-handle
+  5. header.video - takes precedence (1)
+{% endcomment %}
+
+{%- assign article_image = blog.metafields.header['image'] -%}
+{%- assign article_color = blog.metafields.header['color'] -%}
+{%- assign article_background_color = blog.metafields.header['background-color'] -%}
+{%- assign article_handle = blog.metafields.header['article'] -%}
+{%- assign article_video = blog.metafields.header['video'] -%}
+{%- assign specific_article = articles[article_handle] -%}
+
+{%- if article_video == '' or article_video == blank -%}
+  {% if article_image %}
+    {%- assign blog_header_class = 'blog__header--background-image blog__header--background-image-show-specific' -%}
+  {% elsif blog.articles.first.image  %}
+    {%- assign blog_header_class = 'blog__header--background-image blog__header--background-image-specific' -%}
+  {%- else -%}
+    {%- assign blog_header_class = 'blog__header--background-image blog__header--background' -%}
+  {%- endif -%}
+{%- else -%}
+  {%- assign blog_header_class = 'blog__header--background-video' -%}
+{%- endif -%}
+
+<a href="{% if blog.metafields.header['article'] %}{{ specific_article.url }}{% else %}{{ blog.articles.first.url }}{% endif %}">
+  <div class="blog__header {{ blog_header_class }}">
+    {%- unless article_video == blank or article_video == '' -%}
+      <video class="blog__header__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+        <source src="{{ article_video }}" type="video/mp4">
+      </video>
+    {%- endunless -%}
+
+    {%- if article_handle -%}
+      {%- if specific_article.title != blank -%}
+        <h1 class="blog__header__title{% if article_color %} blog__header__color{% endif %}">{{ specific_article.title | upcase }}</h1>
+      {%- endif -%}
+      {%- if specific_article.excerpt != blank -%}
+        <p class="blog__header__caption{% if article_color %} blog__header__color{% endif %}">{{ specific_article.excerpt }}</p>
+      {%- endif -%}
+    {%- else -%}
+
+      {%- if blog.articles.first -%}
+        
+          <h1 class="blog__header__title{% if article_color %} blog__header__color{% endif %}">{{ blog.articles.first.title | upcase }}</h1>
+          <p class="blog__header__caption{% if article_color %} blog__header__color{% endif %}">{{ blog.articles.first.excerpt }}</p>
+        
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</a>
+
+<style>
+  .blog__header--background {
+    background-color: {{ article_background_color }};
+  }
+
+  .blog__header--background-image-show-specific {
+    background-image: url({{ article_image }});
+  }
+
+  .blog__header--background-image-specific {
+    background-color: {{ article_background_color }};
+    background-image: url("{{ blog.articles.first.image | img_url: 'x780' }}");
+  }
+
+  .blog__header__color {
+    color: {{ article_color }};
+  }
+</style>

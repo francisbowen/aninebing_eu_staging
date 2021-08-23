@@ -1,0 +1,257 @@
+{%- comment -%}
+  GLOBAL OBJECT
+
+  Creates a theme object of useful Liquid-accessible
+  objects to use in JavaScript and exports it as a
+  global variable.
+
+  Only Liquid objects should be stored on this object.
+
+  1. Shop
+  2. Template
+  3. Locales
+  4. Cart
+  5. Customer
+  6. Current Object
+
+{%- endcomment -%}
+
+{% if template.name == 'page' and template.suffix != blank %}
+  {% assign page_type = template.suffix | append: '-page' %}
+{% elsif template.name == 'page' %}
+  {% assign page_type = page.handle | append: '-page' %}
+{% else %}
+  {% assign page_type = template.name %}
+{% endif %}
+
+<script>
+(function(theme) {
+  // 1. Shop
+  theme.shop = {
+    address: {{ shop.address | json }},
+    currency: {{ shop.currency | json }},
+    domain: {{ shop.domain | json }},
+    locale: {{ shop.locale | json }},
+    name: {{ shop.name | json }},
+    url: {{ shop.url | json }},
+    date_now: {{ 'now' | date: '%FT%T.%LZ' | json }},
+    request_path: {{ request.path | json }}
+  };
+
+  // 2. Template
+  theme.template = {
+    name: {{ template.name | json }},
+    suffix: {{ template.suffix | json }},
+    page_type: {{ page_type | json }},
+    product_tile_type: 'load' // collection and search for monetate
+  };
+
+  // 3. Locales
+  theme.locales = {
+    general: {
+      pagination: {
+        view_all: {{ 'general.pagination.view_all' | t | json }},
+      },
+      search: {
+        name: {{ 'general.search.name' | t | json }},
+        total_results: {{ 'general.search.total_results' | t | json }},
+        related_collections: {{ 'general.search.related_collections' | t | json }},
+        view_all_results_1: {{ 'general.search.view_all_results_1' | t | json }},
+        view_all_results_2: {{ 'general.search.view_all_results_2' | t | json }},
+        close: {{ 'general.search.close' | t | json }}
+      },
+      review: {
+        read_more: {{ 'general.review.read_more' | t | json }},
+        read_less: {{ 'general.review.read_less' | t | json }},
+        load_more: {{ 'general.review.load_more' | t | json }},
+        split_by: {{ settings.product_read_more_split | json }}  
+      }
+    },
+    product: {
+      sold_out: {{ 'products.product.sold_out' | t | json }},
+      sold_out_tag: {{ 'products.product.sold_out_tag' | t | json }},
+      new: {{ 'products.product.new' | t | json }},
+      out_of_stock: {{ 'products.product.out_of_stock' | t | json }},
+      loyalty_points: {{ 'products.product.loyalty_points' | t | json }},
+      related: {{ 'products.product.related' | t | json }},
+      related_mob: {{ 'products.product.related_mob' | t | json }},
+      select_size: {{ 'products.product.select_size' | t | json }},
+      add_to_bag: {{ 'products.product.add_to_cart' | t | json }},
+      coming_soon: {{ 'products.product.coming_soon' | t | json }},
+      coming_soon_tag: {{ 'products.product.coming_soon_tag' | t | json }},
+      loyalty_points: {{ 'products.product.loyalty_points' | t | json }},
+      review: {{ 'products.product.review' | t | json }},
+      description: {{ 'products.product.description' | t | json }},
+      fit: {{ 'products.product.fit' | t | json }},
+      material_care: {{ 'products.product.material_care' | t | json }},
+      more_colors: {{ 'products.product.more_colors' | t | json }},
+      success_message: {{ 'products.modal.success_msg' | t | json }},
+      success_message_coming_soon: {{ 'products.modal.success_msg_coming_soon' | t | json }},
+      modal_out_of_stock_description: {{ 'products.modal.modal_out_of_stock_description' | t | json }},
+      modal_coming_soon_description: {{ 'products.modal.modal_coming_soon_description' | t | json }}
+    },
+    collection: {
+      quick_add: {{ 'collections.general.quick_add' | t | json }},
+      quick_add_mobile: {{ 'collections.general.quick_add_mobile' | t | json }},
+      quick_add_select: {{ 'collections.general.quick_add_select' | t | json }},
+      continue_shopping: {{ 'collections.general.quick_add_continue_shopping' | t | json }},
+      out_of_stock: {{ 'collections.general.out_of_stock' | t | json }},
+      out_of_stock_short: {{ 'collections.general.out_of_stock_short' | t | json }},
+      coming_soon: {{ 'collections.general.coming_soon' | t | json }},
+      coming_soon_short: {{ 'collections.general.coming_soon_short' | t | json }},
+      notify_me: {{ 'collections.general.out_of_stock_short' | t | json }},
+      add_to_cart: {{ 'collections.general.add_to_cart' | t | json }},
+      added_to_cart: {{ 'collections.general.added_to_cart' | t | json }},
+      out_of_stock_selected_option: {{ 'collections.general.out_of_stock_selected_option' | t | json }},
+      checkout: {{ 'collections.general.checkout' | t | json }},
+      sort: {
+        popular: {{ 'collections.sorting.popular' | t | json }}
+      },
+      filters: {
+        results: {{ 'collections.filters.results' | t | json }},
+        clear: {{ 'collections.filters.clear' | t | json }},
+        done: {{ 'collections.filters.done' | t | json }}
+      }
+    },
+    cart: {
+      item: {{ 'cart.general.item' | t | json }},
+      items: {{ 'cart.general.items' | t | json }},
+      count: {{ 'cart.general.in_bag' | t | json }},
+      error_quantity1: {{ 'general.cart.error_max_quantity1' | t | json }},
+      error_quantity2: {{ 'general.cart.error_max_quantity2' | t | json }},
+      error_in_cart: {{ 'general.cart.error_already_in_cart' | t | json }},
+      item_sold_out: {{ 'cart.general.item_sold_out' | t | json }},
+      out_of_stock: {{ 'products.product.out_of_stock' | t | json }},
+      coming_soon: {{ 'products.product.coming_soon' | t | json }},
+      max_quantity: {{ 'general.cart.max_quantity' | t | json }},
+      recommended_products: {{ 'cart.general.recommended_products' | t | json }}
+    },
+    customer: {
+      register: {
+        password_match: {{ 'customer.register.password_match' | t | json }},
+        default_password_length: {{ 'customer.register.default_password_length' | t | json }}
+      },
+      wishlist: {
+        add: {{ 'customer.wishlist.add' | t | json }},
+        empty: {{ 'customer.wishlist.empty' | t | json }},
+        continue_shopping: {{ 'customer.wishlist.continue_shopping' | t | json }},
+        adding: {{ 'customer.wishlist.adding' | t | json }},
+        loading: {{ 'customer.wishlist.loading' | t | json }}
+      }
+    },
+    gift_product: {
+      add_gift: {{ 'gift_product.add_gift' | t | json }},
+      change_gift: {{ 'gift_product.change_gift' | t | json }},
+      add_more_products: {{ 'gift_product.add_more_products' | t | json }},
+      shop_now: {{ 'gift_product.shop_now' | t | json }},
+      collection_to_redirect_under_400: {{ 'gift_product.collection_to_redirect_under_400' | t | json }},
+      eligible: {{ 'gift_product.eligible' | t | json }},
+      atc: {{ 'gift_product.gift_atc' | t | json }},
+      atc_mobile: {{ 'gift_product.gift_atc_mobile' | t | json }}
+    },
+    checkout: {
+      po_box_error: {{ 'checkout.po_box_error' | t | json }}
+    },
+    sale_gateway: {
+      error_email_duplication: {{ 'sale_gateway.error_email_duplication' | t | json }}
+    }
+  };
+
+  // 4. Cart Object
+  theme.cart = {{ cart | json }};
+
+  // 5. Customer
+  theme.customer =
+    {%- if customer -%}
+      {
+        email: {{ customer.email | json }},
+        first_name: {{ customer.first_name | json }},
+        accepts_marketing: {{ customer.accepts_marketing | json }},
+        addresses: {{ customer.addresses | json }},
+        addresses_count: {{ customer.addresses_count | json }},
+        default_address: {{ customer.default_address | json }},
+        email: {{ customer.email | json }},
+        first_name: {{ customer.first_name | json }},
+        has_account: {{ customer.has_account | json }},
+        id: {{ customer.id | json }},
+        last_name: {{ customer.last_name | json }},
+        name: {{ customer.name | json }},
+        orders_count: {{ customer.orders_count | json }},
+        tags: {{ customer.tags | json }},
+        total_spent: {{ customer.total_spent | json }}
+      }
+    {%- else -%}
+      null
+    {%- endif -%};
+
+  // 6. Current Object
+  theme.product = {{ product | json }};
+  theme.collection = {{ collection | json }};
+  theme.page = {{ page | json }};
+
+  // 7. Breakpoints
+  theme.breakpoints = {
+    sm: 640,
+    md: 996,
+    lg: 1280,
+    xl: 1920
+  };
+
+  // 8. Theme Settings
+  theme.settings = {
+    account_toggle: {{ settings.show_account_toggle }},
+    domain_us: {{ settings.yotpo_app_key_us | json }},
+    domain_us_dev: {{ settings.yotpo_app_key_us_dev | json }},
+    domain_eu: {{ settings.yotpo_app_key_eu | json }},
+    gift_bundle_enabled: {{ settings.enable_gift_products }},
+    out_of_stock_message: {{ settings.out_of_stock_message | json }},
+    checkout: {
+      zip_ireland: {{ settings.checkout_zip_ireland | json }},
+      business_address: {{ settings.checkout_business_address | json }},
+      zone_product_exclusion_enabled: {{ settings.show_zone_product_exclusion }},
+      excluded_zone_message: {{ settings.checkout_excluded_zone_message | json }},
+      excluded_zone_message_eu: {{ settings.checkout_excluded_zone_message_eu | json }}
+    },
+    gift: {
+      minimum_amount: {{ settings.gift_minimum_amount | json }},
+      gift1: {{ settings.gift_product_1 | json }},
+      gift2: {{ settings.gift_product_2 | json }},
+      add_type: {{ settings.gift_add_type | json }},
+      purchasable: {{ settings.enable_gift_products_purchasable | json }}
+    },
+    discount: {
+      show_message: {{ settings.show_discount_message | json }},
+      tag: {{ settings.discount_tag_name | json }},
+      minimum_price1: {{ settings.discount_minimum_price1 | json }},
+      message1: {{ settings.discount_message1 | json }},
+      minimum_price2: {{ settings.discount_minimum_price2 | json }},
+      message2: {{ settings.discount_message2 | json }}
+    },
+    out_of_stock_message: {{ settings.out_of_stock_message | json }},
+    coming_soon_message: {{ settings.coming_soon_message | json }}
+  }
+  // 7. SVGs
+
+  theme.svgs = {
+    star: {
+      filled:`{% include 'icons' with selected_icon: 'star', icon_class: 'icon-star', icon_fill: '#000000', icon_stroke: "#000000", title: 'general.review.filled_star', desc: 'general.review.star' %}`,
+      empty:`{% include 'icons' with selected_icon: 'star', icon_class: 'icon-star', icon_fill: '#FFFFFF', icon_stroke: "#000000", title: 'general.review.empty_star', desc: 'general.review.star' %}`
+    },
+    accordion: {
+      plus:`{%- include 'icons' with selected_icon: 'plus-sign', icon_class: 'icon-plus', icon_fill: 'none', icon_stroke: '#FFFFFF', title: 'general.accordion.open', desc: 'general.accordion.toggle_accordion' -%}`,
+      minus:`{%- include 'icons' with selected_icon: 'minus-sign', icon_class: 'icon-minus' icon_fill: 'none', icon_stroke: '#FFFFFF', title: 'general.accordion.close', desc: 'general.accordion.toggle_accordion' -%}`,
+      icon_closed: `{%- include 'accordion__icon' with type: 'closed' -%}`,
+      icon_opened: `{%- include 'accordion__icon' with type: 'opened' -%}`
+    },
+    remove: `{%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}`,
+    arrow: {
+      chevron_left: `{% include 'icons' with icon_class: 'icon-previous', selected_icon: 'chevron-previous', icon_stroke: '#FFFFFF' %}`,
+      chevron_right: `{% include 'icons' with icon_class: 'icon-next', selected_icon: 'chevron-next', icon_stroke: '#FFFFFF' %}`,
+      chevron_right_small: `{% include 'icons' with icon_class: 'icon-next', selected_icon: 'chevron-next-small', icon_stroke: '#FFFFFF' %}`,
+      chevron_left_small: `{% include 'icons' with icon_class: 'icon-next', selected_icon: 'chevron-previous-small', icon_stroke: '#FFFFFF' %}`
+    }
+  };
+
+  window.theme = theme;
+})(window.theme || {});
+</script>

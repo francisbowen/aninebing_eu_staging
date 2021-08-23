@@ -1,0 +1,62 @@
+{%- include 'blog-check' -%}
+
+<div class="blog__body-press">
+
+  <h2 class="blog__body-press__title">{{ section.settings.title }}</h2>
+
+  {%- if show_exact_article -%}
+    {%- assign start_at = 0 -%}
+  {%- else -%}
+    {%- assign start_at = 1 -%}
+  {%- endif -%}
+
+  <div class="blog__body-press__articles">
+    {%- for article in blogs.press.articles limit: article_event_limit offset: start_at -%}
+      {%- include 'article__tile' with blog_type: 'press' -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if blogs.press.articles.size > article_press_limit -%}
+    <div class="blog__body-press__view-all">
+      <a href="{{ blogs.press.url }}" class="link link--primary">{{ 'blogs.events.view_all' | t }}</a>
+    </div>
+  {%- endif -%}
+
+</div>
+  
+{% schema %}
+  {
+    "name": "Blog Body - Press",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Article Tile - Press"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Latest In The Press"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_specific_article",
+        "label": "Show Specific Article",
+        "info": "If not checked, it will skip the latest article. Please check for each section.",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Fallback background color",
+        "default": "#000000"
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  .article-tile__image {
+    background-color: {{ section.settings.color }};
+  }
+</style>

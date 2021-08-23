@@ -1,0 +1,43 @@
+{%- comment -%}
+
+Article comments list and form.
+
+Objects Referenced:
+ • article https://help.shopify.com/en/themes/liquid/objects/article
+ • comment https://help.shopify.com/en/themes/liquid/objects/comment
+ • settings https://help.shopify.com/en/themes/liquid/objects#settings
+
+{%- endcomment -%}
+
+{%- comment -%}
+  Comments may not appear right after they are submitted, either to be checked by Shopify's spam filter
+  or to await moderation. When a comment is submitted, the browser is redirected to a page
+  that includes the new comment id in its URL.
+{%- endcomment -%}
+
+{%- assign number_of_comments = article.comments_count -%}
+{%- if comment.status == 'pending' -%}
+  {%- assign number_of_comments = article.comments_count | plus: 1 -%}
+{%- endif -%}
+
+{%- comment -%}
+  #comments is required, it is used as an anchor link by Shopify.
+{%- endcomment -%}
+<section class="article__comments" id="comments">
+  <h2>{{ 'blogs.comments.comments_with_count' | t: count: number_of_comments }}</h2>
+
+  {% paginate article.comments by settings.comments_page_size %}
+    {%- comment -%}
+      If a comment was just submitted with no blank field, show it.
+    {%- endcomment -%}
+    {% if comment.status == 'pending' %}
+      {% include 'comment' %}
+    {% endif %}
+    {% for comment in article.comments %}
+      {% include 'comment' %}
+    {% endfor %}
+    {% include 'paginate' %}
+  {% endpaginate %}
+
+  {% include 'form--comment' %}
+</section>

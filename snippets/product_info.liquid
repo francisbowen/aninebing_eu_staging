@@ -1,0 +1,28 @@
+{% assign custom_class = custom_class %}
+
+<section class="product__info {{ custom_class }}" onClick="" data-gift-bundle-one="{{ all_products[settings.gift_product_1].handle }}" data-gift-bundle-two="{{ all_products[settings.gift_product_2].handle }}">
+  {% assign product_details_class = 'hide-until@md' %}
+  {% if type == 'bundle' %}
+    {% assign product_details_class = '' %}
+  {% endif %}
+
+  {% unless type == 'bundle' %}
+    {% include 'product__attributes' with class_name: 'hide-until@md' %}
+  {% endunless %}
+  
+  {% include 'product__details' with product_details_class, size: 'desktop', type %}
+
+  {% unless type == 'bundle' %}
+    {%- include 'product_accordion' with custom_class: 'accordion--product' -%}
+  {% endunless %}
+  
+  {% unless type == 'bundle' %}
+    {%- if settings.shipping_return_link != blank -%}
+      <div class="product__shipping-return product__link">
+        <a href="{{ settings.shipping_return_link }}" class="link link--primary" title="{{ 'products.product.shipping_return_action' | t }}" target="_blank">
+          {{ settings.shipping_return }}
+        </a>
+      </div>
+    {%- endif -%}
+  {% endunless %}
+</section>

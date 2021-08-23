@@ -1,0 +1,29 @@
+{%- comment -%}
+
+Default collection template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/collection-liquid
+
+Objects Referenced:
+ • collection https://help.shopify.com/en/themes/liquid/objects/collection
+ • settings https://help.shopify.com/en/themes/liquid/objects#settings
+
+{%- endcomment -%}
+
+<article class="collection" id="isp-grid">
+  {% section 'collection__banner' %}
+  {% include 'collection__filters' %}
+  {% include 'back-to-top' %}
+
+  {% if shop.url == 'https://www.aninebing.com' %}
+    <div id="isp_search_result_page"></div><script src="https://shopify.instantsearchplus.com/js/search_result_loading_page.js?smart_navigation=1&isp_platform=shopify&UUID=a005f850-9e49-4b71-8cd4-f15a91c5b24b&store_id=1501528"></script>
+  {% elsif shop.url == 'https://eu.aninebing.com' %}
+    <div id="isp_search_result_page"></div><script src="https://shopify.instantsearchplus.com/js/search_result_loading_page.js?smart_navigation=1&isp_platform=shopify&UUID=3ea5405c-8181-459b-8f38-1799765b293f&store_id=14923532"></script>
+  {% elsif shop.url == 'https://anine-bing-dev01-us.myshopify.com' %}
+    <div id="isp_search_result_page"></div><script src="https://shopify.instantsearchplus.com/js/search_result_loading_page.js?smart_navigation=1&isp_platform=shopify&UUID=de9064d7-5c06-48c4-9d38-6903c4450266&store_id=1614446664"></script>
+  {% elsif shop.url == 'https://anine-bing-dev01-eu.myshopify.com' %}
+    <div id="isp_search_result_page"></div><script src="https://shopify.instantsearchplus.com/js/search_result_loading_page.js?smart_navigation=1&isp_platform=shopify&UUID=b89d1ba5-cc07-4f94-a3ab-f575284ea55e&store_id=6962151487"></script>
+  {% endif %}
+</article>
+
+{% section 'collection-slider' %}

@@ -1,0 +1,18 @@
+{%- comment -%}
+
+Default page template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/page-liquid
+
+Objects Referenced:
+ • page https://help.shopify.com/en/themes/liquid/objects/page
+
+{%- endcomment -%}
+<script src="https://cdn-gae-ssl-default.akamaized.net/js/search_result_page.min.js?isp_platform=shopify"></script>
+
+<article class="page isp-search-results js-{{ template.name }}">
+  <h1 class="isp-search-results__title uppercase-text js-result-count">{{ page.title }}</h1>
+  <div class="page__content">
+    {{ page.content }}
+  </div>
+</article>

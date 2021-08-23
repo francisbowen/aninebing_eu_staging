@@ -1,0 +1,12 @@
+{%- comment -%}
+
+Product pricing renderer.
+
+{%- endcomment -%}
+
+<div class="pricing {{ template_class }}">
+  <span class="pricing__label pricing__label--varies">{{ 'products.product.starting_at' | t }}</span>
+  <div class="pricing__values">
+    {% include 'pricing' with price: product.price_min, compare_at_price: product.compare_at_price_min %}
+  </div>
+</div>

@@ -1,0 +1,20 @@
+{%- comment -%}
+
+Cart state class renderer.
+
+Objects Referenced:
+ • cart https://help.shopify.com/en/themes/liquid/objects/cart
+
+{%- endcomment -%}
+
+{%- assign cart_classes = base_class | default: 'cart' | split: ' ' -%}
+
+{%- if cart.total_discount > 0 -%}
+  {%- assign cart_classes = 'cart--discounted' | concat: cart_classes -%}
+{%- endif -%}
+
+{%- if cart.item_count == 0 -%}
+  {%- assign cart_classes = 'cart--empty' | concat: cart_classes -%}
+{%- endif -%}
+
+{%- assign cart_classes = cart_classes | reverse | join: ' ' -%}

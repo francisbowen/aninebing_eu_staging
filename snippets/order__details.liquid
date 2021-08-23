@@ -1,0 +1,46 @@
+{%- comment -%}
+
+Order addresses abd statuses.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/customers-order
+
+Objects Referenced:
+ • order https://help.shopify.com/en/themes/liquid/objects/order
+
+{%- endcomment -%}
+
+<div class="order__details-wrapper">
+  <h2 class="order__details__title heading--1">{{ 'customer.order.payment_title' | t }}</h2>
+  <div class="order__details">
+    <div class="order__details__block order__info order__info--billing">
+      <h2 class="order__subtitle">{{ 'customer.order.billing_address' | t }}</h2>
+      <div class="order__status order__status--payment">
+        <p class="status">
+          <span class="status__label order-letter-space-m">{{ 'customer.order.payment_status' | t }}</span>
+          <span class="status__value order-letter-space-m">{{ order.financial_status_label }}</span>
+        </p>
+      </div>
+      <div class="order__address order__address--billing">
+        {% include 'address' with order.billing_address %}
+      </div>
+    </div>
+
+    <div class="order__details__block order__info order__info--shipping">
+      <h2 class="order__subtitle">{{ 'customer.order.shipping_address' | t }}</h2>
+      <div class="order__status order__status--fulfillment">
+        <p class="status">
+          <span class="status__label order-letter-space-m">{{ 'customer.order.fulfillment_status' | t }}</span>
+          <span class="status__value order-letter-space-m">{{ order.fulfillment_status_label }}</span>
+        </p>
+      </div>
+      <div class="order__address order__address--shipping">
+        {% include 'address' with order.shipping_address %}
+      </div>
+    </div>
+    
+    <div class="order__details__block order-detail__payment">
+      <h2 class="order__subtitle">{{ 'customer.order.payment_method' | t }}</h2>
+      <p class="order__status"><span class="order__credit-card-company">{{ order.transactions.first.payment_details.credit_card_company }}</span> {{ order.transactions.first.payment_details.credit_card_number }}</p>
+    </div>
+  </div>
+</div>

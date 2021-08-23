@@ -1,0 +1,17 @@
+{%- comment -%}
+
+Page tile renderer.
+
+Objects Referenced:
+ • page https://help.shopify.com/en/themes/liquid/objects/page
+
+{%- endcomment -%}
+
+<article class="page-tile">
+  <h2 class="page-tile__title">
+    <a href="{{ page.url }}">{{ page.title }}</a>
+  </h2>
+  <div class="page-tile__excerpt">
+    <p>{{ page.content | strip_html | truncatewords: 25, '...' }}</p>
+  </div>
+</article>

@@ -1,0 +1,126 @@
+{%- unless template.suffix == 'international-checkout' -%}
+  <section class="announcement-bar{% if section.settings.show_announcement %} announcement-bar--active js-announcement-bar-active{% endif %} {{ section.blocks.size }}">
+    <div class="announcement-bar__slider js-announcement">
+      {%- for block in section.blocks -%}
+        {%- assign remove_underline = '' -%}
+        {%- if block.settings.remove_underline -%}
+          {%- assign remove_underline = ' remove-underline' -%}
+        {%- endif -%}
+
+        {%- if block.type == 'ge_announcement_bar' -%}
+          {%- unless template.suffix == 'international-checkout' -%}
+            {% comment %} Geotargetly is only showing if user is NOT from the US {% endcomment %}
+            {%- unless shop.url == 'https://eu.aninebing.com' -%}
+              <div class="announcement-bar__slide{{ remove_underline }}" id="GlobaleFreeShippingBannerContainer"></div>
+            {%- endunless -%}
+            <div class="announcement-bar__slide{{ remove_underline }} js-geotargetly-announcement-bar-US">
+              {{ block.settings.announcement }}
+            </div>
+          {%- endunless -%}
+        {%- else -%}
+          <div class="announcement-bar__slide{{ remove_underline }}">
+            {{ block.settings.announcement }}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </section>
+{%- endunless -%}
+
+<style>
+  #shopify-section-{{ section.id }} .announcement-bar .announcement-bar__slider {
+    background-color: {{ section.settings.bg_promo_text }};
+  }
+
+  #shopify-section-{{ section.id }} .announcement-bar .announcement-bar__slide p {
+    color: {{ section.settings.color_promo_text }};
+  }
+
+  #shopify-section-{{ section.id }} .announcement-bar .announcement-bar__slide p a {
+    border-bottom: 1px solid {{ section.settings.color_promo_text }};
+    color: {{ section.settings.color_promo_text }};
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Announcement Bar",
+    "settings" : [
+      {
+        "type": "paragraph",
+        "content": "Hidden on the international checkout."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_announcement",
+        "label": "Show announcement bar",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "color_promo_text",
+        "label": "Announcement Bar Promo Text Color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "bg_promo_text",
+        "label": "Announcement Bar Promo Text Background",
+        "default": "#000000"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Top Bar Slide",
+        "type": "announcement_bar",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Announcement Bar Title",
+            "info": "To easily identify the announcement slide."
+          },
+          {
+            "type": "checkbox",
+            "id": "remove_underline",
+            "label": "Remove Underline Styling"
+          },
+          {
+            "type": "richtext",
+            "id": "announcement",
+            "label": "Announcement bar content",
+            "default": "<p>UP TO 70% OFF SALE | FREE SHIPPING ON ALL ORDERS</p>"
+          }
+        ]
+      },
+      {
+        "name": "GE Top Bar Slide",
+        "type": "ge_announcement_bar",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Disregard this block on EU stores, since no GE. On US, GE does not appear for users with USD currency, so this will be from Shopify. Will not appear on the international shipping from GE."
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Announcement Bar Title",
+            "info": "To easily identify the announcement slide."
+          },
+          {
+            "type": "checkbox",
+            "id": "remove_underline",
+            "label": "Remove Underline Styling"
+          },
+          {
+            "type": "richtext",
+            "id": "announcement",
+            "label": "GE US - Announcement bar content",
+            "default": "<p>UP TO 70% OFF SALE | FREE SHIPPING ON ALL ORDERS</p>"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,36 @@
+{%- comment -%}
+
+SEO meta.
+
+Documentation: https://help.shopify.com/en/themes/development/getting-started/search-engine-optimization
+
+Objects Referenced:
+ • canonical_url https://help.shopify.com/en/themes/liquid/objects#canonical_url
+ • current_page https://help.shopify.com/en/themes/liquid/objects/current-page
+ • current_tags https://help.shopify.com/en/themes/liquid/objects/current-tags
+ • page_description https://help.shopify.com/en/themes/liquid/objects/page-description
+ • page_title https://help.shopify.com/en/themes/liquid/objects/page-title
+
+{%- endcomment -%}
+
+{%- capture seo_title -%}
+  {{ page_title }}
+  {%- if current_tags -%}
+    {%- assign meta_tags = current_tags | join: ', ' -%}
+    &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+  {%- endif -%}
+  {%- if current_page != 1 -%}
+    &ndash; {{ 'general.meta.page' | t: page: current_page }}
+  {%- endif -%}
+  {%- assign escaped_page_title = page_title | escape -%}
+  {%- unless escaped_page_title contains shop.name -%}
+    &ndash; {{ shop.name }}
+  {%- endunless -%}
+{%- endcapture -%}
+<title>{{ seo_title | strip }}</title>
+
+{% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+{% endif %}
+
+<link rel="canonical" href="{{ canonical_url }}">

@@ -1,0 +1,16 @@
+{%- comment -%}
+
+Discount application renderer.
+
+Objects Referenced:
+ • discount_application https://help.shopify.com/en/themes/liquid/objects/discount-application
+
+{%- endcomment -%}
+
+<div class="discount order-total-info uppercase-text order-letter-space-sm">
+  <span class="discount__label">
+    {{ 'customer.order.discount' | t }}
+    <span class="discount__title">{{ discount_application.title }}</span>
+  </span>
+  <span class="discount__amount">{{ discount_application.total_allocated_amount | money }}</span>
+</div>

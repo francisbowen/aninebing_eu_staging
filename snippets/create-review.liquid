@@ -1,0 +1,71 @@
+<button type="button" href="#" class="review__create-review link link--primary js-open-modal" data-modal-target="#CreateReviewModal">{{ 'products.create_review.review_title' | t }}</button>
+
+<div class="modal-content" id="CreateReviewModal">
+  <button type="button" class="modal-close js-close-modal" name="close">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+  <section class="review-modal js-create-review-modal">
+    <picture>
+      <source media="(max-width: 996px)" srcset="{{ settings.logo | img_url: '35x' }}">
+      <source srcset="{{ settings.logo | img_url: '45x' }}">
+      <img src="{{ settings.logo | img_url: '45x' }}" class="review-modal__logo" alt="{{ settings.logo.alt }}">
+    </picture>
+    {%- assign genericProductTitle = product_name | split: '- ' -%}
+    <p class="review-modal__title uppercase-text">
+      {{ 'products.create_review.question' | t }} 
+      {%- if genericProductTitle.size > 1 -%}
+        {{ genericProductTitle[0] }}?
+      {%- else -%}
+        {{ product_name }}?
+      {%- endif -%}
+    </p>
+
+    <form class="create-review js-create-review-form">
+      <div class="review-modal__stars-container js-create-review-stars"></div>
+      
+      <div class="review-modal__grid">
+
+        <div class="form__field">
+          <label for="CreateReviewFirstName" class="create-review__label uppercase-text">{{ 'products.create_review.first_name' | t }}*</label>
+          <input type="text" id="CreateReviewFirstName" class="input input-text input__textbox js-input" placeholder="{{ 'products.create_review.first_name' | t }}" required />
+        </div>
+
+        <div class="form__field">
+          <label for="CreateReviewLastName" class="create-review__label uppercase-text">{{ 'products.create_review.last_name' | t }}*</label>
+          <input type="text" id="CreateReviewLastName" class="input input-text input__textbox js-input" placeholder="{{ 'products.create_review.last_name' | t }}" required />
+        </div>
+
+        <div class="form__field form__field--long">
+          <label for="CreateReviewEmail" class="create-review__label uppercase-text">{{ 'products.create_review.email' | t }}*</label>
+          <input type="email" id="CreateReviewEmail" class="input input-text input__textbox js-input" placeholder="{{ 'products.create_review.email' | t }}" required />
+        </div>
+
+        <div class="form__field">
+          <label for="CreateReviewCity" class="create-review__label uppercase-text">{{ 'products.create_review.city' | t }}</label>
+          <input type="text" id="CreateReviewCity" class="input input--optional input-text input__textbox js-input" placeholder="{{ 'products.create_review.city' | t }}" />
+        </div>
+  
+        <div class="form__field">
+          <label for="CreateReviewProvince" class="create-review__label uppercase-text">{{ 'products.create_review.province' | t }}</label>
+          <input type="text" id="CreateReviewProvince" class="input input--optional input-text input__textbox js-input" placeholder="{{ 'products.create_review.province' | t }}" />
+        </div>
+  
+        <div class="form__field form__field--long">
+          <label for="CreateReviewTitle" class="create-review__label uppercase-text">{{ 'products.create_review.title' | t }}*</label>
+          <input type="text" id="CreateReviewTitle" class="input input-text input__textbox js-input" placeholder="{{ 'products.create_review.title' | t }}" required />
+        </div>
+
+        <div class="form__field form__field--long">
+          <label for="CreateReviewContent" class="create-review__label uppercase-text">{{ 'products.create_review.content' | t }}*</label>
+          <textarea id="CreateReviewContent" class="input input-textarea input-text input__textbox js-input" placeholder="{{ 'products.create_review.content_placeholder' | t }}" required></textarea>
+        </div>
+      </div>
+
+      <button class="create-review__submit button button--secondary ">{{ 'products.create_review.submit' | t }}</button>
+      <p class="create-review__required">{{ 'products.create_review.required_fields' | t }}</p>
+    </form>
+  </section>
+  <section class="review-modal create-review__success js-create-review-success" style="display: none;">
+    <p class="uppercase-text">{{ 'products.create_review.success_msg' | t }}</p>
+  </section>
+</div>

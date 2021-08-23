@@ -1,0 +1,12 @@
+{%- assign article_press_limit = settings.nb_press_articles -%}
+{%- if blogs.events.articles.size > 0 -%}
+  {%- assign article_event_limit = settings.nb_events_articles -%}
+  {%- if section.settings.show_specific_article -%}
+    {%- assign show_exact_article = true -%}
+  {%- else -%}
+    {% assign show_exact_article = false %}
+    {%- assign recent_articles = blogs.events.articles -%}
+  {%- endif -%}
+{%- else -%}
+  {%- assign recent_articles = blogs.press.articles -%}
+{%- endif -%}

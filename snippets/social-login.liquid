@@ -1,0 +1,4 @@
+<script type="text/javascript">
+var SOCIAL_LOGIN_CUSTOMER_LOGGED_IN = {% if customer %}true{% else %}false{% endif %};
+</script>
+{% if canonical_url contains 'login' or canonical_url contains 'register' or canonical_url contains 'apps/oneclick' %}{{ 'https://d1pzjdztdxpvck.cloudfront.net/resource/resource.js?shop=aninebing.myshopify.com&cache_key=158679843742' | script_tag }}{% endif %}

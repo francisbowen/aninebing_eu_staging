@@ -1,0 +1,40 @@
+{% if customer %}
+  <script type="text/javascript">
+    var enrollData = {
+      "_id": "{{ customer.id }}",
+      "email": "{{ customer.email }}",
+      "first_name": "{{ customer.first_name }}",
+      "last_name": "{{ customer.last_name }}"
+    };
+  </script>
+{% endif %}
+
+<script>
+  var onBrandUpdate = onBrandUpdate || function () {};
+  (function (t, u, c) {
+      var d = document, o = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      if (c) {
+          o.onload = c;
+      }
+      o.src = u;
+      s.parentNode.insertBefore(o, s);
+  }("script", "https://api.st2.antavo.com/sdk/latest", function () {
+
+      let antavo_api_key;
+
+      if (theme.shop.url == 'https://anine-bing-dev01-us.myshopify.com' || theme.shop.url == 'https://www.aninebing.com') {
+        antavo_api_key = 'ANZ9UXQUTAAAU8VOD4R';
+      } else {
+        antavo_api_key = 'ANZ92L7CTAAAU7VOGJL';
+      }
+
+      Antavo.SDK.init(
+          antavo_api_key,
+          "{{ customer.id }}",
+          {},
+          onBrandUpdate,
+          "customer"
+      );
+  }));
+</script>
+

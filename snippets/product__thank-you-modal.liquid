@@ -1,0 +1,10 @@
+<button title="Close modal" class="modal-close js-close-modal js-product-thank-you-close js-modal-click-exclude">Close modal</button>  
+<div class="thank-you-success__modal js-modal-click-exclude">
+  <div class="thank-you-success__logo">
+    <img src="{{ settings.stock_success_logo | img_url: 'master' }}" alt="{{ shop.name }}" />
+  </div>
+  <div class="thank-you-success__info">
+    <p class="thank-you-success__title button-text">{{ 'products.modal.success_title' | t }}</p>
+    <p class="thank-you-success__message input-text js-thank-you-message">{{ 'products.modal.success_msg' | t }}</p>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+{% include 'product__classes' with base_class: 'product' %}
+
+{% include 'breadcrumb' %}
+
+<article class="{{ product_classes }} js-product">
+  <div class="product-bundle">
+    {%- assign icon_classes_mob = 'icon-heart swym-add-to-wishlist js-add-to-wishlist hide-from@md product_' | append: product.id -%}
+
+    <div class="product__slider product__grid-item js-product-slider-wrapper">
+      <div class="product__slider-tile js-product-slider" data-color-id="color--{{ product.id }}" data-variant-id="{{ variant.id }}"></div>
+    </div>
+
+    {%- include 'product_info' with custom_class: 'product__grid-item js-product-info', tag_list: section.settings.tag_list, type: 'bundle', access: 'second' -%}
+    {%- include 'product__details--bundler' with product_details_class: 'hide' -%}
+    
+    <section class="product__grid hide-from@md">
+      {% include 'zoom-mobile-image' %}
+
+      {% assign productImagesLength = product.images | size %}
+
+      {%- assign excluded_product_type = product.type | downcase -%}
+      {%- assign excluded_product_list = section.settings.excluded_product_types | downcase -%}
+
+      {%- assign counter = 0 -%}
+      {%- for image in product.images -%}
+        {% assign wrapper_attributes_mobile = 'data-color-id="color--' | append: product.id | append: '"' %}
+
+        {%- assign counter = counter | plus: 1 -%}
+        {% assign wrapper_class = 'product__image product__grid-item hide-until@md js-prod-desk-image js-featured-image js-featured-image--' | append: product.id %}
+        {% assign wrapper_attributes = 'data-color-id="color--' | append: product.id | append: '"' %}
+
+        {%- include 'image--responsive-no-max' with image: image, wrapper_class: wrapper_class, wrapper_attributes -%}
+        {%- include 'image--responsive-no-max' with image: image, wrapper_class: 'product__image product__grid-item js-product-image', wrapper_attributes: wrapper_attributes_mobile -%}
+      {%- endfor -%}
+    </section>
+  </div>
+
+  {% include 'product-related' %}
+</article>
+
+{% schema %}
+  {
+    "name": "Product Info",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Product & Zone Specific"
+      },
+      {
+        "type": "richtext",
+        "id": "specific_product_zone_text",
+        "label": "Text for specific product - US"
+      },
+      {
+        "type": "richtext",
+        "id": "specific_product_zone_text_eu",
+        "label": "Text for specific product - EU"
+      }
+    ]
+  }
+{% endschema %}

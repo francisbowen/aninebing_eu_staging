@@ -1,0 +1,159 @@
+<link rel="stylesheet" href="https://st2-cdn.antavo.com/css/microsite/aninebing/style.css">
+<script type="text/javascript">
+  var onBrandUpdate = function onBrandUpdate() {
+
+  let loyalty_api_domain;
+
+  if (theme.shop.url == 'https://anine-bing-dev01-us.myshopify.com' || theme.shop.url == 'https://www.aninebing.com') {
+    loyalty_api_domain = 'https://loyalty.aninebing.com';
+  } else {
+    loyalty_api_domain = 'https://loyalty-eu.aninebing.com';
+  }
+
+  var loyaltyCustomer = Antavo.SDK.getCustomer();
+    if (!loyaltyCustomer || loyaltyCustomer.status == 'inactive') {
+      document.getElementById("list-how-it-works").classList.remove("hidden");
+    }
+    else {
+      document.getElementById("list-article").innerHTML = "<iframe src='" + loyalty_api_domain + "/spend' scrolling='no' style='width: 100%; height: 1200px;'></iframe>";
+    }
+  }
+
+  function enrollCustomer() {
+
+    let loyalty_api_key;
+
+    if (theme.shop.url == 'https://anine-bing-dev01-us.myshopify.com' || theme.shop.url == 'https://www.aninebing.com') {
+      loyalty_api_key = 'ANZ9UXQUTAAAU8VOD4R';
+    } else {
+      loyalty_api_key = 'ANZ92L7CTAAAU7VOGJL';
+    }
+
+    event.preventDefault();
+
+    if (typeof enrollData === 'undefined') {
+      // non-existant enrollData mean there is no customer logged in
+      window.location.href = decodeURIComponent(theme.shop.url + "/account/login?from=loyalty-program");
+    }
+
+    $.post(
+      "https://api.st2.antavo.com/events",
+      {
+        "api_key": loyalty_api_key,
+        "customer": enrollData._id,
+        "action": "opt_in",
+        "data": {
+        "email": enrollData.email,
+          "first_name": enrollData.first_name,
+          "last_name": enrollData.last_name
+        }
+      },
+      function(data, status){
+        window.location.reload();
+      }
+    );
+  }
+</script>
+<article id="list-article" class="page-how-it-works page-front">
+  <div id="list-how-it-works" class="row no-gutters rellax" data-rellax-speed="1">
+    <div class="col-sm"><img src="{{ settings.loyalty_program_hero_banner | img_url: 'master'  }}" class="img-fluid img-header" alt="Model wearing black Anine Bing clothes" title=""></div>
+  </div>
+  <header class="container intro">
+    <div class="row">
+      <div class="col-sm">
+        {{ settings.loyalty_program_intro }}
+      </div>
+    </div>
+  </header>
+  <div class="container first-enroll-btn">
+    <div class="row join-the-list">
+      <div class="col-sm">
+        <form>
+          <button onclick="enrollCustomer()" class="btn1"> {{ settings.loyalty_program_join }} </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <article class="container rewards">
+    <div class="row">
+      <div class="col-sm">
+        <h2>{{ settings.loyalty_program_rewards_title }}</h2>
+        <ul>
+          {{ settings.loyalty_program_rewards_text }}
+        </ul>
+      </div>
+    </div>
+  </article>
+  <article class="container how-to-earn-points">
+    <div class="row">
+      <div class="col-sm">
+        <h2>{{ settings.loyalty_program_points_title }}</h2>
+        <ul>
+          {{ settings.loyalty_program_points_text }}
+        </ul>
+      </div>
+    </div>
+  </article>
+  <hr>
+  <article class="container status">
+    <div class="row">
+      <div class="col-sm">
+        <h1>{{ settings.loyalty_program_status_title }}</h1>
+        {{ settings.loyalty_program_status_text }}
+      </div>
+    </div>
+  </article>
+  <article class="statuses">
+    <div class="row no-gutters">
+      <div class="col-sm status">
+        <div class="img parallax" style="background-image: url({{ settings.loyalty_program_essential_banner | img_url: 'master'}});" alt="Models wearing Anine Bing clothes)">
+          <p class="bg-text">{{ settings.loyalty_program_essential_title }} <br><span>{{ settings.loyalty_program_essential_points }}</span></p>
+        </div>
+        <div class="status-essential">
+          {{ settings.loyalty_program_essential_text }}
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-sm status">
+        <div class="img parallax" style="background-image: url({{ settings.loyalty_program_elevated_banner | img_url: 'master'}});" alt="Models wearing Anine Bing clothes)">
+          <p class="bg-text">{{ settings.loyalty_program_elevated_title }} <br><span>{{ settings.loyalty_program_elevated_points }}</span></p>
+        </div>
+        <div class="status-elevated">
+          {{ settings.loyalty_program_elevated_text }}
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-sm status">
+        <div class="img parallax" style="background-image: url({{ settings.loyalty_program_exclusive_banner | img_url: 'master'}});" alt="Models wearing Anine Bing clothes)">
+          <p class="bg-text">{{ settings.loyalty_program_exclusive_title }} <br><span>{{ settings.loyalty_program_exclusive_points }}</span></p>
+        </div>
+        <div class="status-exclusive">
+          {{ settings.loyalty_program_exclusive_text }}
+        </div>
+      </div>
+    </div>
+  </article>
+  <div class="container">
+    <div class="row join-the-list">
+      <div class="col-sm">
+      <form>
+      <button onclick="enrollCustomer()" class="btn1"> {{ settings.loyalty_program_join }} </button>
+    </form>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="container frequently-asked-questions">
+    <div class="row">
+      <div class="col-sm">
+        <h2>{{ settings.loyalty_program_faq_title }}</h2>
+        <dl>
+          {{ settings.loyalty_program_faq_text }}
+        </dl>
+        <a target="_blank" class="btn1" href="{% if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' %}{{ settings.loyalty_program_faq_link }}{% else %}{{ settings.loyalty_program_faq_link_eu }}{% endif %}" rel="noopener noreferrer">{{ settings.loyalty_program_more_faq }}</a>
+      </div>
+    </div>
+  </div>
+</article>

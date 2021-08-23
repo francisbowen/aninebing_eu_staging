@@ -1,0 +1,115 @@
+{%- comment -%}
+  PRODUCT JSON
+
+  Creates a custom product JSON object.
+
+  Variables:
+  1. product__json (optional)
+    The product to render.
+    Default: product object
+{%- endcomment -%}
+
+{%- assign product__json = product__json | default: product -%}
+{%- assign base_product = base_product | default: product -%}
+{%- assign product_variants = product_variants | default: product.variants -%}
+{%- assign swatch = product.images | where: 'alt', 'swatch' | first -%}
+{%- assign productTitle = product.title -%}
+{%- assign productTitleSplit = productTitle | split: '- ' -%}
+{%- assign productColorHandle = productTitleSplit[1] | downcase | handleize -%}
+{%- assign productColor = productColorHandle | append: '.png' -%}
+
+{%- if productColor.size > 2 -%}
+  {%- assign productColorURL = productColor | file_url -%}  
+{%- endif -%}
+
+{
+  "id": {{ product__json.id | json }},
+  "color_file": {{ productColorURL | json }},
+  "color_handle": {{ productColorHandle | json }},
+  "title": {{ product__json.title | json }},
+  "handle": {{ product__json.handle | json }},
+  "price": {{ base_product.price | json }},
+  "available": {{ base_product.available | json }},
+  "compare_at_price": {{ base_product.compare_at_price | json }},
+  "product_type": {{ product__json.type | json }},
+  "variants": [{%- for variant in product_variants -%}
+    {
+      "id": {{ variant.id | json }},
+      "title": {{ variant.title | json }},
+      "option1": {{ variant.option1 | json }},
+      "option2": {{ variant.option2 | json }},
+      "option3": {{ variant.option3 | json }},
+      "sku": {{ variant.sku | json }},
+      "requires_shipping": {{ variant.requires_shipping | json }},
+      "taxable": {{ variant.taxable | json }},
+      "featured_image": {%- if variant.image -%}{
+        "id": {{ variant.image.id | json }},
+        "product_id": {{ product__json.id | json }},
+        "position": {{ forloop.index | json }},
+        "width": {{ variant.image.width | json }},
+        "height": {{ variant.image.height | json }},
+        "src": {{ variant.image.src | json }}
+      }{%- else -%}null{%- endif -%},
+      "available": {{ variant.available | json }},
+      "name": {{ variant.title | json }},
+      "public_title": {{ variant.title | json }},
+      "options": {{ variant.options | json }},
+      "price": {{ variant.price | json }},
+      "weight": {{ variant.weight | json }},
+      "compare_at_price": {{ variant.compare_at_price | json }},
+      "inventory_quantity": {{ variant.inventory_quantity | json }},
+      "inventory_management": {{ variant.inventory_management | json }},
+      "inventory_policy": {{ variant.inventory_policy | json }},
+      "barcode": {{ variant.barcode | json }},
+      "url": {{ variant.url | json }},
+      "option1_name": {{ product.options[0] | json }},
+      "option2_name": {{ product.options[1] | json }},
+      "option3_name": {{ product.options[2] | json }},
+      "swatch": {{ swatch | img_url: '50x50', crop: 'center' | json }},
+      "product_handle": {{ product.handle | json }}
+    }{% unless forloop.last %},{% endunless %}
+  {%- endfor -%}],
+  "description": {{ product.description | json }},
+  "metafields": [{
+    "details": {{ product.metafields.fit.details | json }},
+    "description": {{ product.metafields.fit.description | json }},
+    "measurements": {{ product.metafields.fit.measurements | json }},
+    "product_measurements": {{ product.metafields.fit.product_measurements | json }},
+    "fabric": {{ product.metafields.materials.fabric | json }},
+    "care": {{ product.metafields.materials.care | json }},
+    "origin": {{ product.metafields.materials.origin | json }},
+    "color": {{ product.metafields.color.swatch | json }},
+    "color_file": {{ product.metafields.color.swatch_file | json }}
+  }],
+  "tags": [{%- for tag in product.tags -%}
+    {{ tag | json }}
+  {%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
+  "images": [{% for image in product__json.images  %}
+    {
+      "alt": {{ image.alt |json }},
+      "aspect_ratio": {{ image.aspect_ratio | json }},
+      "id": {{ image.id | json }},
+      "product_id": {{ image.product_id | json }},
+      "src": {{ image.src | json }}
+    }{% unless forloop.last %},{% endunless %}
+  {% endfor %}],
+  "featured_image": {{ product__json.featured_image.src | json }},
+  "featured_image_id": {{ product__json.featured_image.id | json }},
+  "featured_image_aspect_ratio": {{ product__json.featured_image.aspect_ratio | json }},
+  "featured_image_alt": {{ product__json.featured_image.alt | json }},
+  "options": {{ product__json.options | json }},
+  "url": {{ product__json.url | json }},
+  "options_with_values": [
+    {%- for option in product__json.options_with_values -%}
+      {
+        "name": {{ option.name | json }},
+        "position": {{ option.position | json }},
+        "selected_value": {{ option.selected_value | json }},
+        "values": {{ option.values | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+    ]
+}
+
+{%- comment -%} Reset variables to avoid duplicates {%- endcomment -%}
+{%- assign product__json = blank -%}

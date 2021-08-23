@@ -1,0 +1,85 @@
+  <!-- google dynamic remarketing tag for theme.liquid -->
+  {% if template contains 'product' %}
+    <script type="text/javascript">
+      var json_product = {{ product | json }};
+    </script>
+    <script>
+      var ecomm_prodid=[];
+      for(var i=0;i<json_product.variants.length;i++)
+        ecomm_prodid.push(json_product.variants[i].id);
+    </script>
+    <script type="text/javascript">
+      var google_tag_params = {
+        ecomm_prodid: ecomm_prodid,
+        ecomm_pagetype: 'product',
+        ecomm_totalvalue: parseFloat('{{ product.price | money_without_currency | remove: ","}}')
+      };
+    </script>
+  {% elsif template contains 'collection' %}
+    <script type="text/javascript">
+      var google_tag_params = {
+        ecomm_pagetype: 'category'
+      };
+    </script>
+  {% elsif template contains 'cart' or template.suffix == 'international-checkout' %}
+    <script type="text/javascript">
+      var id = new Array();
+      {% for item in cart.items %}
+      id.push('{{item.variant.id}}');
+       {% endfor %}
+
+       var google_tag_params = {
+         ecomm_prodid: id,
+         ecomm_pagetype: 'cart',
+         ecomm_totalvalue: parseFloat('{{ cart.total_price | money_without_currency | remove: ","}}')
+       };
+    </script>
+  {% elsif template contains 'search' %}
+    <script type="text/javascript">
+      var google_tag_params = {
+        ecomm_pagetype: 'searchresults'
+      };
+    </script>
+  {% elsif template contains 'index' %}
+    <script type="text/javascript">
+      var google_tag_params = {
+        ecomm_pagetype: 'home'
+      };
+    </script>
+  {% else %}
+    <script type="text/javascript">
+      var google_tag_params = {
+        ecomm_pagetype: 'other'
+      };
+    </script>
+  {% endif %}
+
+  <script>
+  gtag('event', 'page_view', {'send_to': 'AW-969851850',
+                              'ecomm_prodid':window.google_tag_params.ecomm_prodid,
+                              'ecomm_pagetype': window.google_tag_params.ecomm_pagetype,
+                              'ecomm_totalvalue':window.google_tag_params.ecomm_totalvalue
+                             });
+  </script>
+
+  <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion_async.js" charset="utf-8"></script>
+  <script>
+    $(document).ajaxSuccess(function(event, xhr, settings) {
+      var id = new Array();
+      var total;
+      if (settings.url == "/cart/add.js" || settings.url == "/cart/update.js") {
+        $.getJSON('/cart.js', function(data) {
+          id = data.items.map(function(item) {
+            return item.variant_id;
+          });
+          total = data.total_price;
+
+          gtag('event', 'page_view', {'send_to': 'AW-969851850',
+                                'ecomm_prodid':id,
+                                'ecomm_pagetype': 'cart',
+                                'ecomm_totalvalue':total
+                               });
+        });
+      }
+    });
+  </script>

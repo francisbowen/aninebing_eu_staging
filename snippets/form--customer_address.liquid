@@ -1,0 +1,163 @@
+{%- comment -%}
+
+Customer address form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#customer_address
+
+Objects Referenced:
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+
+{%- assign form_address = customer_address | default: customer.new_address -%}
+{%- assign address_id = form_address.id | default: 'New' -%}
+{%- assign form_id = 'CustomerAddressForm' | append: address_id -%}
+{%- assign form_class = 'form form--customer-address js-form-address' -%}
+
+{% form 'customer_address', form_address, id: form_id, class: form_class %}
+  {% include 'form__status', form_id: form_id %}
+
+  <h2 class="addresses__subtitle">
+    {%- if address_id == 'New' -%}
+      {{- 'customer.addresses.add_new' | t -}}
+    {%- else -%}
+      {{- 'customer.addresses.edit_address' | t -}}
+    {%- endif -%}
+  </h2>
+
+  <div class="form__field form__field--text">
+    {% assign field_id = form_id | append: '-AddressFirstName' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.first_name' | t }}</label>
+    <input type="text"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[first_name]"
+      value="{{ form.first_name }}"
+      placeholder="{{ 'customer.addresses.first_name' | t }}"
+      required>
+  </div>
+
+  <div class="form__field form__field--text">
+    {% assign field_id = form_id | append: '-AddressLastName' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.last_name' | t }}</label>
+    <input type="text"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[last_name]"
+      value="{{ form.last_name }}"
+      placeholder="{{ 'customer.addresses.last_name' | t }}"
+      required>
+  </div>
+
+  <div class="form__field form__field--text">
+    {% assign field_id = form_id | append: '-AddressCompany' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.company' | t }}</label>
+    <input type="text"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[company]"
+      value="{{ form.company }}"
+      placeholder="{{ 'customer.addresses.company' | t }}">
+  </div>
+
+  <div class="form__field form__field--text">
+    {% assign field_id = form_id | append: '-AddressAddress1' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.address1' | t }}</label>
+    <input type="text"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[address1]"
+      value="{{ form.address1 }}"
+      placeholder="{{ 'customer.addresses.address1' | t }}"
+      required>
+  </div>
+
+  <div class="form__field form__field--text">
+    {% assign field_id = form_id | append: '-AddressAddress2' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.address2' | t }}</label>
+    <input type="text"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[address2]"
+      value="{{ form.address2 }}"
+      placeholder="{{ 'customer.addresses.address2' | t }}">
+  </div>
+
+  <div class="form__field form__field--text">
+    {% assign field_id = form_id | append: '-AddressCity' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.city' | t }}</label>
+    <input type="text"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[city]"
+      value="{{ form.city }}"
+      placeholder="{{ 'customer.addresses.city' | t }}">
+  </div>
+
+  <div class="form__field form__field--select" id="{{ form_id | append: '-AddressProvinceContainer' }}">
+    {% assign field_id = form_id | append: '-AddressProvince' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.province' | t }}</label>
+    <select
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[province]"
+      data-default="{{ form.province }}"
+      placeholder="{{ 'customer.addresses.province' | t }}"
+      ></select>
+      {%- include 'icons' with selected_icon: 'chevron-down', icon_fill: 'none', icon_stroke: '#000000', icon_class: 'icon-chevron-down', title: 'general.dropdown.icon', desc: 'general.dropdown.toggle_dropdown' -%}
+  </div>
+
+  <div class="form__field form__field--select">
+    {% assign field_id = form_id | append: '-AddressCountry' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.country' | t }}</label>
+    <select
+      id="{{ field_id }}"
+      name="address[country]"
+      class="address-country-option input input-text input__textbox"
+      data-form-id="{{ form_id }}"
+      data-default="{{ form.country }}"
+      placeholder="{{ 'customer.addresses.country' | t }}">
+        {{- all_country_option_tags -}}
+      </select>
+      {%- include 'icons' with selected_icon: 'chevron-down', icon_fill: 'none', icon_stroke: '#000000', icon_class: 'icon-chevron-down', title: 'general.dropdown.icon', desc: 'general.dropdown.toggle_dropdown' -%}
+  </div>
+
+  <div class="form__field form__field--text">
+    {% assign field_id = form_id | append: '-AddressZip' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.zip' | t }}</label>
+    <input type="text"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[zip]"
+      value="{{ form.zip }}"
+      autocapitalize="characters"
+      placeholder="{{ 'customer.addresses.zip' | t }}">
+  </div>
+
+  <div class="form__field form__field--tel">
+    {% assign field_id = form_id | append: '-AddressPhone' %}
+    <label class="visually-hidden" for="{{ field_id }}">{{ 'customer.addresses.phone' | t }}</label>
+    <input type="tel"
+      id="{{ field_id }}"
+      class="input input-text input__textbox"
+      name="address[phone]"
+      value="{{ form.phone }}"
+      placeholder="{{ 'customer.addresses.phone' | t }}">
+  </div>
+
+  <div class="form__field form__field--checkbox">
+    {{ form.set_as_default_checkbox }}
+    <label for="address_default_address_{{ form.id }}">{{ 'customer.addresses.set_default' | t }}</label>
+  </div>
+
+  <div class="form__actions">
+    <button  class="button button--secondary button--inner button--cancel js-close-modal" role="button" aria-label="button">{{ 'customer.addresses.cancel' | t }}</button>
+    <button type="submit" class="button button--primary button--inner button--save" role="button" aria-label="button">
+      {%- if address_id == 'New' -%}
+        {{- 'customer.addresses.save' | t -}}
+      {%- else -%}
+        {{- 'customer.addresses.update' | t -}}
+      {%- endif -%}
+    </button>
+  </div>
+{% endform %}

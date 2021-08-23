@@ -1,0 +1,51 @@
+{%- comment -%}
+
+Default search results template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/search-liquid
+
+Objects Referenced:
+ • search https://help.shopify.com/en/themes/liquid/objects/search
+ • settings https://help.shopify.com/en/themes/liquid/objects#settings
+
+{%- endcomment -%}
+
+{% assign search_classes = 'search' | split: ' ' %}
+{% if search.performed %}
+  {% assign search_classes = 'search--performed' | concat: search_classes %}
+{% endif %}
+{% if search.results_count == 0 %}
+  {% assign search_classes = 'search--no-results' | concat: search_classes %}
+{% endif %}
+{% assign search_classes = search_classes | reverse | join: ' ' %}
+
+<article class="{{ search_classes }}">
+  {% include 'form--search' %}
+
+  {% if search.performed %}
+      <h1>{{ 'general.search.heading' | t: count: search.results_count }}:
+        {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}</h1>
+  {% else %}
+      <h1>{{ 'general.search.title' | t }}</h1>
+  {% endif %}
+  
+  {% if search.performed %}
+    {% paginate search.results by settings.results_page_size %}
+      <div class="search__results">
+        {% for item in search.results %}
+          {% case item.object_type %}
+            {% when 'product' %}
+              {% include 'product__tile', product: item %}
+            {% when 'article' %}
+              {% include 'article__tile', article: item %}
+            {% when 'page' %}
+              {% include 'page__tile', page: item %}
+          {% endcase %}
+        {% else %}
+          <div class="search__results">{{ 'general.search.no_results_html' | t }}</div>
+        {% endfor %}
+      </div>
+      {% include 'paginate' %}
+    {% endpaginate %}
+  {% endif %}
+</article>

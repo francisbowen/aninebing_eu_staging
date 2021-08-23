@@ -1,0 +1,139 @@
+{% assign section_logo = section.settings.section_logo %}
+
+<div id="size-guide-modal" class="size-guide-modal">
+
+  <button type="button" class="modal-close js-close-modal" name="close">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+
+  <div class="size-guide-container">
+
+    {% for block in section.blocks %}
+      {% assign block_product_type = block.settings.product_type | strip | downcase %}
+      {% assign block_product_vendor = block.settings.product_vendor | strip | downcase %}
+      {% assign product_type = product.type | downcase %}
+      {% assign product_vendor = product.vendor | downcase %}
+      {% assign measurement = block.settings.fitguide_blog %}
+      {% assign section_body = block.settings.section_body %}
+      {% assign max_height_desktop = block.settings.max_height_desktop %}
+      {% assign product_size_title = block.settings.title | default: product.type %}
+
+      {% capture header %}
+        {% if section_logo and block.settings.use_logo %}
+          <img class="size-guide__logo" src="{{ section_logo | img_url: '200x' }}" alt="{{ shop.name }}" aria-hidden="true" />
+        {% endif %}
+      {% endcapture %}
+
+      {% capture sizeGuide %}
+        {% if section_body != blank %}
+          <div class="size-guide__body">{{ section_body }}</div>
+        {% endif %}
+
+        {% if measurement %}
+          {% for fitguide in blogs[measurement].articles %}
+            {% if fitguide.title ==  product_size_title %}
+              {{fitguide.content}}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {% style %}
+          @media only screen and (min-width: 640px) {
+            .size-guide-modal {
+              max-height: {{ max_height_desktop }}px;
+            }
+          }
+        {% endstyle %}
+      {% endcapture %}
+
+      {% unless product_vendor contains 'bing kids' %}
+        {% if block_product_type contains product_type %}
+          {{ header }}
+          <h2 class="size-guide__title{% if block.settings.use_logo == false %} size-guide__title-dark{% endif %}">{% if product_size_title != blank %}{{ product_size_title }}{% else %}{{ product.type }}{% endif %}</h2>
+          {{ sizeGuide }}
+          {% break %}
+        {% elsif block_product_type == 'clothing' %}
+          {{ header }}
+          <h2 class="size-guide__title{% if block.settings.use_logo == false %} size-guide__title-dark{% endif %}">{% if product_size_title != blank %}{{ product_size_title }}{% else %}{{ 'collections.general.size_guide_fallback_title' | t }}{% endif %}</h2>
+          {{ sizeGuide }}
+          {% break %}
+        {% endif %}
+
+      {% endunless %}
+
+      {% if product_vendor contains block_product_vendor and block_product_type == blank %}
+        {{ header }}
+        <h2 class="size-guide__title{% if block.settings.use_logo == false %} size-guide__title-dark{% endif %}">{{ product_size_title }}</h2>
+        {{ sizeGuide }}
+        {% break %}
+      {% endif %}
+
+    {% endfor %}
+  </div>
+
+  <button type="button" class="modal-close js-close-modal" name="close">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+
+</div>
+
+{% schema %}
+{
+  "name": "Size Guide",
+  "class": "size-guide",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "section_logo",
+      "label": "Logo"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Measurement Guides",
+      "type": "measurement_guides",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "use_logo",
+          "label": "Use Logo at top",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Size Title"
+        },
+        { 
+          "type": "text",
+          "id": "product_type",
+          "label": "Affiliated Product Type"
+        },
+        {
+          "type": "text",
+          "id": "product_vendor",
+          "label": "Affiliated Product Vendor",
+          "info": "Only use for Kids products"
+        },
+        {
+          "type": "richtext",
+          "id": "section_body",
+          "label": "Section Body"
+        },
+        {
+          "type": "blog",
+          "id": "fitguide_blog",
+          "label": "Fitguide Table"
+        },
+        {
+          "type": "text",
+          "id": "max_height_desktop",
+          "label": "Max height of pop up",
+          "info": "Enter number only, e.g: 569",
+          "default": "569"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,34 @@
+{%- comment -%}
+
+Default blog template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/blog-liquid
+
+Objects Referenced:
+ • blog https://help.shopify.com/en/themes/liquid/objects/blog
+ • settings https://help.shopify.com/en/themes/liquid/objects#settings
+
+{%- endcomment -%}
+
+<article class="blog">
+
+  <h1 class="blog__title">{{ blog.title }}</h1>
+
+  <div class="blog__tags">
+    {% include 'taglist' with tags: blog.all_tags %}
+  </div>
+
+  {% paginate blog.articles by settings.articles_page_size %}
+    <div class="blog__articles">
+      {% for article in blog.articles %}
+        {% include 'article__tile' %}
+      {% else %}
+        <div class="blog__empty">
+          <p>{{ 'blog.articles.empty' | t }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    {% include 'paginate' %}
+  {% endpaginate %}
+
+</article>

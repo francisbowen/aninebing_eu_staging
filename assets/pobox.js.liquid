@@ -1,0 +1,48 @@
+$(function() {
+  
+  function poBoxValidation() {
+    const inputs = {
+      address1: $('#checkout_shipping_address_address1'),
+      address2: $('#checkout_shipping_address_address2'),
+      checkoutContinueButton: $('#continue_button')
+    }
+    const $form = $('.step form.edit_checkout');
+    const regexPoBox = /^(((p[\s\.]?[o\s][\.]?)\s?)|(post\s?office\s?))((box|bin|b\.?)?\s?(num|number|#)?\s?\d+)/ig;
+
+    $form.on('submit', function (e) {
+      const $valAddress1 = inputs.address1.val();
+      const $valAddress2 = inputs.address2.val();
+      
+      if ($valAddress1.match(regexPoBox)) {
+        e.preventDefault();
+        const $parentInput = $(inputs.address1).closest('.field');
+        $parentInput.find('.field__message--error').remove();
+
+        $parentInput.addClass('field--error');
+        $parentInput[0].insertAdjacentHTML('beforeend', '<p class="field__message field__message--error" id="error-for-address1">' + theme.locales.checkout.po_box_error + '</p>');
+      } else if ($valAddress2.match(regexPoBox)) {
+        e.preventDefault();
+        const $parentInput = $(inputs.address2).closest('.field');
+        $parentInput.find('.field__message--error').remove();
+        
+        $parentInput.addClass('field--error');
+        $parentInput[0].insertAdjacentHTML('beforeend', '<p class="field__message field__message--error" id="error-for-address2">' + theme.locales.checkout.po_box_error + '</p>');
+      };
+
+      setTimeout(function() {
+        $(inputs.checkoutContinueButton).removeClass('btn--loading');
+        $(inputs.checkoutContinueButton).prop('disabled', false);
+      }, 1000);
+    });
+
+    inputs.address1.on('blur', function() {
+      $(inputs.address1).closest('.field').removeClass('.field--error')
+    });
+
+    inputs.address2.on('blur', function() {
+      $(inputs.address2).closest('.field').removeClass('.field--error')
+    });
+  }
+
+  poBoxValidation();
+});

@@ -1,0 +1,17 @@
+<section class="cart__flyout-recommended js-accordion-list">
+  <div class="cart__flyout-recommended__content js-accordion-item js-product-recommended-content">
+    <div class="js-recommended-products-flyout"></div>
+    <div class="product__related-slider js-accordion-wrapper js-product-recommended-slider">
+      <div class="cart__flyout-recommended-slider js-recommended-product-gallery"></div>
+    </div>
+  </div>
+  <div class="js-modal js-modal-click-exclude">
+    <div class="recommended-modal modal-content modal-content--recommended js-modal-content-recommended js-modal-click-exclude" id="recommended-modal">
+      <button type="button" class="modal-close js-close-modal" name="close">
+        {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+      </button>
+      <div class="cart__flyout-recommended__form js-product-recommended-form"></div>
+    </div>
+  </div>
+  <button id="recommended-atc-trigger" data-modal-target="#recommended-modal" role="button" class="js-open-modal heading--3 uppercase-text js-add-trigger hide" name="quick-add">+ADD</button>
+</section>

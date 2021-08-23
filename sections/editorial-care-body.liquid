@@ -1,0 +1,54 @@
+{% for block in section.blocks %}
+  {% if block.settings.image %}
+    <div class="care__body__grid care__body__grid{{ block.settings.position }}">
+      <picture>
+        <source media="(max-width: 996px)" srcset="{{ block.settings.image | img_url: '640x'}} 2x, {{ block.settings.image | img_url: '320x' }} 1x">
+        <source srcset="{{ block.settings.image | img_url: '1440x' }} 2x, {{ block.settings.image | img_url: '720x' }} 1x">
+        <img class="care__body__image" src="{{ block.settings.image | img_url: '720x' }}" alt="{{ block.settings.image.alt }}">
+      </picture>
+  {% endif %}
+  <div class="care__body__content">
+  {% if block.settings.title != blank %}<p class="care__body__content__title uppercase-text">{{ block.settings.title }}</p>{% endif %}
+  {% if block.settings.text  != blank %}<div class="care__body__content__text">{{ block.settings.text }}</div>{% endif %}
+  </div>
+  {% if block.settings.image %}</div>{% endif %}
+{% endfor %}
+
+{% schema %}
+ {
+   "name": "Care body",
+   "class": "care__body",
+   "blocks": [
+    {
+      "name": "Image & text",
+      "type": "image",
+      "settings": [
+        {
+          "label": "Image",
+          "id": "image",
+          "type": "image_picker"
+        },
+        {
+        "type": "select",
+        "id": "position",
+        "options": [
+            { "value": "--left", "label": "Left"},
+            { "value": "--right", "label": "Right"}
+        ],
+        "label": "Choose the image position"
+        },
+        {
+          "label": "Title",
+          "id": "title",
+          "type": "text"
+        },
+        {
+          "label": "Text",
+          "id": "text",
+          "type": "richtext"
+        }
+      ]
+    }
+   ]
+ }
+{% endschema %}

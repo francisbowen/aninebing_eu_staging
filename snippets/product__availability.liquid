@@ -1,0 +1,13 @@
+{% comment %}
+
+Product availability.
+
+Objects Referenced:
+ • product https://help.shopify.com/en/themes/liquid/objects/product
+
+{%- endcomment -%}
+
+<div class="availability">
+  <span class="availability__label availability__label--in-stock">{{ 'products.product.in_stock' | t }}</span>
+  <span class="availability__label availability__label--out-of-stock">{{ 'products.product.sold_out' | t }}</span>
+</div>

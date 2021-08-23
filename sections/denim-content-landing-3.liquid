@@ -1,0 +1,931 @@
+{% comment %} Colors {% endcomment %}
+{% assign background_color = section.settings.background_color %}
+{% assign content_title_text_color_desktop = section.settings.content_title_text_color_desktop %}
+{% assign content_title_text_color_mobile = section.settings.content_title_text_color_mobile %}
+{% assign content_body_text_color_desktop = section.settings.content_body_text_color_desktop %}
+{% assign content_body_text_color_mobile = section.settings.content_body_text_color_mobile %}
+{% assign content_cta_text_color_desktop = section.settings.content_cta_text_color_desktop %}
+{% assign content_cta_text_color_mobile = section.settings.content_cta_text_color_mobile %}
+{% comment %} Media {% endcomment %}
+{% assign background_image_desktop = section.settings.background_image_desktop %}
+{% assign background_image_desktop_2x = section.settings.background_image_desktop_2x %}
+{% assign background_image_mobile = section.settings.background_image_mobile %}
+{% assign background_image_mobile_2x = section.settings.background_image_mobile_2x %}
+{% assign video_filename = section.settings.video_filename %}
+{% assign video_filename_mobile = section.settings.video_filename_mobile %}
+{% comment %} Cta {% endcomment %}
+{% assign button_style_desktop = section.settings.button_style_desktop %}
+{% assign button_style_mobile = section.settings.button_style_mobile %}
+{% assign cta_text = section.settings.cta_text %}
+{% assign cta_link = section.settings.cta_link %}
+{% comment %} Content {% endcomment %}
+{% assign content_image = section.settings.content_image %}
+{% assign content_image_width = section.settings.content_image_width %}
+{% assign content_image_visibility = section.settings.content_image_visibility %}
+{% assign content_title = section.settings.content_title %}
+{% assign content_body = section.settings.content_body %}
+{% assign cta_link_container = section.settings.cta_link_container %}
+{% assign container_link = section.settings.container_link %}
+{% comment %} Content Settings {% endcomment %}
+{% assign full_width_d = section.settings.full_width_d %}
+{% assign full_width_t = section.settings.full_width_t %}
+{% assign full_width = section.settings.full_width %}
+{% assign aligned_center = section.settings.aligned_center %}
+{% assign remove_margin = section.settings.remove_margin %}
+{% assign cta_remove_margin = section.settings.cta_remove_margin %}
+{% comment %} Font size {% endcomment %}
+{% assign enable_title_custom_font_size = section.settings.enable_title_custom_font_size %}
+{% assign content_title_font_size_desktop = section.settings.content_title_font_size_desktop %}
+{% assign content_title_font_size_mobile = section.settings.content_title_font_size_mobile %}
+
+{% assign enable_body_custom_font_size = section.settings.enable_body_custom_font_size %}
+{% assign content_body_font_size_desktop = section.settings.content_body_font_size_desktop %}
+{% assign content_body_font_size_mobile = section.settings.content_body_font_size_mobile %}
+
+{% assign enable_cta_custom_font_size = section.settings.enable_cta_custom_font_size %}
+{% assign content_cta_font_size_desktop = section.settings.content_cta_font_size_desktop %}
+{% assign content_cta_font_size_mobile = section.settings.content_cta_font_size_mobile %}
+{% comment %} Content Alignment {% endcomment %}
+{% assign individual_alignment = section.settings.individual_alignment %}
+{% assign add_content_under_image_mobile = section.settings.add_content_under_image_mobile %}
+{% assign remove_gap_under_image = section.settings.remove_gap_under_image %}
+{% assign content_alignment_mobile_block = section.settings.content_alignment_mobile_block %}
+{% assign custom_margin_top = section.settings.custom_margin_top %}
+{% assign mobile_content_alignment = section.settings.mobile_content_alignment %}
+{% assign content_mobile_height_mobile = section.settings.content_mobile_height_mobile %}
+{% assign content_mobile_width_mobile = section.settings.content_mobile_width_mobile %}
+{% comment %} Desktop {% endcomment %}
+{% assign alignment_top_desktop = section.settings.alignment_top_desktop %}
+{% assign alignment_left_desktop = section.settings.alignment_left_desktop %}
+{% assign image_alignment_top_desktop = section.settings.image_alignment_top_desktop %}
+{% assign image_alignment_left_desktop = section.settings.image_alignment_left_desktop %}
+{% assign title_alignment_top_desktop = section.settings.title_alignment_top_desktop %}
+{% assign title_alignment_left_desktop = section.settings.title_alignment_left_desktop %}
+{% assign body_alignment_top_desktop = section.settings.body_alignment_top_desktop %}
+{% assign body_alignment_left_desktop = section.settings.body_alignment_left_desktop %}
+{% assign button_alignment_top_desktop = section.settings.button_alignment_top_desktop %}
+{% assign button_alignment_left_desktop = section.settings.button_alignment_left_desktop %}
+{% comment %} Tablet {% endcomment %}
+{% assign alignment_top_tablet = section.settings.alignment_top_tablet %}
+{% assign alignment_left_tablet = section.settings.alignment_left_tablet %}
+{% assign image_alignment_top_tablet = section.settings.image_alignment_top_tablet %}
+{% assign image_alignment_left_tablet = section.settings.image_alignment_left_tablet %}
+{% assign title_alignment_top_tablet = section.settings.title_alignment_top_tablet %}
+{% assign title_alignment_left_tablet = section.settings.title_alignment_left_tablet %}
+{% assign body_alignment_top_tablet = section.settings.body_alignment_top_tablet %}
+{% assign body_alignment_left_tablet = section.settings.body_alignment_left_tablet %}
+{% assign button_alignment_top_tablet = section.settings.button_alignment_top_tablet %}
+{% assign button_alignment_left_tablet = section.settings.button_alignment_left_tablet %}
+{% comment %} Mobile {% endcomment %}
+{% assign alignment_top_mobile = section.settings.alignment_top_mobile %}
+{% assign alignment_left_mobile = section.settings.alignment_left_mobile %}
+{% assign image_alignment_top_mobile = section.settings.image_alignment_top_mobile %}
+{% assign image_alignment_left_mobile = section.settings.image_alignment_left_mobile %}
+{% assign title_alignment_top_mobile = section.settings.title_alignment_top_mobile %}
+{% assign title_alignment_left_mobile = section.settings.title_alignment_left_mobile %}
+{% assign body_alignment_top_mobile = section.settings.body_alignment_top_mobile %}
+{% assign body_alignment_left_mobile = section.settings.body_alignment_left_mobile %}
+{% assign button_alignment_top_mobile = section.settings.button_alignment_top_mobile %}
+{% assign button_alignment_left_mobile = section.settings.button_alignment_left_mobile %}
+{% comment %} Container Height {% endcomment %}
+{% assign height_d = section.settings.height_d %}
+{% assign height_t = section.settings.height_t %}
+{% assign height_m = section.settings.height_m %}
+
+{% include 'content-section-template' %}
+
+{% schema %}
+  {
+    "name" :"Content",
+    "class": "content-container",
+    "tag": "section",
+    "settings" : [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "The title of your section"
+      },
+      {
+        "type": "header",
+        "content": "Container settings",
+        "info": "If there are no images and no video, you will need to determine the height of your container for Desktop, Tablet and Mobile. If you leave the tablet height empty, for example, the desktop height will apply. The height is determined in pixels."
+      },
+      {
+        "type": "text",
+        "id": "height_d",
+        "label": "Container Height - [Desktop]"
+      },
+      {
+        "type": "text",
+        "id": "height_t",
+        "label": "Container Height - [Tablet]"
+      },
+      {
+        "type": "text",
+        "id": "height_m",
+        "label": "Container Height - [Mobile]"
+      },
+      {
+        "type": "header",
+        "content": "background medias & color",
+        "info": "If a video is present, the video will overwrite everything else. If there is no video but there are one or more images, the images will show on top of background color. If there is no video and no images, the background color will show entirely."
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_desktop",
+        "label": "Background Image - [Desktop]",
+        "info": "upload with aspect ratio of 16:9 to achieve best result"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background color"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_desktop_2x",
+        "label": "Background Image - [Desktop] - 2x (Retina)"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_mobile",
+        "label": "Background Image - [Mobile]",
+        "info": "upload with aspect ratio of 2:3 to achieve best result"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_mobile_2x",
+        "label": "Background Image - [Mobile] - 2x (Retina)"
+      },
+      {
+        "type": "text",
+        "id": "video_filename",
+        "label": "Video Filename e.g: Video.mp4 - [Desktop]",
+        "info": "To import your video please go to Settings > Files > Upload Files"
+      },
+      {
+        "type": "text",
+        "id": "video_filename_mobile",
+        "label": "Video Filename e.g: Video.mp4 - [Mobile]",
+        "info": "To import your video please go to Settings > Files > Upload Files"
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "text",
+        "id": "full_width_d",
+        "label": "Determine content width - [Desktop]",
+        "info": "e.g: 100%, 500px, 60vw, etc"
+      },
+      {
+        "type": "text",
+        "id": "full_width_t",
+        "label": "Determine content width - [Tablet]"
+      },
+      {
+        "type": "text",
+        "id": "full_width",
+        "label": "Determine content width - [Mobile]"
+      },
+      {
+        "type": "checkbox",
+        "id": "aligned_center",
+        "label": "Align Content Center"
+      },
+      {
+        "type": "checkbox",
+        "id": "add_content_under_image_mobile",
+        "label": "Make a content block visible under image"
+      },
+      {
+        "type": "text",
+        "id": "custom_margin_top",
+        "label": "Spacing between elements (Pixel value only)",
+        "info": "Adjust the spacing between [the title and the body] and [the body and the bottom]. Default spacing: 25px"
+      },
+      {
+        "type":      "select",
+        "id":        "mobile_content_alignment",
+        "label":     "Aligment when content is under image/video",
+        "options": [
+          {
+            "value": "center_center",
+            "label": "Center Center"
+          },
+          {
+            "value": "center_left",
+            "label": "Center Left"
+          },
+          {
+            "value": "center_right",
+            "label": "Center Right"
+          },
+          {
+            "value": "top_left",
+            "label": "Top Left"
+          },
+          {
+            "value": "top_center",
+            "label": "Top Center"
+          },
+          {
+            "value": "top_right",
+            "label": "Top Right"
+          },
+          {
+            "value": "bottom_left",
+            "label": "Bottom Left"
+          },
+          {
+            "value": "bottom_center",
+            "label": "Bottom Center"
+          },
+          {
+            "value": "bottom_right",
+            "label": "Bottom Right"
+          }
+        ],
+        "default":   "center_center",
+        "info": "Alignment of content when under image is [activated]. If your mobile content is 100% or full width of the screen, you will not see any different. To view it, try making your mobile content 200px."
+      },
+      {
+        "type": "header",
+        "content": "Mobile",
+        "info": "From 640px width to 0px"
+      },
+      {
+        "type": "text",
+        "id": "content_mobile_height_mobile",
+        "label": "In px, height of the container under the image. - [Mobile]",
+        "default": "100"
+      },
+      {
+        "type": "text",
+        "id": "content_mobile_width_mobile",
+        "label": "Width of the container under the image. - [Mobile]",
+        "default": "100%"
+      },
+      {
+        "type": "checkbox",
+        "id": "remove_gap_under_image",
+        "label": "Remove gap under image"
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "checkbox",
+        "id": "remove_margin",
+        "label": "Remove spacing above the - [text paragraph]"
+      },
+      {
+        "type": "checkbox",
+        "id": "cta_remove_margin",
+        "label": "Remove spacing above the - [button/link]"
+      },
+      {
+        "type": "image_picker",
+        "id": "content_image",
+        "label": "Content Image"
+      },
+      {
+        "type": "text",
+        "id": "content_image_width",
+        "label": "Content Image Width (number only)",
+        "default": "45"
+      },
+      {
+        "type": "select",
+        "id": "content_image_visibility",
+        "options": [
+            { "value": "mobile_and_desktop", "label": "Mobile & Desktop"},
+            { "value": "mobile_only", "label": "Mobile only"},
+            { "value": "desktop_only", "label": "Desktop only"},
+            { "value": "none", "label": "None"}
+        ],
+        "label": "Content Image Visibility"
+      },
+      {
+        "type": "text",
+        "id": "content_title",
+        "label": "Content Title"
+      },
+      {
+        "type": "color",
+        "id": "content_title_text_color_desktop",
+        "label": "Content Title Text Color [Desktop]"
+      },
+      {
+        "type": "color",
+        "id": "content_title_text_color_mobile",
+        "label": "Content Title Text Color [Mobile]"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_title_custom_font_size",
+        "label": "Enable - Title Custom Font Size"
+      },
+      {
+        "type": "range",
+        "id": "content_title_font_size_desktop",
+        "label": "Content Title Font Size - [Desktop]",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 24,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "content_title_font_size_mobile",
+        "label": "Content Title Font Size - [Mobile]",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 22,
+        "unit": "px"
+      },
+      {
+        "type": "richtext",
+        "id": "content_body",
+        "label": "Content Body"
+      },
+      {
+        "type": "color",
+        "id": "content_body_text_color_desktop",
+        "label": "Content Body Text Color [Desktop]"
+      },
+      {
+        "type": "color",
+        "id": "content_body_text_color_mobile",
+        "label": "Content Body Text Color [Mobile]"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_body_custom_font_size",
+        "label": "Enable - Body Custom Font Size"
+      },
+      {
+        "type": "range",
+        "id": "content_body_font_size_desktop",
+        "label": "Content Body Font Size - [Desktop]",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 16,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "content_body_font_size_mobile",
+        "label": "Content Body Font Size - [Mobile]",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 16,
+        "unit": "px"
+      },
+      {
+        "type": "text",
+        "id": "cta_text",
+        "label": "Cta Text"
+      },
+      {
+        "type": "paragraph",
+        "content": "Note: The following CTA Text Colors will ONLY take effect when the button style is set to 'Link - No Style Primary' OR 'Link - No Style Secondary'."
+      },
+      {
+        "type": "color",
+        "id": "content_cta_text_color_desktop",
+        "label": "CTA Text Color [Desktop]"
+      },
+      {
+        "type": "color",
+        "id": "content_cta_text_color_mobile",
+        "label": "CTA Text Color [Mobile]"
+      },
+      {
+        "type": "url",
+        "id": "cta_link",
+        "label": "Cta Link"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_cta_custom_font_size",
+        "label": "Enable - CTA Custom Font Size"
+      },
+      {
+        "type": "range",
+        "id": "content_cta_font_size_desktop",
+        "label": "Content CTA Font Size - [Desktop]",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "content_cta_font_size_mobile",
+        "label": "Content CTA Font Size - [Mobile]",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "default": 14,
+        "unit": "px"
+      },
+      {
+        "type": "header",
+        "content": "Button Style"
+      },
+      {
+        "type": "select",
+        "id": "button_style_desktop",
+        "options": [
+            { "value": "button_primary", "label": "Button Primary"},
+            { "value": "button_secondary", "label": "Button Secondary"},
+            { "value": "button_tertiary", "label": "Button Tertiary"},
+            { "value": "button_quaternary", "label": "Button Quaternary"},
+            { "value": "link_primary", "label": "Link Primary"},
+            { "value": "link_secondary", "label": "Link Secondary"},
+            { "value": "link_no_style_primary", "label": "Link - No Style Primary"},
+            { "value": "link_no_style_secondary", "label": "Link - No Style Secondary"}
+        ],
+        "label": "Choose the button style [Desktop]"
+      },
+      {
+        "type": "select",
+        "id": "button_style_mobile",
+        "options": [
+            { "value": "button_primary", "label": "Button Primary"},
+            { "value": "button_secondary", "label": "Button Secondary"},
+            { "value": "button_tertiary", "label": "Button Tertiary"},
+            { "value": "button_quaternary", "label": "Button Quaternary"},
+            { "value": "link_primary", "label": "Link Primary"},
+            { "value": "link_secondary", "label": "Link Secondary"},
+            { "value": "link_no_style_primary", "label": "Link - No Style Primary"},
+            { "value": "link_no_style_secondary", "label": "Link - No Style Secondary"}
+        ],
+        "label": "Choose the button style [Mobile]"
+      },
+      {
+        "type": "paragraph",
+        "content": "CTA Email still requires CTA Text to be filled out, but if it is not empty, it will take precedence over the CTA Link. Precedence: CTA Email - Container > CTA Link - Container > empty"
+      },
+      {
+        "type": "textarea",
+        "id": "cta_email_container",
+        "label": "CTA Email - Container",
+        "info": "[Example](https://css-tricks.com/snippets/html/mailto-links/): mailto:someone@yoursite.com?cc=someoneelse@theirsite.com, another@thatsite.com, me@mysite.com&bcc=lastperson@theirsite.com&subject=Big%20News&body=Body-goes-here"
+      },
+      {
+        "type": "checkbox",
+        "id": "container_link",
+        "label": "Enable the link around the container (section)",
+        "info": "Note: If this option is enabled, the CTA Link - Container' will override the button CTA Link"
+      },
+      {
+        "type": "url",
+        "id": "cta_link_container",
+        "label": "CTA Link - Container"
+      },
+      {
+        "type": "header",
+        "content": "Content Alignment - [Container]"
+      },
+      {
+        "type": "header",
+        "content": "Desktop",
+        "info": "From highest screensize width to 996px"
+      },
+      {
+        "type": "range",
+        "id": "alignment_top_desktop",
+        "label": "Text alignment - Top - [Desktop]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "alignment_left_desktop",
+        "label": "Text alignment - Left - [Desktop]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Tablet",
+        "info": "From 996px width to 640px"
+      },
+      {
+        "type": "range",
+        "id": "alignment_top_tablet",
+        "label": "Text alignment - Top - [Tablet]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "alignment_left_tablet",
+        "label": "Text alignment - Left - [Tablet]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Mobile",
+        "info": "From 640px width to 0px"
+      },
+      {
+        "type": "range",
+        "id": "alignment_top_mobile",
+        "label": "Text alignment - Top - [Mobile]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "alignment_left_mobile",
+        "label": "Text alignment - Left - [Mobile]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "checkbox",
+        "id": "individual_alignment",
+        "label": "Enable Title/Content/CTA individual alignment"
+      },
+      {
+        "type": "header",
+        "content": "Content Alignment - [Image]",
+        "info": "Align the title within the container"
+      },
+      {
+        "type": "header",
+        "content": "Desktop",
+        "info": "From highest screensize width to 996px"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_top_desktop",
+        "label": "Image alignment - Top - [Desktop]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_left_desktop",
+        "label": "Image alignment - Left - [Desktop]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Tablet",
+        "info": "From 996px width to 640px"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_top_tablet",
+        "label": "Image alignment - Top - [Tablet]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_left_tablet",
+        "label": "Image alignment - Left - [Tablet]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Mobile",
+        "info": "From 640px width to 0px"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_top_mobile",
+        "label": "Image alignment - Top - [Mobile]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "image_alignment_left_mobile",
+        "label": "Image alignment - Left - [Mobile]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Content Alignment - [Title]",
+        "info": "Align the title within the container"
+      },
+      {
+        "type": "header",
+        "content": "Desktop",
+        "info": "From highest screensize width to 996px"
+        },
+      {
+        "type": "range",
+        "id": "title_alignment_top_desktop",
+        "label": "Text alignment - Top - [Desktop]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_left_desktop",
+        "label": "Text alignment - Left - [Desktop]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Tablet",
+        "info": "From 996px width to 640px"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_top_tablet",
+        "label": "Text alignment - Top - [Tablet]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_left_tablet",
+        "label": "Text alignment - Left - [Tablet]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Mobile",
+        "info": "From 640px width to 0px"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_top_mobile",
+        "label": "Text alignment - Top - [Mobile]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "title_alignment_left_mobile",
+        "label": "Text alignment - Left - [Mobile]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Content Alignment - [Body]",
+        "info": "Align the Body within the container"
+      },
+      {
+        "type": "header",
+        "content": "Desktop",
+        "info": "From highest screensize width to 996px"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_top_desktop",
+        "label": "Text alignment - Top - [Desktop]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_left_desktop",
+        "label": "Text alignment - Left - [Desktop]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Tablet",
+        "info": "From 996px width to 640px"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_top_tablet",
+        "label": "Text alignment - Top - [Tablet]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_left_tablet",
+        "label": "Text alignment - Left - [Tablet]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Mobile",
+        "info": "From 640px width to 0px"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_top_mobile",
+        "label": "Text alignment - Top - [Mobile]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "body_alignment_left_mobile",
+        "label": "Text alignment - Left - [Mobile]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Content Alignment - [Button/CTA]",
+        "info": "Align the Button/CTA within the container"
+      },
+      {
+        "type": "header",
+        "content": "Desktop",
+        "info": "From highest screensize width to 996px"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_top_desktop",
+        "label": "Text alignment - Top - [Desktop]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_left_desktop",
+        "label": "Text alignment - Left - [Desktop]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Tablet",
+        "info": "From 996px width to 640px"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_top_tablet",
+        "label": "Text alignment - Top - [Tablet]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_left_tablet",
+        "label": "Text alignment - Left - [Tablet]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "Mobile",
+        "info": "From 640px width to 0px"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_top_mobile",
+        "label": "Text alignment - Top - [Mobile]",
+        "info": "Distance in % from the top of the container (100% would mean that it will be located at the bottom of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      },
+      {
+        "type": "range",
+        "id": "button_alignment_left_mobile",
+        "label": "Text alignment - Left - [Mobile]",
+        "info": "Distance in % from the left of the container (100% would mean that it will be located at the right of the container).",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 50,
+        "unit": "%"
+      }
+    ]    
+  }
+{% endschema %}

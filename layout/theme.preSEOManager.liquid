@@ -1,0 +1,208 @@
+{%- comment -%}
+
+Default layout for all templates.
+
+Documentation: https://help.shopify.com/en/themes/development/layouts/theme-liquid
+
+Objects Referenced:
+  • content_for_header https://help.shopify.com/en/themes/liquid/objects#content_for_header
+  • content_for_layout https://help.shopify.com/en/themes/liquid/objects#content_for_layout
+  • settings https://help.shopify.com/en/themes/liquid/objects#settings
+  • shop https://help.shopify.com/en/themes/liquid/objects#shop
+  • template https://help.shopify.com/en/themes/liquid/objects#template
+
+{%- endcomment -%}
+
+<!DOCTYPE html>
+<html class="js-noscript" lang="{{ shop.locale }}">
+  <head>
+    {% include 'shop-sheriff-amp' %}
+    {%- if shop.url == 'https://eu.aninebing.com' -%}
+      {% comment %} Facebook domain Verification {% endcomment %}
+      <meta name="facebook-domain-verification" content="zxyj8klumcizhaiwnf4f89m52ddzow" />
+      {% comment %} Google site verification {% endcomment %}
+      <meta name="google-site-verification" content="v08veMPRakwEEqjq8MIxq3NB3o3HR52Wln9FA7IkaBk" />
+    {%- else -%}
+      {% comment %} LS Direct Marketing Head {% endcomment %}
+      {%- include 'ls-direct-marketing-head' -%}
+    {%- endif -%}
+
+    <script>
+      // Refer to isp.js
+      var __isp_options = __isp_options || {};
+      __isp_options.isp_serp_with_product_attributes = '1' // Include product attributes
+      __isp_options.variant_color_attribute = 'color'
+      __isp_options.isp_serp_avoid_scroll_after_filter = true;
+      __isp_options.quick_view_beta = 'ignore'; //ignore recent changes that modified quick view
+
+      var isp_related_options = isp_related_options || {};
+      isp_related_options.with_product_attributes = false // Include product attributes
+      isp_related_options.DECIMALS_REMOVE_ON_ROUND_PRICES = true // Remove .00 from prices like $49.00
+      isp_related_options.LAZYLOAD = "progressive" // Load images in advance
+      isp_related_options.PRICE_FROM_ALWAYS = true // Render from price wording
+      isp_related_options.RANDOMIZE = true // Add extra randomization
+    </script>
+
+    {%- include 'google-optimize' -%}
+    {%- include 'shop-sheriff-amp' -%}
+
+    {% comment %} <script src="{{ 'redirect.js' | asset_url }}" /> {% endcomment %}
+    {{ 'redirect.js' | asset_url | script_tag }}
+  
+    {% comment %} Domain check for yotpo {% endcomment %}
+    {%- if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' -%}
+      {% comment %}North America{% endcomment %}
+      <script defer type="text/javascript">(function e(){var e=document.createElement("script");e.type="text/javascript",e.async=true,e.src="//staticw2.yotpo.com/PROzW4b465I9n5LmsIeARiCOAHvgJRUYkDTpY76F/widget.js";
+      var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();</script>
+    {%- else -%}
+      {% comment %}Europe{% endcomment %}
+      <script defer type="text/javascript">(function e(){var e=document.createElement("script");e.type="text/javascript",e.async=true,e.src="//staticw2.yotpo.com/dWvnf4oVLG2vJoHvchXVtb2g8AkqIP7GoQcPZNB0/widget.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();</script>
+    {%- endif -%}
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.theme_color }}">
+    {% include 'favicon' %}
+    {% include 'meta__seo' %}
+    {% include 'meta__social' %}
+
+    {% comment %} Redirects {% endcomment %}
+    <script>
+      if (window.location.pathname === '/collections' || window.location.pathname === '/products') {
+        window.location.href = '/collections/all-clothing'
+      }
+    </script>
+
+    <link rel="stylesheet" href="{{ 'css_vendors.css' | asset_url }}">
+    <link rel="stylesheet" href="{{ 'scss_theme.scss.css' | asset_url }}">
+    <script>document.documentElement.classList.remove('js-noscript');</script>
+    {% include 'js_global' %}
+    <script src="{{ 'js_vendors.js' | asset_url }}"></script>
+    <script src="{{ 'js_theme.js' | asset_url }}" defer></script>
+
+    {% comment %} {{ '//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js' | script_tag }} {% endcomment %}
+    {% comment %} {{ 'api.jquery.js' | shopify_asset_url | script_tag }} {% endcomment %}
+    
+    {{ content_for_header }}
+
+    {% include 'kustomer' %}
+
+    {% if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' %}
+      {% comment %} North America {% endcomment %}
+      {% include 'head-pixel-us' %}
+      {% include 'hotjar-script-us' %}
+      {% include 'bouncex-script-us' %}
+
+      {% comment %} Generic Global E Pixels on pages/international-checkout {% endcomment %}
+      {%- if template.suffix == 'international-checkout' -%}
+        {% comment %}{% include 'checkout-generic-globale-pixel' %}{% endcomment %}
+      {%- endif -%}
+      <!-- globale_css_include -->
+      {% include 'globale-css-include' %}
+    {% else %}
+      {% comment %} Europe {% endcomment %}
+      {% include 'head-pixel-eu' %}
+      {% include 'hotjar-script' %}
+      {% include 'retention-science-pixel-eu' %}
+      {% include 'bouncex-script-eu' %}
+    {% endif %}
+
+    {% comment %} Generic Global E Pixels on pages/international-checkout {% endcomment %}
+    {%- if template.suffix == 'international-checkout' -%}
+		{% comment %}{% include 'checkout-generic-globale-pixel' %}{% endcomment %}
+    {%- endif -%}
+
+    {%- assign yotpo_offload_content = shop.metafields.yotpo.yotpo_offload_content %}
+    {%- assign time_now = 'now' | date: '%s' %}
+    {%- assign yotpo_live_time = shop.metafields.yotpo.yotpo_live | date: '%s' %}
+    {%- assign diffSeconds = time_now | minus: yotpo_live_time %}
+    {%- if yotpo_offload_content == 'yes' and diffSeconds < 86400 -%}
+      {{ 'yotpo-full-css.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+  </head>
+
+  <body class="template-{{ template.name }}" id="body" data-cart-subtotal="{{ cart.items_subtotal_price }}" data-cart-attribute="{{ cart.attributes.source | url_encode }}" data-cart-pagination-attribute="{{ cart.attributes.pagination }}">
+    {%- if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' -%}
+      {% comment %} LS Direct Marketing Body {% endcomment %}
+      {%- include 'ls-direct-marketing-body' -%}
+
+      {% comment %} Klarna {% endcomment %}
+      <script 
+        async 
+        src="https://na-library.klarnaservices.com/lib.js"
+        data-client-id="9203849e-9cf0-5e8d-aade-dba8d8b0887d"
+      ></script>
+      <script>
+        window.KlarnaOnsiteService = window.KlarnaOnsiteService || [];
+        window.KlarnaOnsiteService.push({ eventName: 'refresh-placements' });
+      </script>
+    {%- endif -%}
+
+    <a class="skip-to-main-content button button--secondary" href="#MainContent" title="Skip to Main Content" tabindex="0">Skip to Main Content</a>
+
+    <div class="header js-header-container">
+      {% section 'announcement-bar' %}
+      {% section 'header' %}
+    </div>
+
+    <main id="MainContent" role="main">
+      {% comment %}<a class="skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>{% endcomment %}
+      {{ content_for_layout }}
+
+      {% if settings.enable_gift_products %}
+        {% include 'gift' %}
+      {% endif %}
+    </main>
+    
+    {% section 'footer' %}
+
+    {%- if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' -%}
+      {% include 'swymSnippet' %}
+    {%- else -%}
+      {% include 'swymSnippet-eu' %}
+    {%- endif -%}
+
+    {% section 'newsletter-popup' %}
+    {% include 'out-of-stock__modal' %}
+    {% include 'coming-soon__modal' %}
+
+    <section id="stock-notification-success" class="thank-you-success modal-content">
+      {% include 'product__thank-you-modal' %}
+    </section>
+
+    <button class="thank-you-success__button js-product-success-open js-open-modal js-modal-click-exclude hide" data-modal-target="#stock-notification-success"></button>
+    
+    {% comment %} {% include 'social-login' %} {% endcomment %}
+
+    {% comment %} Domain check for pixels {% endcomment %}
+    {%- if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' -%}
+
+      {% comment %}North America{% endcomment %}
+      {%- include 'criteo-tracking-us' -%}
+      {%- include 'body-pixel-us' -%}
+      {%- include 'google-dynamic-remarketing-us' -%}
+
+      {% comment %} globale_js_include {% endcomment %}
+      {% include 'globale-js-include' %}
+      
+    {%- else -%}
+
+      {% comment %}Europe{% endcomment %}
+      {%- include 'criteo-tracking-eu' -%}
+      {%- include 'body-pixel-eu' -%}
+      {%- include 'google-dynamic-remarketing-eu' -%}
+    {%- endif -%}
+
+    {% comment %} Antavo - Loyalty Program {% endcomment %}
+    {%- include 'antavo' -%}
+    
+    {% comment %} Geotargetly (US + EU) {% endcomment %}
+    {% include 'geotargetly' %}
+
+    {% comment %} Attentive (US + EU) {% endcomment %}
+    <script src="https://cdn.attn.tv/aninebing/dtag.js"></script>
+
+    {% comment %} GDPR - Rakuten (US + EU) {% endcomment %}
+    {%- include 'gdpr-rakuten-compliance' -%}
+  </body>
+</html>

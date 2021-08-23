@@ -1,0 +1,335 @@
+// Checkout
+$(function() {
+
+	const forms = {
+		// Sailthru pixel logic
+		$searchForms: $('.search-form, #menu-search'),
+		$footerSubscriptionForm: $('.js-sailthru-footer'),
+		$newsletterSubscriptionForm: $('.js-sailthru-newsletter'),
+		$registerSubscriptionForm: $('.js-sailthru-register'),
+		$createCustomerForm: $('form#create_customer'),
+		$customerInfoForm: $('.step[data-step=contact_information] form'),
+		$shippingStepForm: $('.step[data-step=shipping_method] form'),
+		$orderForm: $('[data-step=shipping_method] .edit_checkout'),
+		apiUrlUser: '/apps/api-1/v1/create_user',
+		apiUrlEvent: '/apps/api-1/v1/send_event',
+		apiUserExists: '/apps/api-1/v1/user_exists' 
+	};
+
+	const sailthru = function () {
+
+		const sailthruSearchForms = function (event, eventName, element) {
+			const acceptedTerms = [
+				'madeleine', 'madeline', 'madeleine blazer', 'madeline blazer', 'stevie', 'stevie boots', 
+				'stevie boot', 'stevie booties', 'tiger', 'tiger tee', 'tiger tshirt', 'tiger t-shirt', 
+				'tiger tee shirt', 'dylan', 'dylan coat', 'dylan jacket', 'dylan trench', 'bar silk', 
+				'bar silk black', 'bar silk leo', 'bar silk skirt', 'silk skirt', 'bar silk skirt black',
+				'bar silk skirt leo', 'frida', 'frida jeans', 'frida jean', 'frida denim', 'frida pants',
+				'blazer', 'blazers', 'sweatshirt', 'sweatshirts', 'sweat shirt', 'sweat shirts', 'hoodie',
+				'hoodies', 'tee', 't-shirt', 'tee shirt', 'tshirt', 't shirt', 't-shirts', 'tee shirts', 
+				'tshirts', 't shirts', 'skirt', 'skirts', 'camisole', 'cami', 'camis', 'camisoles', 'sweater',
+				'sweaters', 'cardigan', 'cardi', 'cardigans', 'cardis', 'boots', 'boot', 'bootie', 'booties',
+				'jacket', 'coat', 'jackets', 'coats', 'leather', 'leather jacket', 'leather jackets', 'leopard',
+				'leo', 'leopard print', 'leo print', 'jeans', 'denim', 'jean', 'denim pants'
+			];
+			const searchTerm = $(element).find('input[type=text]').val();
+
+			if (!Shopify.customer_email) {
+				return;
+			}
+
+			let formData = {
+				email: Shopify.customer_email,
+				event: eventName,
+				options: {
+					key: 'email',
+					vars: {
+						search_term: searchTerm
+					}
+				}
+			};
+
+			if (acceptedTerms.includes(searchTerm)) {
+				sailthruAJAX(forms.apiUrlEvent, formData);
+			} else {
+				return;
+			}
+		};
+
+		const sailthruPermissionStatusForm = function (event, eventName) {
+			const email = event.target.querySelector('input[type=email]').value;
+			const emailCheckbox = event.target.querySelector('.js-checkbox-input.required');
+			const formData = {
+				email,
+				options: {
+					key: 'email',
+					vars: {
+						email_permission_status: true,
+						reg_source: eventName
+					},
+					lists: {master_list: 1}
+				}
+			};
+
+			if (!emailCheckbox){
+
+				sailthruAJAXPromise(forms.apiUrlUser, formData).done(function(res) {
+					const $msg = $(event.target).find('.js-success-msg');
+					if ($msg) showHideMessage($msg);
+				}).fail(function(err) {
+					const $msg = $(event.target).find('.js-error-msg');
+					if ($msg) showHideMessage($msg);
+				});
+
+			} else if (emailCheckbox && emailCheckbox.checked) {
+				
+				sailthruAJAXPromise(forms.apiUrlUser, formData).done(function(res) {
+					const $msg = $(event.target).find('.js-success-msg');
+					const inputGroup = event.target.querySelector('.input__group');
+					if ($msg) showHideMessage($msg);
+					if (inputGroup) inputGroup.classList.remove('has-error');
+
+					if (event.target.id === 'popupNewsletterForm') {
+						setTimeout(() => {
+							event.target.closest('.js-container-popup').querySelector('.js-close-popup').click();
+						}, 2000);
+					}
+				}).fail(function(err) {
+					const $msg = $(event.target).find('.js-error-msg');
+					if ($msg) showHideMessage($msg);
+				});
+				
+			} else if (emailCheckbox && !emailCheckbox.checked) {
+				const inputGroup = event.target.querySelector('.input__group');
+				if (inputGroup) inputGroup.classList.add('has-error');
+			}
+		};
+
+		function showHideMessage($msg) {
+			const timing = 10000;
+			$msg.removeClass('is-hidden');
+			setTimeout(() => {
+				$msg.addClass('is-hidden');
+			}, timing)
+		}
+
+		// Newsletter Registration Checkbox
+		const sailthruRegistrationStatusForm = function (event, eventName) {
+			const email = event.target.closest('form').querySelector('input[type=email]').value;
+			const hasAgreedToSubscription = event.target.closest('form').querySelector('.js-checkbox-newsletter').checked;
+
+			const formData = {
+				email,
+				options: {
+					key: 'email',
+					vars: {
+						email_permission_status: true,
+						reg_source: eventName
+					},
+					lists: {master_list: 1}
+				}
+			};
+
+			if (hasAgreedToSubscription) sailthruAJAX(forms.apiUrlUser, formData)
+		};
+
+		const sailthruPermissionStatusBtn = function (event, eventName) {
+			const $email = $(event.target).closest('.privy-popup-content').find('.privy-email-input').val();
+
+			const formData = {
+				email: $email,
+				options: {
+					key: 'email',
+					vars: {
+						email_permission_status: true,
+						reg_source: eventName
+					},
+					lists: {master_list: 1}
+				}
+			};
+
+			if ($email.length) {
+				sailthruAJAX(forms.apiUrlUser, formData)
+			}
+		};
+
+		const sailthruPermissionSaleGateway = function (event, eventName) {
+			const $email = $(event.target).closest('form').find('input[type=email]').val();
+			const formData = {
+				email: $email,
+				options: {
+					key: 'email',
+					vars: {
+						email_permission_status: true,
+						reg_source: eventName
+					},
+					lists: {master_list: 1}
+				}
+			};
+
+			$.ajax({
+				url: forms.apiUserExists,
+				type: 'POST',
+				data: formData
+			}).done(function(res) {
+				const duplicatedEmail = res.result;
+				const form = document.querySelector('.js-gateway-form');
+				const allowEmailDuplication = form.dataset.emailDuplication;
+				const originalErrorMessage = form.querySelector('.error-msg').innerText;
+				const emailSignupForm = form.querySelector('.js-form');
+
+				// Email is not empty and is not duplicated or email duplication is allowed
+				if ($email.length && (!duplicatedEmail || (allowEmailDuplication == 'true'))) {
+					sailthruAJAX(forms.apiUrlUser, formData);
+					document.querySelector('.sale-gateway-modal-button').click();
+					$('.sale-gateway__related-slider').slick('setPosition');     //Fixes the width of the slider. The width is broken by default because the slider is hidden in a 'display: none' modal.
+				} else if ($email.length && (allowEmailDuplication == 'false') && duplicatedEmail) {
+					// Email is not empty and does not allow email duplication, but the email is duplicated
+					emailSignupForm.classList.add('has-error');
+					emailSignupForm.querySelector('.error-msg').innerText = theme.locales.sale_gateway.error_email_duplication;
+					emailSignupForm.querySelector('.error-msg').setAttribute('data-previous-error-message', originalErrorMessage);
+				}
+			}).fail(function(err) {
+				console.log(err);
+			});
+		};
+
+		const sailthruCustomerCreation = function (eventName, params) {
+			const newsletterCheckbox = document.querySelector('#CreateCustomer-ConfirmNewsletter');
+
+			if (newsletterCheckbox.checked) {
+				const $firstname = $('form #CreateCustomer-FirstName').val();
+				const $lastname = $('form #CreateCustomer-LastName').val();
+				const $fullname = $firstname + ' ' + $lastname;
+				const $email = $('form #CreateCustomer-Email').val();
+				const $birthday = '';
+				const source = params();
+				const shopifyCustomerId = null;
+				const hasAgreedToSubscription = true;
+
+				const formData = {
+					email: $email,
+					options: {
+						key: 'email',
+						vars: {
+							full_name: $fullname,
+							first_name: $firstname,
+							last_name: $lastname,
+							birth_date: $birthday,
+							reg_source: eventName,
+							campaign_source: source,
+							shopify_customer_id: shopifyCustomerId,
+							email_permission_status: hasAgreedToSubscription // should be false by default, and if it's checked then true
+						},
+						lists: {master_list: 1}
+					}
+				};
+
+				sailthruAJAX(forms.apiUrlUser, formData);
+			}
+		};
+
+		const sailthruMobilePermission = function (eventName, params) {
+			const mobileSMSInput = document.querySelector('input#accepts_sms');
+
+			if (mobileSMSInput.checked) {
+				const phone = document.querySelector('#checkout_shipping_address_phone').value;
+				const email = document.querySelector('#checkout_email').value;
+				const source = params();
+				const acceptMarketing = true;
+
+				const formData = {
+					email: email,
+					options: {
+						key: 'email',
+						vars: {
+							mobile_permission_status: acceptMarketing,
+							mobile_number: phone,
+							campaign_source: source,
+							reg_source: eventName
+						},
+						lists: {master_list: 1}
+					}
+				};
+
+				sailthruAJAX(forms.apiUrlUser, formData);
+			}
+		}
+
+		const sailthruAJAX = function (url, data) {
+			$.ajax({
+				url: url,
+				type: 'POST',
+				data: data
+			}).done(function(res) {
+				console.log(res);
+			}).fail(function(err) {
+				console.log(err);
+			});
+		};
+
+		function sailthruAJAXPromise(url,data) {
+			return $.ajax({ url: url, type: 'POST', data: data });
+		}
+
+		const sailthruParams = function () {
+			const url = new URL(window.location.href);
+			return url.searchParams.get("utm_source");
+		};
+
+		// Footer Submission 
+		forms.$footerSubscriptionForm.on('submit', function(event) {
+			event.preventDefault();
+			sailthruPermissionStatusForm(event, 'user creation - footer');
+		});
+
+		// Footer Submission 
+		forms.$newsletterSubscriptionForm.on('submit', function(event) {
+			event.preventDefault();
+			sailthruPermissionStatusForm(event, 'user creation - newsletter subscription');
+		});
+	
+
+		// Popup Submission 
+		$(document).on('click', '#privy-submit-btn', function() {
+			sailthruPermissionStatusBtn(event, 'user creation - pop up');
+		});
+
+		// Sale Gateway Submission - 'submit', '.js-gateway-form'
+		// click', '.js-gateway-form .js-submit-btn'
+		$(document).on('submit', '.js-gateway-form', function(e) {
+			e.preventDefault();
+			const formSubmissionFrom = this.dataset.formSubmit;
+			sailthruPermissionSaleGateway(event, formSubmissionFrom);
+		});
+
+		// Customer Creation
+		// TODO: Need to edit this after for ST master_list
+		// forms.$registerSubscriptionForm.on('click', function(e) {
+		forms.$registerSubscriptionForm.closest('form').on('submit', function(e) {
+			sailthruCustomerCreation('user creation - Registration form', sailthruParams);
+		});
+
+		// Search Forms
+		forms.$searchForms.each(function() {
+			$(this).on('submit', function(event) {
+				sailthruSearchForms(event, 'search_abandon', this);
+			});
+			sailthruCustomerCreation('user creation - custom registration form', sailthruParams);
+		});
+
+		// Order Form
+		// if ($('.step[data-step=thank-you]').length || Shopify.Checkout && Shopify.Checkout.page === 'thank_you' || Shopify.Checkout && Shopify.Checkout.step === 'thank_you') {
+		// 	// sailthruCustomerCreation('user creation - thank you page', sailthruParams);
+		// }
+
+		// Mobile Marketing Permission
+		if (Shopify.Checkout && Shopify.Checkout.step === 'contact_information') {
+			forms.$customerInfoForm.on('submit', function() {
+				sailthruMobilePermission('SMS landing page - Checkout flow', sailthruParams);
+			})
+		}
+	}
+
+	sailthru();
+});

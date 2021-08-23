@@ -1,0 +1,73 @@
+{% comment %}
+  Accordion Information
+
+  Note: Included in 'product_info.liquid'
+{% endcomment %}
+
+<section class="accordion {{ custom_class }}">
+  <ul class="accordion__list js-accordion-list js-accordion-product-wrapper">
+    {%- if product.description != blank -%}
+      <li class="accordion__item accordion__item--desc js-accordion-item js-accordion-product is-active" data-color-id="color--{{ product.id }}">
+        <a href="#" class="accordion__label">
+          {%- include 'accordion__icon' with type: 'opened' -%}
+          <h2 class="heading--4">{{ 'products.product.description' | t }}</h2>
+        </a>
+        <div class="accordion__info product__description js-accordion-wrapper" style="display: flex;">
+          {{ product.description }}
+        </div>
+      </li>
+    {%- endif -%}
+    {%- assign meta_product_fit = product.metafields.fit -%}
+    {%- if product.metafields.fit.size > 0 -%}
+      <li class="accordion__item accordion__item--fit js-product-fit js-accordion-item js-accordion-product" data-color-id="color--{{ product.id }}">
+        <a href="#" class="accordion__label">
+          {%- include 'accordion__icon' with type: 'closed' -%}
+          <h2 class="heading--4">{{ 'products.product.fit' | t }}</h2>
+        </a>
+        <div class="accordion__info product__fit js-accordion-wrapper hide">
+          {%- if meta_product_fit.details != blank -%}
+            <p>{{ meta_product_fit.details }}</p>
+          {%- endif -%}
+          {%- if meta_product_fit.description != blank -%}
+            <p>{{ meta_product_fit.description }}</p>
+          {%- endif -%}
+          {%- if meta_product_fit.measurements != blank -%}
+            <p>{{ meta_product_fit.measurements }}</p>
+          {%- endif -%}
+          {%- if meta_product_fit.product_measurements != blank -%}
+            <p>{{ meta_product_fit.product_measurements }}</p>
+          {%- endif -%}
+        </div>
+      </li>
+    {%- endif -%}
+    {%- assign meta_product_materials = product.metafields.materials -%}
+    {%- if product.metafields.materials.size > 0 -%}
+      <li class="accordion__item accordion__item--material js-product-material js-accordion-item js-accordion-product" data-color-id="color--{{ product.id }}">
+        <a href="#" class="accordion__label">
+          {%- include 'accordion__icon' with type: 'closed' -%}
+          <h2 class="heading--4">{{ 'products.product.material_care' | t }}</h2>
+        </a>
+        
+        <div class="accordion__info product__material js-accordion-wrapper hide">
+          <p>{{ meta_product_materials.fabric }}</p>
+          <p>{{ meta_product_materials.care }}</p>
+          <p>{{ meta_product_materials.origin }}</p>
+        </div>
+      </li>
+    {%- endif -%}
+    {% comment %} Review is shared throughout the grouped products - swatches. No Reviews for coming soon. {% endcomment %}
+    {%- unless product.tags contains 'swym-comingsoon' -%}
+      <li class="accordion__item accordion__item--review review js-accordion-item js-accordion-review">
+        <a href="#" class="accordion__label">
+          {%- include 'accordion__icon' with type: 'closed' -%}
+          <h2 class="heading--4 js-review-label">{{ 'products.product.review' | t }}</h2>
+          <div class="review__average-rating js-yotpo-product"></div>
+        </a>   
+        
+        <div class="accordion__info review__wrapper js-accordion-wrapper js-review-wrapper hide">
+          {% include 'create-review' with product_name: product.title %}
+        </div> 
+      </li>
+    {%- endunless -%}
+  </ul>
+</section>

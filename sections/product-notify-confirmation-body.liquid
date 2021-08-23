@@ -1,0 +1,56 @@
+<div class="our-story__body__text-body">{{ section.settings.text_body }}</div>
+
+{% if section.blocks != blank %} 
+  <div class="our-story__body__image-grid">
+    {% for block in section.blocks %}
+      <img class="our-story__body__image" src="{{ block.settings.image | img_url: '720x' }}" alt="{{ block.settings.image.alt }}" aria-hidden="true">
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if section.settings.video_filename != blank %}
+  <video class="our-story__body__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+    <source src="{{ section.settings.video_filename | file_url }}" type="video/mp4">
+  </video>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Our story body",
+    "class": "our-story__body",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Text"
+      },  
+      {
+        "type": "richtext",
+        "id": "text_body",
+        "label": "Text body"
+      },
+      {
+        "type": "header",
+        "content": "Video"
+      },  
+      {
+        "type": "text",
+        "id": "video_filename",
+        "label": "Video Filename e.g: Video.mp4",
+        "info": "To import your video please go to Settings > Files > Upload Files"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Image",
+        "type": "image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ] 
+  }
+{% endschema %}

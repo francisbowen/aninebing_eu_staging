@@ -1,0 +1,15 @@
+<div class="addresses__modal modal-content modal-content--address" id="{{ modal_id }}">
+
+  <button type="button" class="modal-close js-close-modal modal-close--account" name="close" role="button" aria-label="button">
+    {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small icon-close--account', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+  </button>
+
+  <div class="addresses__modal-form addresses__modal-form--add">
+    <div class="customer__logo">
+      <img src="{{ settings.logo | img_url: '200x' }}" alt="{{ shop.name }}" />
+    </div>
+
+     {%- include 'form--customer_address' with customer_address: address -%}
+
+  </div>
+</div>

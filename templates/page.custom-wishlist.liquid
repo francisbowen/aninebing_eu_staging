@@ -1,0 +1,14 @@
+{%- if customer -%}
+  {%- include 'breadcrumb' -%}
+{%- endif -%}
+
+<article class="custom-wishlist{% if customer %} js-{{ template.name }}{% else %} custom-wishlist--not-customer{% endif %}">
+  <div class="custom-wishlist__header">
+    <div class="custom-wishlist__link-copied js-wishlist-link-copied">
+      <span>{{ 'customer.wishlist.copied' | t }}</span>
+    </div>
+    <h1 class="custom-wishlist__title">{{ page.title }}</h1>
+    <a href="#" class="js-share-wishlist"><span class="link link--primary">{{ 'customer.wishlist.share' | t }}</span></a>
+  </div>
+  <div class="custom-wishlist__wrapper" id="wishlist-items-container"></div>
+</article>

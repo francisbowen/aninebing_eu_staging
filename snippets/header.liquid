@@ -1,0 +1,80 @@
+{%- comment -%}
+
+Site header.
+
+Objects Referenced:
+  • linklists https://help.shopify.com/en/themes/liquid/objects#linklists
+
+{%- endcomment -%}
+
+{%- include 'store-domain' -%}
+
+<header id="section-{{ section.id }}" class="js-header-section">
+  <div class="header__wrapper container js-header">
+    <div class="header__switchers header__hamburger">
+      <a href="#Menu" class="header__tool-link js-hamburger-menu" title="{{ 'general.menu.toggle_menu' | t }}">
+        <span class="header__tools-icon header__menu-hamburger hide-from@md">
+          {%- include 'icons' with selected_icon: 'hamburger', icon_class: 'icon-hamburger', icon_fill: '#000000', icon_stroke: '#000000', title: 'general.menu.icon_hamburger', desc: 'general.menu.toggle_menu' -%}
+        </span>
+        <span class="header__tools-icon header__menu-close">
+          {%- include 'icons' with selected_icon: 'close', icon_class: 'icon-hamburger', icon_fill: '#000000', icon_stroke: '#000000', title: 'general.menu.icon_hamburger', desc: 'general.menu.toggle_menu' -%}
+        </span>
+      </a>
+    </div>
+    <div class="header__logo">
+      <a href="/" class="header__logo-image " alt="{{ shop.name }}">
+        <img src="{{ section.settings.logo | img_url: 'master' }}" alt="{{ shop.name }}">
+      </a>
+    </div>
+    <div class="header__tools">
+      <div class="header__country-selector js-menu-country heading--3 hide-until@md">
+        <a class="js-country-selector" href="#" title="{{ 'general.country.go_to_store' | t }}">
+          <span class="menu__country-label">
+            {%- if store_domain == 'USA' -%}
+              {{ 'general.country.name' | t }}
+            {%- else -%}
+              {{ 'general.country.name_eu' | t }}
+            {%- endif -%}
+            <span class="svg-wrapper js-item-down">
+              {%- include 'icons' with selected_icon: 'chevron-down', icon_fill: 'none', icon_stroke: '#000000', icon_class: 'icon-chevron-down', title: 'general.dropdown.icon', desc: 'general.dropdown.toggle_dropdown' -%}
+            </span>
+          </span>
+        </a>
+        <ul class="menu__items menu__items--country">
+          {%- include 'country-selector' -%}
+        </ul>
+      </div>
+
+      <div class="header__tool-link header__tool-link--search">
+        <span class="header__tools-icon header__tools-icon--search js-trigger-search">
+          {%- include 'icons' with selected_icon: 'search', icon_class: 'icon-search', title: 'general.search.icon', desc: 'general.search.toggle_search' -%}
+        </span>
+      </div>
+
+      <a href="{% if customer %}/account{% else %}/account/login{% endif %}" title="{{ 'general.account.go_to_account' | t }}" class="header__tool-link hide-until@md">
+        <span class="header__tools-icon header__tools-icon--acc">
+          {%- include 'icons' with selected_icon: 'account', icon_class: 'icon-account', title: 'general.account.icon', desc: 'general.account.go_to_account' -%}
+        </span>
+      </a>
+
+      <a href="{% if customer %}/pages/custom-wishlist{% else %}/account/login?from=header-wishlist{% endif %}" title="{% if customer %}{{ 'general.account.go_to_wishlist' | t }}{% else %}{{ 'general.account.go_to_account' | t }}{% endif %}" class="header__tool-link header__tool-link--wishlist hide-until@xs">
+        <span class="header__tools-icon header__tools-icon--wishlist">
+          {%- include 'icons' with selected_icon: 'heart-2', icon_class: 'icon-wishlist', title: 'general.wishlist.icon', desc: 'general.wishlist.go_to_wishlist' -%}
+        </span>
+      </a>
+
+      <a href="/cart" title="{{ 'general.cart.go_to_cart' | t }}" class="header__tool-link header__tool-link--cart{% unless request.page_type == 'cart' %} js-cart-flyout-trigger{% endunless %}">
+        <div class="header__tools-icon">
+          <span>{%- include 'icons' with selected_icon: 'cart', icon_class: 'icon-cart', title: 'general.bag.icon', desc: 'general.bag.toggle_bag' -%}</span>
+          <span class="header__count js-cart-count {% unless cart.item_count > 0 %}hide{% endunless %}">{{ cart.item_count }}</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  {% render 'linklist' with linklist: linklists[section.settings.menu_desktop] %}
+  {% include 'menu' %}
+  {% unless request.page_type == 'cart' %}{% include 'cart__flyout' %}{% endunless %}
+  {% render 'search__form' %}
+</header>
+
+{% include 'shop__schema' %}

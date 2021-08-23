@@ -1,0 +1,125 @@
+{% comment %} <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn-gae-ssl-default.akamaized.net/js/isp.v.2.0.1.min.js?v=5.672.075&amp;mode=shopify" async=""></script>
+<script type="text/javascript" src="https://cdn-gae-ssl-default.akamaized.net/js/isp.jquery.requires.js?v=5.672.075"></script>
+<script src="https://cdn-gae-ssl-default.akamaized.net/js/search_result_page.min.js?isp_platform=shopify"></script>
+<script src="https://premium-dot-acp-magento.appspot.com/categories_navigation?q=&amp;page_num=1&amp;store_id=1614446664&amp;cdn_cache_key=1568646573&amp;facets_required=2&amp;callback=ispSearchResultOnlyFacets&amp;related_search=1&amp;with_product_attributes=1&amp;category_id=132230840392&amp;category_url=%2Fcollections%2Fsilk"></script> {% endcomment %}
+
+{% for block in section.blocks %}
+  {% assign match_url = block.settings.url %}
+
+  {% if match_url == request.path %}
+
+    {% assign collection_title = block.settings.collection_title %}
+    {% assign collection_name = block.settings.selected_collection %}
+    {% assign selected_collection = collections[collection_name] %}
+    {% assign product_limit = block.settings.product_limit %}
+    {% assign enable_product_limit = block.settings.enable_product_limit %}
+    {% assign restrict_height = block.settings.restrict_height %}
+
+    {% capture sliderConfig %}
+      {
+      "dots": false,
+      "arrows": true,
+      "infinite": true,
+      "speed": 300,
+      "slidesToShow": 4,
+      "lazyLoad": "progressive",
+      "nextArrow": "<button class='slick-next slick-arrow slider-arrow slider-arrow--next' aria-label='Next' type='button' style=''>Next</button>",
+      "prevArrow": "<button class='slick-prev slick-arrow slider-arrow slider-arrow--prev' aria-label='Previous' type='button' style=''>Previous</button>",
+      "responsive": [
+        {
+          "breakpoint": 996,
+          "settings": {
+            "dots": false,
+            "arrows": false,
+            "infinite": true,
+            "speed": 300,
+            "slidesToShow": 1,
+            "centerMode": true,
+            "variableWidth": false,
+            "lazyLoad": "progressive"
+          }
+        }
+      ]
+    }
+    {% endcapture %}
+
+    {% if collection_title != blank %}
+      <h2 class="slider__title slider__title js-slider-title">{{ collection_title }}</h2>
+    {% endif %}
+
+    <div class="slider__container js-slider slider" data-slider='{{ sliderConfig | h }}' id="collection-slider">
+      {% if enable_product_limit %}
+        {% for product in selected_collection.products limit: product_limit %}
+          <div class="slider__slide slider__slide js-slide">
+            {% comment %} Product Image {% endcomment %}
+            <div class="isp_product_image_wrapper">
+              <a onclick="ispStoreProductPosition({{ product.id }}, {{ forloop.index }})" class="isp_product_image_href" href="{{ product.url }}" title="{{ product.title }}">
+                <img onerror="ispOnThumbnailError(this)" class="slider__image slider__image {% if restrict_height %}has-limit-height{% endif %}" src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}" />
+              </a>
+                {% comment %} <a class="isp_product_quick_view_button" product_id="{{ product.id }}" onclick="displayProductQuickView({{ product.id }}, {{ forloop.index }});"> {% endcomment %}
+              <a href="{{ product.url }}" class="isp_product_quick_view_button" product_id="{{ product.id }}">
+                <span role="button" class="button button--secondary hide-until@md">{{ 'collections.general.view' | t }}</span>
+              </a>
+            </div>
+            {% comment %} Product Info {% endcomment %}
+            {%- assign genericProductTitle = product.title | split: '- ' -%}
+            <div class="isp_product_info">
+              <a onclick="ispStoreProductPosition({{ product.id }}, {{ forloop.index }})" class="isp_product_image_href" href="{{ product.url }}">
+                <div class="isp_product_title">
+                  {%- if genericProductTitle.size > 1 -%}
+                    {{ genericProductTitle[0] }}<br>
+                    <span class="text-title-space">{{ genericProductTitle[1] }}</span>
+                    {%- if product.tags contains 'multiple-colors' -%}
+                      <span class="text-title-space text-title-space--gap">{{ 'products.product.more_colors' | t}}</span>
+                    {%- endif -%}
+                  {%- else -%}
+                    {{ product.title }}
+                  {%- endif -%}
+                </div>
+                {% comment %} Product Tag {% endcomment %}
+                <div class="isp_product_tagged">
+                  {% assign oneVariantIsAvailable = false %}
+                  {% comment %} Check if product in entirely sold out {% endcomment %}
+                  {% for variant in product.variants %}
+                    {% if variant.available %}
+                      {% assign oneVariantIsAvailable = true %}
+                    {% endif %}
+                  {% endfor %}
+                  {% comment %} Check if product is new {% endcomment %}
+                  {% assign isNew = false %}
+
+                  {% for tag in product.tags %}
+                    {% if tag == 'new' %}
+                      {% assign isNew = true %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% unless oneVariantIsAvailable %}
+                    {{ 'products.product.sold_out' | t }}
+                  {% elsif isNew %}
+                    {{ 'products.product.new' | t }}
+                  {% endunless %}
+                </div>
+              </a>
+              {% comment %} Product Price {% endcomment %}
+              <div class="isp_product_price_wrapper">
+                {% if product.available and product.compare_at_price_max < product.price and product.compare_at_price_max != 0 %}
+                  <span class="isp_product_price money on-sale" data-currency="USD" data-currency-usd="{{ product.price | money_without_currency }}" tabindex="0">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span>
+                {% endif %}
+                <span class="isp_product_price money" data-currency="USD" data-currency-usd="{{ product.price | money_without_currency }}" tabindex="0">{{ product.price | money_without_trailing_zeros }}</span>
+                {% comment %} Quick view button mobile {% endcomment %}
+                <a href="{{ product.url }}" class="isp_product_quick_view_button" product_id="{{ product.id }}">
+                  <span role="button" class="button button--secondary hide-from@md">{{ 'collections.general.view' | t }}</span>
+                </a>
+              </div>
+              {% comment %} Add to wishlist {% endcomment %}
+              <button class="swym-button swym-add-to-wishlist-view-product product_{{ product.id }}" data-swaction="addToWishlist" data-with-epi="true" data-product-id="{{ product.id }}" data-variant-id="{{ product.selected_or_first_available_variant.id }}"></button>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+  {% endif %}
+{% endfor %}

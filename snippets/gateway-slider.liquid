@@ -1,0 +1,42 @@
+{%- for product in collections[section.settings.shopify_collection].products -%}
+  {%- assign genericProductTitle = product.title | split: '- ' -%}
+  {%- if genericProductTitle.size > 1 -%}
+    {%- assign productTitle = genericProductTitle[0] -%}
+  {%- else -%}
+    {%- assign productTitle = product.title -%}
+  {%- endif -%}
+
+  {%- assign productTag = '' -%}
+  {%- for tag in product.tags -%}
+    {%- if tag contains 'pdp_' -%}
+      {%- assign productTag = tag | split: '_' -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  <div class="related-product-tile__container slider__slide">
+    <div class="related-product-tile__image-wrapper">
+      <a href="{{ product.url }}" title="Link to {{ productTitle }}">
+        <img src="{{ product.featured_image | img_url: 'master' }}" class="related-product-tile__image slider__image" alt="{{ productTitle }} product image"/>
+      </a>
+      <a href="{{ product.url }}" class="related-product-tile__quick-add hide-until@md">
+        <span role="button" class="button button--secondary">{{ 'collections.general.view' | t }}</span>
+      </a>
+    </div>
+    <div class="related-product-tile__content">
+      <h3 class="related-product-tile__title">
+        {{ productTitle }}<br>
+        <span class="text-title-space">{{ genericProductTitle[1] }}</span>
+        {%- if product.tags contains 'multiple-colors' -%}
+          <a href="{{ product.url }}" title="Link to {{ productTitle }}"><span class="text-title-space text-title-space--gap">{{ 'products.product.more_colors' | t }}</span></a>
+        {%- endif -%}
+      </h3>
+      <h3 class="related-product-tile__tag">{{ productTag[1] }}</h3>
+      <div class="related-product-tile__atc-wrapper">
+        <h3 class="related-product-tile__price">{{ product.price | money }}</h3>
+        <a href="{{ product.url }}" title="Link to {{ productTitle }}">
+          <button role="button" class="heading--3 hide-from@md js-add-trigger" name="quick-add">+ {{ 'collections.general.view' | t }}</button>
+        </a>
+      </div>
+    </div>
+  </div>
+{%- endfor -%}

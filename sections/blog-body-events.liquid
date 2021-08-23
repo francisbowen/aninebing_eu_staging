@@ -1,0 +1,61 @@
+{%- include 'blog-check' -%}
+
+<div class="blog__body-events">
+
+  <h2 class="blog__body-events__title">{{ section.settings.title }}</h2>
+
+  {%- if show_exact_article -%}
+    {%- assign start_at = 0 -%}
+  {%- else -%}
+    {%- assign start_at = 1 -%}
+  {%- endif -%}
+
+  <div class="blog__body-events__articles">
+    {%- for article in blogs.events.articles limit: article_event_limit offset: start_at -%}
+      {%- include 'article__tile' with blog_type: 'events' -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if blogs.events.articles.size > article_event_limit -%}
+    <div class="blog__body-events__view-all">
+      <a href="{{ blogs.events.url }}" class="link link--primary">{{ 'blogs.events.view_all' | t }}</a>
+    </div>
+  {%- endif -%}
+</div>
+  
+{% schema %}
+  {
+    "name": "Blog Body - Events",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Article Tile - Events"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Latest Events"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_specific_article",
+        "label": "Show Specific Article",
+        "info": "If not checked, it will skip the latest article. Please check for each section.",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Fallback background color",
+        "default": "#000000"
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  .article-tile__image {
+    background-color: {{ section.settings.color }};
+  }
+</style>

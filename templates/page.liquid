@@ -1,0 +1,25 @@
+{%- comment -%}
+
+Default page template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/page-liquid
+
+Objects Referenced:
+  • page https://help.shopify.com/en/themes/liquid/objects/page
+
+{%- endcomment -%}
+
+<article class="page">
+  {% if request.path contains 'site-accessibility' %}
+    <div class="page__accessibility-logo">
+      <a href="https://accessible360.com" aria-label="Accessibility Logo" class="page__accessible-link">
+        <img src="{{ 'accessibility-logo-black.png' | asset_url }}" alt="Reviewed by Accessible360">
+      </a>
+    </div>
+  {% endif %}
+  <h1 class="page__title heading--1">{{ page.title }}</h1>
+  {% comment %} <p class="page__date">{{ 'general.page.published_at' | t }} {{ page.published_at | date: '%B %e, %Y' }}</p> {% endcomment %}
+  <div class="page__content">
+    {{ page.content }}
+  </div>
+</article>

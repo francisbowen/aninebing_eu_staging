@@ -1,0 +1,61 @@
+{%- comment -%}
+
+Comment form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#customer_login
+
+Objects Referenced:
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+{%- assign form_id = 'CustomerLogin' -%}
+{%- assign form_class = 'form form--customer-login' -%}
+
+{% form 'customer_login', id: form_id, class: form_class %}
+
+  {%- if template.name contains 'login' -%}
+    {% include 'form__status', form_id: form_id %}
+  {%- endif -%}
+
+  <div class="form__field">
+    {% assign field_id = form_id | append: '-CustomerEmail' %}
+    <label class="hidden" for="{{ field_id }}">{{ 'customer.login.email' | t }}</label>
+    <input type="email"
+      name="customer[email]"
+      id="{{ field_id }}"
+      class="input input-text input__textbox js-input{% if form.errors contains 'email' %} input--error{% endif %}"
+      placeholder="{{ 'customer.login.email' | t }}"
+      autocorrect="off"
+      autocomplete="email"
+      autocapitalize="off"
+      autofocus
+      required>
+  </div>
+
+  {% if form.password_needed %}
+    <div class="form__field">
+      {% assign field_id = form_id | append: '-CustomerPassword' %}
+      <label class="hidden" for="{{ field_id }}">{{ 'customer.login.password' | t }}</label>
+      <input type="password"
+        name="customer[password]"
+        id="{{ field_id }}"
+        class="input input-text input__textbox input-text--login-password js-input{% if form.errors contains 'password' %} input--error{% endif %}"
+        autocomplete="current-password"
+        placeholder="{{ 'customer.login.password' | t }}">
+    </div>
+    <p class="form__recover"><a class="form__recover-link link link--primary" href="/account/login?view=recover" id="RecoverPassword" title="{{ 'customer.login.forgot_password' | t }}">{{ 'customer.login.forgot_password' | t }}</a></p>
+  {% endif %}
+
+  <div class="form__actions">
+    <button type="submit" class="button button--secondary customer__button">{{ 'customer.login.sign_in' | t }}</button>
+
+    <a href="/account/register" class="link link--primary customer__register-link js-customer-toggle hide-from@md" title="{{ 'customer.login.sign_up' | t }}">{{ 'customer.login.sign_up' | t }}</a>
+  </div>
+
+{% endform %}
+
+{% comment %} Social Login Configuration - theme.liquid as well {% endcomment %}
+{% comment %} <div class="customer__social-media-wrapper">
+  <p class="customer__social-media-title uppercase-text">{{ 'customer.social_media.sign_with' | t }}</p>
+  <div class="one-click-social-login"></div>
+</div> {% endcomment %}

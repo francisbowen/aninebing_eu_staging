@@ -1,0 +1,45 @@
+{%- comment -%}
+
+Form status renderer.
+
+Objects Referenced:
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+
+{% if form.posted_successfully? %}
+  <div class="form__status form__status--success">
+    <p class="form__message" tabindex="-1" data-form-status>{{ success_message | default: 'contact.form.post_success' | t }}</p>
+  </div>
+{% endif %}
+
+{%- comment -%} We need to add this so the errors are output in the right order {%- endcomment -%}
+{%- assign error_order = "author, email, body, password, form" | split: ", " -%}
+{% if form.errors %}
+  <div class="form__status form__status--error">
+    <p class="form__message" tabindex="-1">{{ 'contact.form.error_heading' | t }}</p>
+    <ul class="form__errors">
+      {% for error in error_order %}
+        {% for field in form.errors %}
+          {%- unless error == field -%}
+            {%- continue -%}
+          {%- endunless -%}
+          <li class="error">
+            {% capture field_label %}
+              {% case field %}
+                {% when 'author' %}
+                  {{ 'contact.form.name' | t }}
+                {% when 'body' %}
+                  {{ 'contact.form.message' | t }}
+                {% else %}
+                  {{ form.errors.translated_fields[field] }}
+              {% endcase %}
+            {% endcapture %}
+            {%- comment -%} the href should match the input's id {%- endcomment -%}
+            <p href="#{{ form_id }}-{{ field }}" class="error__link">{{ form.errors.messages[field] }}</p>
+          </li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

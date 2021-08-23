@@ -1,0 +1,18 @@
+{% comment %}
+	Accordion Icon for +/-
+{% endcomment %}
+
+{%- if type == 'opened' -%}
+  {%- assign opened = '' -%}
+  {%- assign closed = 'hide' -%}
+{%- else -%}
+  {%- assign opened = 'hide' -%}
+  {%- assign closed = '' -%}
+{%- endif -%}
+
+<span class="accordion__open js-item-open {{ closed }}">
+	{%- include 'icons' with selected_icon: 'plus-sign', icon_class: 'icon-plus', icon_fill: 'none', icon_stroke: '#000000', title: 'general.accordion.open', desc: 'general.accordion.toggle_accordion' -%}
+</span>
+<span class="accordion__close js-item-close {{ opened }}">
+	{%- include 'icons' with selected_icon: 'minus-sign', icon_class: 'icon-minus' icon_fill: 'none', icon_stroke: '#000000', title: 'general.accordion.close', desc: 'general.accordion.toggle_accordion' -%}
+</span>

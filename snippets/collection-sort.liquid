@@ -1,0 +1,50 @@
+<ul id="sorting_drop_list_secondary" class="dropdown-menu js-sorting-drop-list" role="list">
+  <li role="listitem">
+    <a
+      href="#" 
+      id="sort_best_match" 
+      sort_name="sorting_list" 
+      sort_value="relevency" 
+      role="link" 
+      tabindex="0"
+      title="{{ 'collections.sorting.best_match.title' | t }}" 
+      aria-label="{{ 'collections.sorting.best_match.aria_label' | t }}" 
+      class="uppercase-text heading--4 js-sort-option">{{ 'collections.sorting.best_match.title' | t }}</a>
+  </li>  	
+  <li role="listitem">
+    <a 
+      href="#" 
+      id="sort_price_low_to_high" 
+      sort_name="sorting_list" 
+      sort_value="price_min_to_max" 
+      role="link" 
+      tabindex="0"
+      title="{{ 'collections.sorting.price_min_to_max.title' | t }}" 
+      aria-label="{{ 'collections.sorting.price_min_to_max.aria_label' | t }}" 
+      class="selected_sorting_value uppercase-text heading--4 js-sort-option">{{ 'collections.sorting.price_min_to_max.title' | t }}</a>
+  </li>
+  <li role="listitem">
+    <a 
+      href="#" 
+      id="sort_price_high_to_low" 
+      sort_name="sorting_list" 
+      sort_value="price_max_to_min" 
+      role="link" 
+      tabindex="0" 
+      title="{{ 'collections.sorting.price_max_to_min.title' | t }}" 
+      aria-label="{{ 'collections.sorting.price_max_to_min.aria_label' | t }}" 
+      class="uppercase-text heading--4 js-sort-option">{{ 'collections.sorting.price_max_to_min.title' | t }}</a>
+  </li>	   
+  <li role="listitem">
+    <a 
+      href="#" 
+      id="sort_newest_arrival" 
+      sort_name="sorting_list" 
+      sort_value="creation_date" 
+      role="link" 
+      tabindex="0" 
+      title="{{ 'collections.sorting.creation_date.title' | t }}" 
+      aria-label="{{ 'collections.sorting.creation_date.aria_label' | t }}" 
+      class="uppercase-text heading--4 js-sort-option">{{ 'collections.sorting.creation_date.title' | t }}</a>
+  </li>
+</ul>

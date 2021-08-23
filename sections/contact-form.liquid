@@ -1,0 +1,73 @@
+{% form 'contact', class: 'js-form' %}
+  {% unless form.posted_successfully? %}
+
+    <p class="contact__form__first-body">{{ section.settings.first_body }}</p>
+    <h1 class="contact__form__title heading--1">{{ section.settings.title }}</h1>
+    <p class="contact__form__email"><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></p>
+    <p class="contact__form__second-body">{{ section.settings.second_body }}</p>
+    <p class="contact__form__invitation uppercase-text">{{ section.settings.invitation }}</p>
+
+    <div class="contact__form__error js-contact-form-error">
+      <p class="contact__form__error__heading uppercase-text">{{ 'contact.form.error_heading' | t }}</p>
+      <ul>
+        <li class="contact__form__error__email js-contact-form-error-email">{{ 'contact.form.error_email' | t }}</li>
+        <li class="contact__form__error__message js-contact-form-error-message">{{ 'contact.form.error_message' | t }}</li>
+      </ul>
+    </div>
+
+    <div class="form__field">
+      <input type="text" class="input input-text input__textbox js-input" name="contact[name]" placeholder="{{ 'contact.form.name' | t }}" aria-label="{{ 'contact.form.name' | t }}" required/>
+    </div>
+    <div class="form__field">
+      <input type="email" class="input input-text input__textbox js-input" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" aria-label="{{ 'contact.form.email' | t }}" required/>
+    </div>
+    <div class="form__field">
+      <input type="text" class="input input-text input__textbox js-input" name="contact[subject]" placeholder="{{ 'contact.form.subject' | t }}" aria-label="{{ 'contact.form.subject' | t }}" required/>
+    </div>
+    <div class="form__field">
+      <textarea class="input input-text input__textbox js-input" name="contact[message]" placeholder="{{ 'contact.form.message' | t }}" aria-label="{{ 'contact.form.message' | t }}" required></textarea>
+    </div>
+    <button type="submit" class="contact__form__submit button button--secondary js-submit-btn">{{ 'contact.form.submit' | t }}</button>
+
+  {% else %}
+    <p class="contact__form__success heading--1">{{ 'contact.form.post_success' | t }}</p>
+  {% endunless %}
+{% endform %}
+
+{% schema %}
+  {
+    "name": "Contact Form",
+    "class": "contact__form",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Form"
+      },
+      {
+        "type": "textarea",
+        "id": "first_body",
+        "label": "First text body"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "email",
+        "label": "Contact email"
+      },
+      {
+        "type": "textarea",
+        "id": "second_body",
+        "label": "Second text body"
+      },
+      {
+        "type": "text",
+        "id": "invitation",
+        "label": "Form Title"
+      }
+    ]
+  }
+{% endschema %}

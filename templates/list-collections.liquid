@@ -1,0 +1,23 @@
+{%- comment -%}
+
+Default collection list template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/list-collections-liquid
+
+Objects Referenced:
+ • collections https://help.shopify.com/en/themes/liquid/objects#collections
+
+{%- endcomment -%}
+
+<article class="collections">
+  <h1 class="collections__title">{{ page_title }}</h1>
+  <div class="collections__list">
+    {% for collection in collections %}
+      {% include 'collection__tile' %}
+    {% else %}
+      <div class="collections__empty">
+        <p>{{ 'collections.list.empty' | t }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</article>

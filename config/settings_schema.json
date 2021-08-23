@@ -1,0 +1,832 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Foxpad",
+    "theme_author": "Diff",
+    "theme_version": "3.0.0",
+    "theme_documentation_url": "https:\/\/www.diffagency.com\/",
+    "theme_support_url": "https:\/\/www.diffagency.com\/"
+  },
+  {
+    "name": "Store Domain",
+    "settings": [
+      {
+        "type": "url",
+        "id": "eu_domain",
+        "label": "EU Store"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "theme_color",
+        "label": "Theme Primary Color",
+        "default": "#ff0000"
+      }
+    ]
+  },
+  {
+    "name": "Logos",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image (Dark)"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_light",
+        "label": "Logo image (Light)"
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social sharing image"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image",
+        "info": "Shown when sharing a link on social media. [Learn more](https:\/\/help.shopify.com\/manual\/using-themes\/troubleshooting\/showing-social-media-thumbnail-images\/) about image thumbnails."
+      },
+      {
+        "type": "header",
+        "content": "Social sharing options"
+      },
+      {
+        "type": "checkbox",
+        "id": "share_facebook",
+        "label": "Share on Facebook",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_twitter",
+        "label": "Tweet on Twitter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_pinterest",
+        "label": "Pin on Pinterest",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Social accounts"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter",
+        "info": "https:\/\/twitter.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https:\/\/facebook.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https:\/\/pinterest.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "http:\/\/instagram.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr",
+        "info": "http:\/\/shopify.tumblr.com"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat",
+        "info": "https:\/\/www.snapchat.com\/add\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube",
+        "info": "https:\/\/www.youtube.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo",
+        "info": "https:\/\/vimeo.com\/shopify"
+      }
+    ]
+  },
+  {
+    "name": "Image Sizes",
+    "settings": [
+      {
+        "type": "range",
+        "id": "product_tile_image_max",
+        "min": 160,
+        "max": 1920,
+        "step": 40,
+        "label": "Product Tile",
+        "default": 800
+      },
+      {
+        "type": "range",
+        "id": "article_tile_image_max",
+        "min": 160,
+        "max": 1920,
+        "step": 40,
+        "label": "Article Tile",
+        "default": 800
+      },
+      {
+        "type": "range",
+        "id": "collection_tile_image_max",
+        "min": 160,
+        "max": 1920,
+        "step": 40,
+        "label": "Collection Tile",
+        "default": 800
+      },
+      {
+        "type": "range",
+        "id": "line_item_image_max",
+        "min": 80,
+        "max": 1920,
+        "step": 40,
+        "label": "Line Item Thumbnail",
+        "default": 400
+      },
+      {
+        "type": "text",
+        "id": "responsive_sizes",
+        "label": "Responsive Sized",
+        "default": "360,540,720,900,1080,1440,2160,3240",
+        "info": "Comma-separated list of sizes"
+      }
+    ]
+  },
+  {
+    "name": "Pagination",
+    "settings": [
+      {
+        "type": "range",
+        "id": "products_page_size",
+        "min": 4,
+        "max": 48,
+        "step": 1,
+        "label": "Collection Products",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "results_page_size",
+        "min": 4,
+        "max": 48,
+        "step": 1,
+        "label": "Search Results",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "articles_page_size",
+        "min": 4,
+        "max": 48,
+        "step": 1,
+        "label": "Blog Articles",
+        "info": "On every blog page",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "comments_page_size",
+        "min": 4,
+        "max": 48,
+        "step": 1,
+        "label": "Article Comments",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "addresses_page_size",
+        "min": 4,
+        "max": 48,
+        "step": 1,
+        "label": "Customer Addresses",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "orders_page_size",
+        "min": 4,
+        "max": 48,
+        "step": 1,
+        "label": "Customer Orders",
+        "default": 12
+      }
+    ]
+  },
+  {
+    "name": "Product",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Shipping and Returns"
+      },
+      {
+        "type": "text",
+        "id": "shipping_return",
+        "label": "Shipping and Return Text",
+        "default": "Free Shipping and Returns"
+      },
+      {
+        "type": "url",
+        "id": "shipping_return_link",
+        "label": "Shipping and Return Link"
+      },
+      {
+        "type": "header",
+        "content": "Out of Stock Message"
+      },
+      {
+        "type": "text",
+        "id": "out_of_stock_message",
+        "label": "Out of Stock Message - Product Page",
+        "info": "Appears when there is a variant that is out of stock",
+        "default": "Can't find your size? Select your size to sign up for a Back in Stock Notification."
+      },
+      {
+        "type": "text",
+        "id": "coming_soon_message",
+        "label": "Coming Soon Message - Product Page",
+        "info": "Appears when the product has a tag related to coming soon",
+        "default": "Product is Coming Soon - Select Size to sign up to get notified when product launches."
+      },
+      {
+        "type": "header",
+        "content": "Out of Stock Modal"
+      },
+      {
+        "type": "image_picker",
+        "id": "out_of_stock_logo",
+        "label": "Logo"
+      },
+      {
+        "type": "header",
+        "content": "Out of Stock - Success Modal"
+      },
+      {
+        "type": "image_picker",
+        "id": "stock_success_logo",
+        "label": "Logo"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program"
+      },
+      {
+        "type": "url",
+        "id": "loyalty_link",
+        "label": "Loyal Program Link"
+      },
+      {
+        "type": "header",
+        "content": "Review"
+      },
+      {
+        "type": "range",
+        "id": "product_read_more_split",
+        "label": "Determines after how many characters the review 'read more' text should split",
+        "min": 0,
+        "max": 1000,
+        "step": 10,
+        "default": 100
+      },
+      {
+        "type": "textarea",
+        "id": "excluded_product_types",
+        "label": "Excluded Product Types",
+        "info": "Comma Separated List"
+      },
+      {
+        "type": "text",
+        "id": "yotpo_app_key_us",
+        "label": "Yotpo App Key - US",
+        "default": "PROzW4b465I9n5LmsIeARiCOAHvgJRUYkDTpY76F"
+      },
+      {
+        "type": "text",
+        "id": "yotpo_app_key_eu",
+        "label": "Yotpo App Key - EU",
+        "default": "dWvnf4oVLG2vJoHvchXVtb2g8AkqIP7GoQcPZNB0"
+      },
+      {
+        "type": "text",
+        "id": "yotpo_app_key_us_dev",
+        "label": "Yotpo App Key - US Dev",
+        "default": "9BOd25iwVsDnNcJHiY30jFOSZ8l3P99QpqiH9iRn"
+      }
+    ]
+  },
+  {
+    "name": "Account",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Register\/Login"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_account_toggle",
+        "label": "Toggle between Login and Register",
+        "info": "If it's unchecked, then it'll navigate between login and register"
+      },
+      {
+        "type": "header",
+        "content": "Account Dashboard"
+      },
+      {
+        "type": "checkbox",
+        "id": "account_dashboard_switch_side",
+        "label": "Image on the Left instead of Right on Dashboard",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "account_dashboard_image",
+        "label": "Account Dashboard Image"
+      },
+      {
+        "type": "url",
+        "id": "account_dashboard_external_link",
+        "label": "Account Dashboard External Link"
+      }
+    ]
+  },
+  {
+    "name": "Gift Products",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_gift_products",
+        "label": "Enable gift products",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_gift_products_purchasable",
+        "label": "Enable gift products to be purchasable",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "gift_add_type",
+        "label": "Functionality of Adding Gift to Cart",
+        "info": "Note: Automatic takes the Gift Product 1, and if only 1 gift choice for Modal, then it should be in Gift Product 1",
+        "options": [
+          {
+            "value": "modal",
+            "label": "Modal Popup"
+          },
+          {
+            "value": "automatic",
+            "label": "Automatic"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "gift_minimum_amount",
+        "label": "Minimum gift amount in cents",
+        "info": "Example: 40000 is $400, Note: price must be adjusted on cart script as well",
+        "default": "100"
+      },
+      {
+        "type": "product",
+        "id": "gift_product_1",
+        "label": "Gift product 1",
+        "info": "The gift product must also contain the 'gift' tag. Will always select the first available variant."
+      },
+      {
+        "type": "product",
+        "id": "gift_product_2",
+        "label": "Gift product 2",
+        "info": "The gift product must also contain the 'gift' tag. Will always select the first available variant."
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Cart related"
+      },
+      {
+        "type": "text",
+        "id": "cart_promo_message",
+        "label": "Cart Promo Message",
+        "info": "Message that shows up above payment details"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_promo_message",
+        "label": "Check to show cart promo message"
+      }
+    ]
+  },
+  {
+    "name": "Blog",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Blog Header - Events & Press Page"
+      },
+      {
+        "type": "range",
+        "id": "nb_events_articles",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "How Many Events Articles should be displayed on this page?",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "nb_press_articles",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "How Many Press Articles should be displayed on this page?",
+        "default": 6
+      }
+    ]
+  },
+  {
+    "name": "Custom Checkout",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Zone and Product Exclusion"
+      },
+      {
+        "type": "paragraph",
+        "content": "Product exclusion is dependent on product tag called 'product-zone-exclusion'."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_zone_product_exclusion",
+        "label": "Zone and Product Exclusion Activated",
+        "info": "Make sure to disable the cart script if this is checked off and vice versa",
+        "default": true
+      },
+      {
+        "type": "richtext",
+        "id": "checkout_excluded_zone_message",
+        "label": "Checkout Excluded Zone Message - US"
+      },
+      {
+        "type": "richtext",
+        "id": "checkout_excluded_zone_message_eu",
+        "label": "Checkout Excluded Zone Message - EU"
+      },
+      {
+        "type": "header",
+        "content": "Shipping Information"
+      },
+      {
+        "type": "text",
+        "id": "checkout_zip_ireland",
+        "label": "Checkout Zip Ireland Error Message",
+        "default": "Please enter a valid EIR code"
+      },
+      {
+        "type": "text",
+        "id": "checkout_business_address",
+        "label": "Checkout Business Address Error Message",
+        "default": "Please enter a business address"
+      },
+      {
+        "type": "header",
+        "content": "Checkout Marketing"
+      },
+      {
+        "type": "text",
+        "id": "checkout_marketing_title",
+        "label": "Checkout Marketing Header"
+      },
+      {
+        "type": "richtext",
+        "id": "checkout_marketing_text",
+        "label": "Checkout Marketing Text"
+      },
+      {
+        "type": "header",
+        "content": "Shipping Address"
+      },
+      {
+        "type": "text",
+        "id": "shipping_business_accept_text",
+        "label": "Shipping Business Address Text"
+      },
+      {
+        "type": "header",
+        "content": "Checkout Email Signup"
+      },
+      {
+        "type": "textarea",
+        "id": "checkout_email_info",
+        "label": "Checkout Email Signup Info",
+        "default": "<p>By signing up via text, you agree to receive recurring automated marketing messages from Anine Bing at the cell number provided when signing up. Consent is not a condition of any purchase. Msg &amp; data rates mayapply. View <a href=\"http:\/\/attn.tv\/aninebing\/terms.html\" target=\"_blank\" rel=\"noopener noreferrer\">Terms<\/a> and <a aria-haspopup=\"dialog\" data-modal=\"policy-1772645\" data-title-text=\"Privacy policy\" data-close-text=\"Close\" data-iframe=\"true\" href=\"\/1501528\/policies\/1772645.html\">Privacy policy<\/a>.<\/p>"
+      },
+      {
+        "type": "text",
+        "id": "checkout_email_accept",
+        "label": "Checkout Email Signup Agree Text",
+        "default": "Receive news and offers via text message*"
+      },
+      {
+        "type": "header",
+        "content": "Checkout Help"
+      },
+      {
+        "type": "richtext",
+        "id": "checkout_help_contact",
+        "label": "Checkout Help Contact Text"
+      },
+      {
+        "type": "header",
+        "content": "Order Details"
+      },
+      {
+        "type": "text",
+        "id": "shipping_order_details_title",
+        "label": "Shipping Order Details Title"
+      }
+    ]
+  },
+  {
+    "name": "Loyalty Program - Antavo",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Loyalty Program - Generic"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_join",
+        "label": "Loyalty Program Join List Text",
+        "default": "Join The List"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - Intro"
+      },
+      {
+        "type": "image_picker",
+        "id": "loyalty_program_hero_banner",
+        "label": "Loyalty Program Hero Banner"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_intro",
+        "label": "Loyalty Program Intro Text",
+        "default": "<h1>The LIST<span>Beta<\/span><\/h1><h2>A rewarding way to shop<\/h2><p>Get on THE LIST<span class=\"beta\">Beta<\/span> to be the first to experience the rewards of being one of our most valued customers. Enjoy a personalized experience, insider access, and points for every dollar you spend.<\/p>"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - Rewards"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_rewards_title",
+        "label": "Rewards Title",
+        "default": "Rewards"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_rewards_text",
+        "label": "Rewards Text",
+        "default": "<li>Free Shipping<\/li><li>Welcome Gift<\/li><li>THE LIST Credit Toward Shopping<\/li><li>Surprise Rewards<\/li>"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - How to earn points"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_points_title",
+        "label": "Earn Points Title",
+        "default": "How to earn points"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_points_text",
+        "label": "Rewards Text",
+        "default": "<li>$1 = 1 Point<\/li><li>Get 200 Points Or A Welcome Gift Just For Joining<\/li><li>Get Points For Every Survey Or Review You Complete<\/li><li>Get Double Points For Shopping With A Personal Stylist<\/li><li>Earn More With Double And Triple Point Offers<\/li>"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - Status"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_status_title",
+        "label": "Status Title",
+        "default": "Status"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_status_text",
+        "label": "Status Text",
+        "default": "<p>Earn points, get rewards.<\/p><p>A higher status means better rewards.<\/p>"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - Essential"
+      },
+      {
+        "type": "image_picker",
+        "id": "loyalty_program_essential_banner",
+        "label": "Loyalty Program Essential Banner"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_essential_points",
+        "label": "Essential Points",
+        "default": "0 - 1,000 Points"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_essential_title",
+        "label": "Essential Title",
+        "default": "Essential"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_essential_text",
+        "label": "Essential Text",
+        "default": "<p>Welcome Gift<\/p><p>Free shipping<\/p>"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - Elevated"
+      },
+      {
+        "type": "image_picker",
+        "id": "loyalty_program_elevated_banner",
+        "label": "Loyalty Program Elevated Banner"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_elevated_points",
+        "label": "Elevated Points",
+        "default": "1,001 - 10,000 Points"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_elevated_title",
+        "label": "Elevated Title",
+        "default": "Elevated"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_elevated_text",
+        "label": "Elevated Text",
+        "default": "<p>Essential REWARDS+<\/p><p>Early access to sale + new arrivals<\/p><p>Double and triple point offers<\/p>"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - Exclusive"
+      },
+      {
+        "type": "image_picker",
+        "id": "loyalty_program_exclusive_banner",
+        "label": "Loyalty Program Exclusive Banner"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_exclusive_points",
+        "label": "Exclusive Points",
+        "default": "10,001+ Points"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_exclusive_title",
+        "label": "Exclusive Title",
+        "default": "Exclusive"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_exclusive_text",
+        "label": "Exclusive Text",
+        "default": "<p>Elevated REWARDS+<\/p><p>Direct Access To Concierge<\/p><p>Exclusive Styling Concierge Services<\/p>"
+      },
+      {
+        "type": "header",
+        "content": "Loyalty Program - Frequently Asked Questions"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_faq_title",
+        "label": "FAQ Title",
+        "default": "Frequently Asked Questions"
+      },
+      {
+        "type": "textarea",
+        "id": "loyalty_program_faq_text",
+        "label": "FAQ Text",
+        "default": "<dt>What Is THE LIST<span class=\"beta\">BETA<\/span><\/dt><dd>THE LIST<span class=\"beta\">BETA<\/span>  is an invite-only preview to ANINE BING’s loyalty program offering exclusive Concierge services, a personalized experience, and rewards for our customers.<\/dd><dt>How Can I Join?<\/dt><dd>Enroll through the link above by providing your First Name, Last Name, and Email Address.<\/dd>"
+      },
+      {
+        "type": "url",
+        "id": "loyalty_program_faq_link",
+        "label": "FAQ Link - US"
+      },
+      {
+        "type": "url",
+        "id": "loyalty_program_faq_link_eu",
+        "label": "FAQ Link - EU"
+      },
+      {
+        "type": "text",
+        "id": "loyalty_program_more_faq",
+        "label": "FAQ More",
+        "default": "More FAQs"
+      }
+    ]
+  },
+  {
+    "name": "Discount",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Discount Tag Messages",
+        "info": "Discount Message will appear on cart and flyout by line item. NOTE: Second discount message and price has to be larger than the first."
+      },
+      {
+        "type": "checkbox",
+        "id": "show_discount_message",
+        "label": "Show Discount Message?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "discount_tag_name",
+        "label": "Discount Tag Name",
+        "default": "sale-2020-may"
+      },
+      {
+        "type": "text",
+        "id": "discount_minimum_price1",
+        "label": "Discount Minimum Price 1",
+        "info": "Display in cents, for example: $100 = 10000",
+        "default": "15000"
+      },
+      {
+        "type": "text",
+        "id": "discount_message1",
+        "label": "Shipping and Return Text 1",
+        "default": "SPEND $150 ON SALE, GET 15% OFF"
+      },
+      {
+        "type": "text",
+        "id": "discount_minimum_price2",
+        "label": "Discount Minimum Price 2",
+        "info": "Display in cents, for example: $100 = 10000",
+        "default": "30000"
+      },
+      {
+        "type": "text",
+        "id": "discount_message2",
+        "label": "Shipping and Return Text 2",
+        "default": "SPEND $300 ON SALE, GET 25% OFF"
+      }
+    ]
+  }
+]

@@ -1,0 +1,47 @@
+{%- comment -%}
+
+Line item renderer.
+Must be included in a table.
+
+Objects Referenced:
+ • line_item https://help.shopify.com/en/themes/liquid/objects/line_item
+
+{%- endcomment -%}
+
+{%- assign line_item_classes = 'line-item' | split: ' ' -%}
+{%- if line_item.original_price > line_item.final_price -%}
+  {%- assign line_item_classes = 'price--sale' | concat: line_item_classes -%}
+{%- else -%}
+  {%- assign line_item_classes = 'price--regular' | concat: line_item_classes -%}
+{%- endif -%}
+
+<ul class="{{ line_item_classes | reverse | join: ' ' }} line-item__grid">
+  <li class="line-item__image line-item__image--body">
+    <a href="{{ line_item.url }}">
+      {% include 'image--responsive' with image: line_item.image, max_width: settings.line_item_image_max %}
+    </a>
+  </li>
+  <li class="line-item__info line-item__info--body">
+    <a class="line-item__title uppercase-text" href="{{ line_item.url }}">
+      {{ line_item.product.title }}
+    </a>
+    <p class="line-item__title line-item__title--variant uppercase-text">{{ line_item.variant.title }}</p>
+    {% comment %}{% include 'line_item__properties' with properties: line_item.properties %}
+    {% if line_item.successfully_fulfilled_quantity > 0 %}
+      {% include 'fulfillment' with line_item.fulfillment %}
+    {% endif %}{% endcomment %}
+  </li>
+  <li class="line-item__price line-item__price--body line-item__body uppercase-text table-responsive__data table-responsive__data--full-order" data-label="{{ 'customer.order.price' | t }}">
+    {% include 'pricing' with price: line_item.final_price, compare_at_price: line_item.original_price, template_class: template.name %}
+    {% include 'discount_allocation' with item.line_level_discount_allocations %}
+  </li>
+  <li class="line-item__quantity line-item__quantity--body line-item__body uppercase-text table-responsive__data table-responsive__data--full-order" data-label="{{ 'customer.order.quantity' | t }}">
+    {{ line_item.quantity }}
+  </li>
+  <li class="line-item__sku line-item__sku--body line-item__body table-responsive__data table-responsive__data--full-order" data-label="{{ 'customer.order.sku' | t }}">
+    <span class="line-item__sku uppercase-text order-letter-space-sm">{{ line_item.sku }}</span>
+  </li>
+  <li class="line-item__total line-item__total--body line-item__body uppercase-text table-responsive__data table-responsive__data--full-order" data-label="{{ 'customer.order.total' | t }}">
+    {% include 'pricing' with price: line_item.final_line_price, compare_at_price: line_item.original_line_price, template_class: template.name %}
+  </li>
+</ul>

@@ -1,0 +1,33 @@
+{%- comment -%}
+
+Collection toolbar, including product count, filters, and sorting.
+
+Objects Referenced:
+ • collection https://help.shopify.com/en/themes/liquid/objects/collection
+
+{%- endcomment -%}
+
+<aside class="collection__toolbar">
+  <div class="collection__product-count">
+    {{ 'collections.general.items_with_count' | t: count: collection.products_count }}
+  </div>
+  {% if collection.tags.size > 0 %}
+    <div class="collection__tags">
+      {% include 'taglist', tags: collection.tags, multitag: true %}
+    </div>
+  {% endif %}
+  {% assign active_sort_by = collection.sort_by | default: collection.default_sort_by %}
+  <form class="collection__sort" action="{{ request.path }}" method="get">
+    <label for="Collection-Sort">{{ 'collections.sorting.title' | t }}</label>
+    <select name="sort_by" id="Collection-Sort">
+      {% for option in collection.sort_options %}
+        <option value="{{ option.value }}"
+          {%- if option.value == active_sort_by -%} selected{%- endif -%}
+          >
+          {{- option.name -}}
+        </option>
+      {% endfor %}
+    </select>
+    <button type="submit">{{ 'collections.sorting.submit' | t }}</button>
+  </form>
+</aside>

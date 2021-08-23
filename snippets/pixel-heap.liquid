@@ -1,0 +1,21 @@
+<!-- Start Heap Code -->
+  <script type="text/javascript">
+    window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
+    heap.load("148200200");
+
+    {% if customer %}   
+      heap.addEventProperties({'Order Count': {{ customer.orders_count }} }); 
+      
+      /** Heap Identity call  **/
+      var customerEmail = '{{ customer.email }}' || '{{ checkout.email }}';
+      heap.identify(customerEmail);
+      heap.addUserProperties({'Name': '{{ customer.name }}','email': customerEmail,'CustomerID':'{{ customer.id }}','TotalSpent':'{{ customer.total_spent }}'});   
+      /***/
+                                  
+      /*** GTM Customer Email push   */
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({'customerEmail': customerEmail});
+
+    {% endif %}
+  </script>
+  <!-- End Heap Code -->

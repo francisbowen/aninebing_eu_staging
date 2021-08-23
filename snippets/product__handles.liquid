@@ -1,0 +1,6 @@
+{%- assign product__handles = product__handles | default: product -%}
+
+<script>
+  window.color_handles = '{{ product__handles.metafields.related.colors | split: "," | json }}' || {};
+  window.bundle_handles = '{{ product__handles.metafields.related.bundle | split: "," | json }}' || {};
+</script>

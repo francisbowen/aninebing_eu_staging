@@ -1,0 +1,15 @@
+{% if section.settings.image_url != blank %}
+<a href="{{ section.settings.image_url }}" role="link" class="classics__link">
+{% endif %}
+  <div class="classics__header">
+    {% if section.settings.title != blank %}
+      <p class="classics__header__title heading--1">{{ section.settings.title | upcase }}</p>
+    {% endif %}
+
+    {% if section.settings.text != blank %}
+      <div class="classics__header__text">{{ section.settings.text }}</div>
+    {% endif %}
+  </div>
+{% if section.settings.image_url != blank %}
+</a>
+{% endif %}

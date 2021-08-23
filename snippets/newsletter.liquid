@@ -1,0 +1,39 @@
+{% assign footer_newsletter_title = 'general.footer.newsletter.title' | t %}
+{% assign footer_newsletter_placeholder = 'general.footer.newsletter.placeholder' | t %}
+{% assign footer_newsletter_submit = 'general.footer.newsletter.submit' | t %}
+{% assign footer_newsletter_error_msg = 'general.footer.newsletter.general_error_msg_html' | t %}
+{% assign footer_newsletter_success_msg = 'general.footer.newsletter.success_msg' | t %}
+{% assign footer_newsletter_checkbox_text = 'general.footer.newsletter.checkbox_text' | t %}
+
+{% if checkbox_text %}
+  {% assign footer_newsletter_checkbox_text = checkbox_text %}
+{% endif %}
+
+{% assign caption_hidden = caption_hidden %}
+{% assign custom_class = custom_class %}
+
+{% unless caption_hidden %}
+  <p class="footer__newsletter--title button-text">{{ footer_newsletter_title }}</p>
+{% endunless %}
+
+{% form 'customer', id:'popupNewsletterForm', class: 'js-form footer__newsletter js-sailthru-newsletter' %}
+
+<p class="footer__newsletter--success js-success-msg is-hidden">{{ footer_newsletter_success_msg }}</p>
+
+<input type="hidden" name="contact[tags]" value="newsletter">
+
+<div class="input__group input__group--primary {{ custom_class }}">
+  <input class="input input--footer js-input input-text" type="email" name="contact[email]" id="EmailNewsletter" title="{{ footer_newsletter_placeholder }}" value="{% if customer %}{{ customer.email }}{% endif %}">
+  <label class="input__label input-text" for="email">{{ footer_newsletter_placeholder }}</label>
+
+  <button class="input__submit button-text js-submit-btn" name="submit" type="submit">{{ footer_newsletter_submit }}</button>
+
+  <p class="error-msg">{{ footer_newsletter_error_msg }}</p>
+</div>
+
+<div class="input__checkbox-group">
+  <input class="input__checkbox js-checkbox-input required" id="newsletter-checkbox" type="checkbox" aria-label="Newsletter checkbox">
+  <label class="body-text input__checkbox--label" for="newsletter-checkbox">{{ footer_newsletter_checkbox_text }}</label>
+</div>
+      
+{% endform %}

@@ -1,0 +1,67 @@
+{%- comment -%}
+
+Article tile renderer.
+
+Objects Referenced:
+ • article https://help.shopify.com/en/themes/liquid/objects/article
+
+{%- endcomment -%}
+
+<article class="article-tile">
+  <header class="article-tile__image">
+   
+    <a class="article-tile__image__wrapper" href="{{ article.url }}" title="{{ article.title }} Link">
+      {%- if article.metafields.featured['video'] == blank and article.image == blank -%}
+        <div class="article-tile__image__wrapper__bg" style="background: {{ blog.metafields.header['background-color'] }}"></div>
+      {%- elsif article.metafields.featured['video'] == blank -%}
+        {% include 'image--responsive' with image: article.image, wrapper_class: 'article-tile__image', max_width: settings.article_tile_image_max %}
+      {%- else -%}
+        <video class="article-tile__video" height="430" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+          <source src="{{ article.metafields.featured['video'] }}" type="video/mp4">
+        </video>
+      {%- endif -%}
+    </a>
+
+  </header>
+  <div class="article-tile__meta">
+
+    <div class="article-tile__header">
+      <h2 class="article-tile__title">{{ article.title }}</h2>
+      {%- unless blog_type == 'press' -%}
+        <a href="{{ article.url }}" class="link link--primary hide-until@md">{{ 'blogs.events.view_details' | t }}</a>
+      {%- endunless -%}
+    </div>
+
+    {%- unless blog_type == 'events' or blog_type == 'press' -%}
+      <p class="article-tile__author">{{ 'blogs.article.by_author' | t: author: article.author }}</p>
+    {%- endunless -%}
+
+    <p class="article-tile__date">
+      {%- if blog_type == 'events' -%}
+        {{ article.metafields.event['date'] }}
+      {%- elsif blog_type == 'press' -%}
+      {%- else -%}
+        {{ article.published_at | time_tag: format: 'date' }}
+      {%- endif -%}
+    </p>
+    
+    {%- unless blog_type == 'press' -%}
+      <div class="article-tile__excerpt">
+        <p>{{ article.excerpt_or_content | strip_html | truncatewords: 25, '...' }}</p>
+      </div>
+    {%- endunless -%}
+
+    {%- unless blog_type == 'press' -%}
+      <a href="{{ article.url }}" class="article-tile__view-details link link--primary hide-from@md">{{ 'blogs.events.view_details' | t }}</a>
+    {%- endunless -%}
+
+    {% comment %}{% if article.comments_enabled? %}
+      <p class="article-tile__comments-count">
+        {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+      </p>
+    {% endif %}{% endcomment %}
+    {% comment %}<div class="article-tile__tags">
+      {% include 'taglist' with tags: article.tags %}
+    </div>{% endcomment %}
+  </div>
+</article>

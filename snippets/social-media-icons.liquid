@@ -1,0 +1,42 @@
+{% comment %} Facebook {% endcomment %}
+{% assign show_facebook = section.settings.show_facebook %}
+{% assign facebook_link = section.settings.facebook_link %}
+{% assign facebook_alt = section.settings.facebook_alt %}
+{% comment %} Instagram {% endcomment %}
+{% assign show_instagram = section.settings.show_instagram %}
+{% assign instagram_link = section.settings.instagram_link %}
+{% assign instagram_alt = section.settings.instagram_alt %}
+{% comment %} Pinterest {% endcomment %}
+{% assign show_pinterest = section.settings.show_pinterest %}
+{% assign pinterest_link = section.settings.pinterest_link %}
+{% assign pinterest_alt = section.settings.pinterest_alt %}
+{% comment %} Twitter {% endcomment %}
+{% assign show_twitter = section.settings.show_twitter %}
+{% assign twitter_link = section.settings.twitter_link %}
+{% assign twitter_alt = section.settings.twitter_alt %}
+{% comment %} Youtube {% endcomment %}
+{% assign show_youtube = section.settings.show_youtube %}
+{% assign youtube_link = section.settings.youtube_link %}
+{% assign youtube_alt = section.settings.twitter_alt %}
+
+<section class="social-media-container">
+  {% if facebook_link and show_facebook %}
+    <a class="social-icon facebook-icon" href="{{ facebook_link }}" title="Facebook Social Media Icon" target="_blank"><img src="{{ 'icon-facebook-white.png' | asset_url }}" alt="{{ facebook_alt }}"/></a>
+  {% endif %}
+
+  {% if instagram_link and show_instagram %}
+    <a class="social-icon instamgra-icon" href="{{ instagram_link }}" title="Instagram Social Media Icon" target="_blank"><img src="{{ 'icon-instagram-white.png' | asset_url }}" alt="{{ instagram_alt }}" /></a>
+  {% endif %}
+
+  {% if pinterest_link and show_pinterest %}
+    <a class="social-icon pinterest-icon" href="{{ pinterest_link }}" title="Pinterest Social Media Icon" target="_blank"><img src="{{ 'icon-pinterest-white.png' | asset_url }}" alt="{{ pinterest_alt }}" /></a>
+  {% endif %}
+
+  {% if twitter_link and show_twitter %}
+    <a class="social-icon twitter-icon" href="{{ twitter_link }}" title="Twitter Social Media Icon" target="_blank"><img src="{{ 'icon-twitter-white.png' | asset_url }}" alt="{{ twitter_alt }}" /></a>
+  {% endif %}
+
+  {% if youtube_link and show_youtube %}
+    <a class="social-icon youtube-icon" href="{{ youtube_link }}" title="Youtube Social Media Icon" target="_blank"><img src="{{ 'icon-youtube-white.png' | asset_url }}" alt="{{ youtube_alt }}" /></a>
+  {% endif %}
+</section>

@@ -1,0 +1,333 @@
+{%- comment -%}
+This snippet should only be included in the following sections: 
+
+content.liquid
+
+{%- endcomment -%}
+
+{% assign custom_cta_class = 'content__cta' %}
+
+{% if cta_remove_margin %}
+  {% assign custom_cta_class = 'content__cta has-no-margin' %}
+{% endif %}
+
+{% capture sectionContent %}
+
+  <div {% if content_unique_identifier_id %} id="{{ content_unique_identifier_id }}"{% endif %} class="content-container-wrapper{% if remove_gap_under_image %} gap-is-removed{% endif %}{% if content_unique_identifier %} {{ content_unique_identifier }}{% endif %}">
+
+    {% include 'button' with button_style: button_style_desktop, button_text: cta_text, button_url: cta_link, class: custom_cta_class, use_as_span_tag: container_link %}
+    {% capture cta_button_desktop %}{{ cta }}{% endcapture %}
+
+    {% include 'button' with button_style: button_style_mobile, button_text: cta_text, button_url: cta_link, class: custom_cta_class, use_as_span_tag: container_link %}
+    {% capture cta_button_mobile %}{{ cta }}{% endcapture %}
+
+    {% if video_filename != blank %}
+      <video class="content__video js-content-video {% if video_filename_mobile != blank %}hide-until@sm{% endif %}" loop="true" autoplay="autoplay" muted aria-hidden="true" playsinline>
+        <source src="{{ video_filename | file_url }}" type="video/mp4">
+      </video>
+      {% if video_filename_mobile != blank %}
+        <video class="content__video js-content-video hide-from@sm" loop="true" autoplay="autoplay" muted aria-hidden="true" playsinline>
+          <source src="{{ video_filename_mobile | file_url }}" type="video/mp4">
+        </video>
+      {% endif %}
+    {% elsif background_image_desktop and background_image_desktop_2x and background_image_mobile and background_image_mobile_2x %}
+      {% include 'picture' with 
+        image_desktop: background_image_desktop, 
+        image_desktop_2x: background_image_desktop_2x, 
+        image_mobile: background_image_mobile, 
+        image_mobile_2x: background_image_mobile_2x,
+        class: 'content__img',
+        alt: content_title
+      %}
+    {% endif %}
+
+    <div class="content is-hidden-mobile {% if aligned_center %}is-centered {% endif %}{% if full_width_d %}{{ is-full-width-d }}{% elsif full_width_t %}{{ is-full-width-t }}{% elsif full_width_m %}{{ is-full-width-m }}{% endif %}">
+
+      {% if content_image and section.settings.content_image_visibility != 'none' %}
+        <img class="content__image{% if section.settings.content_image_visibility == 'desktop_only' %} hide-until@sm{% elsif section.settings.content_image_visibility == 'mobile_only' %} hide-from@sm{% endif %}" src="{{ content_image | img_url: content_image_width }}x">
+      {% endif %}
+
+      {% if content_title != blank %}
+        <h1 class="content__title">{{ content_title }}</h1>
+      {% endif %}
+
+      {% if content_body != blank %}
+        <div class="content__body {% if remove_margin %}has-no-margin{% endif %}">{{ content_body }}</div>
+      {% endif %}
+
+      {% if cta_link and cta_text != blank %}
+        {{ cta_button_desktop }}
+      {% endif %}
+    </div>
+
+    <div class="content-container-mobile
+      {% if aligned_center %}is-centered{% endif %} 
+      {% if add_content_under_image_mobile %}is-visible-below{% else %}is-visible-above{% endif %}
+      {% if mobile_content_alignment == 'center_center' %}is-center-center
+      {% elsif mobile_content_alignment == 'center_left' %}is-center-left
+      {% elsif mobile_content_alignment == 'center_right' %}is-center-right
+      {% elsif mobile_content_alignment == 'top_left' %}is-top-left
+      {% elsif mobile_content_alignment == 'top_center' %}is-top-center
+      {% elsif mobile_content_alignment == 'top_right' %}is-top-right
+      {% elsif mobile_content_alignment == 'bottom_left' %}is-bottom-left
+      {% elsif mobile_content_alignment == 'bottom_left' %}is-bottom-center
+      {% elsif mobile_content_alignment == 'bottom_right' %}is-bottom-right{% endif %}">
+
+      <div class="content content-mobile">
+        {% if content_image and section.settings.content_image_visibility != 'none' %}
+          <img class="content__image{% if section.settings.content_image_visibility == 'desktop_only' %} hide-until@sm{% elsif section.settings.content_image_visibility == 'mobile_only' %} hide-from@sm{% endif %}" src="{{ content_image | img_url: 'master' }}">
+        {% endif %}
+
+        {% if content_title != blank %}
+          <h1 class="content__title">{{ content_title }}</h1>
+        {% endif %}
+
+        {% if content_body != blank %}
+          <div class="content__body {% if remove_margin %}has-no-margin{% endif %}">{{ content_body }}</div>
+        {% endif %}
+
+        {% if cta_link and cta_text != blank %}
+          {{ cta_button_mobile }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endcapture %}
+{% if section.settings.cta_email_container != blank %}
+  {% comment %}
+    TODO: This section can probably be refactored where we actually position the below anchor tag above the slide.
+    CSS-only Layered Links: https://www.sarasoueidan.com/blog/nested-links/
+  {% endcomment %}
+  <a href="{{ section.settings.cta_email_container }}">{{- sectionContent -}}</a>
+{%- else if container_link != blank -%}
+  <a href="{{ cta_link_container }}">{{- sectionContent -}}</a>
+{% else %}
+  {{ sectionContent }}
+{% endif %}
+<style>
+{% unless background_image_desktop and background_image_mobile or video_filename != blank %}
+  #shopify-section-{{ section.id }}.content-container {
+    {% if background_color %}background-color: {{ background_color }};{% endif %}
+    {% if height_d != blank %}height: {{ height_d }}px;{% endif %}
+    background-clip: padding-box;
+    border-bottom: 6px solid transparent;
+  }
+{% endunless %}
+
+{% unless individual_alignment %}
+  #shopify-section-{{ section.id }} .content {
+    position: absolute;
+    top: {{ alignment_top_desktop }}%;
+    left: {{ alignment_left_desktop }}%;
+    transform: translate(-50%, -50%);
+    {% if full_width_d %}width: {{ full_width_d }};{% else %}width: auto;{% endif %}
+  }
+{% endunless %}
+
+{% if individual_alignment %}
+  #shopify-section-{{ section.id }} .content__image {
+    top: {{ image_alignment_top_desktop }}%;
+    left: {{ image_alignment_left_desktop }}%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+  }
+
+  #shopify-section-{{ section.id }} .content__title {
+    top: {{ title_alignment_top_desktop }}%;
+    left: {{ title_alignment_left_desktop }}%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+  }
+
+  #shopify-section-{{ section.id }} .content__body {
+    top: {{ body_alignment_top_desktop }}%;
+    left: {{ body_alignment_left_desktop }}%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+  }
+
+  #shopify-section-{{ section.id }} .content__cta {
+    top: {{ button_alignment_top_desktop }}%;
+    left: {{ button_alignment_left_desktop }}%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+  }
+{% endif %}
+
+#shopify-section-{{ section.id }} .content__body,
+#shopify-section-{{ section.id }} .content__cta,
+#shopify-section-{{ section.id }} .content__title {
+  {% if custom_margin_top != blank %}margin-top: {{ custom_margin_top }}px;{% endif %};
+}
+
+#shopify-section-{{ section.id }} .content__image {
+  {% if content_image_width %}width: {{ content_image_width }}px;{% endif %}
+}
+
+#shopify-section-{{ section.id }} .content__title {
+  line-height: 1.4;
+  {% if enable_title_custom_font_size %}font-size: {{ content_title_font_size_desktop }}px;{% endif %}
+}
+
+#shopify-section-{{ section.id }} .content__body {
+  {% if enable_body_custom_font_size %}font-size: {{ content_body_font_size_desktop }}px;{% endif %}
+}
+
+#shopify-section-{{ section.id }} .content__cta {
+  {% if enable_cta_custom_font_size %}font-size: {{ content_cta_font_size_desktop }}px;{% endif %}
+}
+
+@media only screen and (max-width: 996px) {
+
+  {% unless background_image_desktop and background_image_mobile or video_filename != blank %}
+    #shopify-section-{{ section.id }}.content-container {
+      {% if background_color %}background-color: {{ background_color }};{% endif %}
+      {% if height_t != blank %}height: {{ height_t }}px;{% endif %}
+    }
+  {% endunless %}
+
+  {% unless individual_alignment %}
+    #shopify-section-{{ section.id }} .content {
+      top: {{ alignment_top_tablet }}%;
+      left: {{ alignment_left_tablet }}%;
+      transform: translate(-50%, -50%);
+      {% if full_width_d %}width: {{ full_width_d }};{% else %}width: auto;{% endif %}
+    }
+  {% endunless %}
+  
+  {% if individual_alignment %}
+    #shopify-section-{{ section.id }} .content__image {
+      top: {{ image_alignment_top_tablet }}%;
+      left: {{ image_alignment_left_tablet }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__title {
+      top: {{ title_alignment_top_tablet }}%;
+      left: {{ title_alignment_left_tablet }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__body {
+      top: {{ body_alignment_top_tablet }}%;
+      left: {{ body_alignment_left_tablet }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__cta {
+      top: {{ button_alignment_top_tablet }}%;
+      left: {{ button_alignment_left_tablet }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+  {% endif %}
+}
+
+@media only screen and (max-width: 640px) {
+
+  #shopify-section-{{ section.id }} .content-container-wrapper.gap-is-removed {
+    margin-bottom: -4px;
+  }
+
+  #shopify-section-{{ section.id }} .content-container-wrapper.gap-is-removed .content__img,
+  #shopify-section-{{ section.id }} .content-container-wrapper.gap-is-removed .content__video {
+    vertical-align: middle;
+  }
+
+  #shopify-section-{{ section.id }} .content__title {
+    {% if enable_title_custom_font_size %}font-size: {{ content_title_font_size_mobile }}px;{% endif %}
+    {% if content_title_text_color_mobile %}color: {{ content_title_text_color_mobile }};{% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .content__body {
+    {% if enable_body_custom_font_size %}font-size: {{ content_body_font_size_mobile }}px;{% endif %}
+    {% if content_body_text_color_mobile %}color: {{ content_body_text_color_mobile }};{% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .content__cta {
+    {% if enable_cta_custom_font_size %}font-size: {{ content_cta_font_size_mobile }}px;{% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .link--no-style-primary,
+  #shopify-section-{{ section.id }} .link--no-style-secondary {
+    {% if content_cta_text_color_mobile %}color: {{ content_cta_text_color_mobile }};{% endif %}
+  }
+
+  {% if add_content_under_image_mobile %}
+    #shopify-section-{{ section.id }} .content-container-mobile {
+      height: {{ content_mobile_height_mobile }}px;
+      width: {{ content_mobile_width_tablet }}px;
+      {% if background_color %}background-color: {{ background_color }};{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .content-mobile {
+      {% if content_mobile_width_mobile %}width: {{ content_mobile_width_mobile }};{% endif %}
+    }
+  {% endif %}
+
+  {% unless background_image_desktop and background_image_mobile or video_filename != blank %}
+    #shopify-section-{{ section.id }}.content-container {
+      {% if background_color %}background-color: {{ background_color }};{% endif %}
+      {% if height_m != blank %}height: {{ height_m }}px;{% endif %}
+    }
+  {% endunless %}
+
+  {% unless individual_alignment %}
+    #shopify-section-{{ section.id }} .content {
+      top: {{ alignment_top_mobile }}%;
+      left: {{ alignment_left_mobile }}%;
+      transform: translate(-50%, -50%);
+      {% if full_width_d %}width: {{ full_width_d }};{% else %}width: auto;{% endif %}
+    }
+  {% endunless %}
+
+  {% if individual_alignment %}
+    #shopify-section-{{ section.id }} .content__image {
+      top: {{ image_alignment_top_mobile }}%;
+      left: {{ image_alignment_left_mobile }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__title {
+      top: {{ title_alignment_top_mobile }}%;
+      left: {{ title_alignment_left_mobile }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__body {
+      top: {{ body_alignment_top_mobile }}%;
+      left: {{ body_alignment_left_mobile }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__cta {
+      top: {{ button_alignment_top_mobile }}%;
+      left: {{ button_alignment_left_mobile }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+  {% endif %}
+}
+
+@media only screen and (min-width: 641px) {
+  #shopify-section-{{ section.id }} .content__title {
+    {% if content_title_text_color_desktop %}color: {{ content_title_text_color_desktop }};{% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .content__body {
+    {% if content_body_text_color_desktop %}color: {{ content_body_text_color_desktop }};{% endif %}
+  }
+
+  #shopify-section-{{ section.id }} .link--no-style-primary,
+  #shopify-section-{{ section.id }} .link--no-style-secondary {
+    {% if content_cta_text_color_desktop %}color: {{ content_cta_text_color_desktop }};{% endif %}
+  }
+}
+
+</style>

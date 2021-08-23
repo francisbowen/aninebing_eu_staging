@@ -1,0 +1,31 @@
+{% if shop.domain == 'eu.aninebing.com' %}
+	<script type="text/javascript" src="//js.findmine.com/D0987688BE00708C5C91.module.js"></script>
+{% else %}
+	<script type="text/javascript" src="//js.findmine.com/FFE3C8DD5AC27DDB8985.module.js"></script>
+{% endif %}
+
+<script>
+  var findmine_params;
+  window.onload = function() {  
+    const findMineID = (theme.shop.domain == 'eu.aninebing.com') ? 'D0987688BE00708C5C91' : 'FFE3C8DD5AC27DDB8985';
+    const completeTheLook = [...document.querySelectorAll('.js-complete-the-look')];
+    const showCompleteTheLook = document.querySelector('.js-complete-the-look').dataset.completeTheLook === 'true';
+
+    findmine_params = {
+      application: findMineID,
+      product_price: {{ product.price | money_without_currency | replace: ',', '' }},
+      product_in_stock: {{ product.available }},
+      product_id: "{{ product.handle }}",
+      return_pdp_item: true,
+      event_handlers: {
+        onFinish: function() {
+          completeTheLook.forEach((look) => {
+            if (look.classList.contains('hidden') && showCompleteTheLook) look.classList.remove('hidden');
+          });
+        }
+      }
+    };
+
+    window.FindMine.match(findmine_params);
+  }
+</script>

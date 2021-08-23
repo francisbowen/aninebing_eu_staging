@@ -1,0 +1,273 @@
+{%- comment -%}
+This snippet should only be included in the following sections: 
+
+half-width-image.liquid
+
+{%- endcomment -%}
+
+{% assign custom_cta_class = 'content__cta' %}
+
+{% capture sectionContent %}
+
+  <div {% if content_unique_identifier_id %} id="{{ content_unique_identifier_id }}"{% endif %} class="content-container-wrapper content-container-wrapper--half{% if content_unique_identifier %} {{ content_unique_identifier }}{% endif %}">
+
+    {% include 'button' with button_style: button_style_desktop, button_text: cta_text, button_url: cta_link, class: custom_cta_class, use_as_span_tag: true %}
+    {% capture cta_button_desktop %}{{ cta }}{% endcapture %}
+
+    {% include 'button' with button_style: button_style_mobile, button_text: cta_text, button_url: cta_link, class: custom_cta_class, use_as_span_tag: true %}
+    {% capture cta_button_mobile %}{{ cta }}{% endcapture %}
+
+    <div class="content-container-image{% if image_on_the_right %} image-to-the-right{% endif %}">
+      {% if background_image_desktop and background_image_mobile %}
+        {% include 'picture' with 
+          image_desktop: background_image_desktop,
+          image_mobile: background_image_mobile,
+          class: 'content__img',
+          alt: section_title
+        %}
+      {% endif %}
+    </div>
+
+    <div class="content-container-text{% if content_aligned_within_text_block %} align-within-block{% endif %}">
+      <div class="content is-hidden-mobile
+        {% if aligned_center %}is-centered{% endif %}">
+
+        {% if content_image and section.settings.content_image_visibility != 'none' %}
+            <img class="content__image{% if section.settings.content_image_visibility == 'desktop_only' %} hide-until@sm{% elsif section.settings.content_image_visibility == 'mobile_only' %} hide-from@sm{% endif %}" src="{{ content_image | img_url: 'master' }}">
+          {% endif %}
+
+        {% if content_title != blank %}
+          <div class="heading--1 content__title">{{ content_title }}</div>
+        {% endif %}
+
+        {% if content_body != blank %}
+          <div class="content__body">{{ content_body }}</div>
+        {% endif %}
+
+        {% if cta_text != blank %}
+          {{ cta_button_desktop }}
+        {% endif %}
+      </div>
+
+      <div class="content-container-mobile
+        {% if aligned_center_mobile %}is-centered{% endif %}
+        {% if add_content_under_image_mobile %}is-visible-below is-visible-below--homepage{% else %}is-visible-above{% endif %}">
+
+        <div class="content content-mobile">
+          {% if content_image and section.settings.content_image_visibility != 'none' %}
+            <img class="content__image{% if section.settings.content_image_visibility == 'desktop_only' %} hide-until@sm{% elsif section.settings.content_image_visibility == 'mobile_only' %} hide-from@sm{% endif %}" src="{{ content_image | img_url: 'master' }}">
+          {% endif %}
+
+          {% if content_title != blank %}
+            <h1 class="content__title">{{ content_title }}</h1>
+          {% endif %}
+
+          {% if content_body != blank %}
+            <div class="content__body">{{ content_body }}</div>
+          {% endif %}
+
+          {% if cta_text != blank %}
+            {{ cta_button_mobile }}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endcapture %}
+
+{% if cta_email_container != blank %}
+  <a href="{{ cta_email_container }}">{{- sectionContent -}}</a>
+{%- elsif cta_link_container != blank -%}
+  <a href="{{ cta_link_container }}">{{- sectionContent -}}</a>
+{%- else -%}
+  {{ sectionContent }}
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} .content__title {
+    font-size: {{ content_title_font_size_desktop }}px;
+  }
+
+  #shopify-section-{{ section.id }} .content__body {
+    font-size: {{ content_body_font_size_desktop }}px;
+    margin-top: {{ content_body_margin_top }}px;
+  }
+
+  #shopify-section-{{ section.id }} .content__cta {
+    font-size: {{ content_cta_font_size_desktop }}px;
+    margin-top: {{ content_cta_margin_top }}px;
+  }
+  
+  #shopify-section-{{ section.id }} .content__image {
+    {% if content_image_width %}width: {{ content_image_width }}px;{% endif %}
+  }
+
+  {% unless individual_alignment %}
+    #shopify-section-{{ section.id }} .content {
+      position: absolute;
+      top: {{ alignment_top_desktop }}%;
+      left: {{ alignment_left_desktop }}%;
+      transform: translate(-50%, -50%);
+      {% if full_width_d %}width: {{ full_width_d }}%{% else %}width: auto;{% endif %}
+    }
+  {% endunless %}
+
+  {% if individual_alignment %}
+    #shopify-section-{{ section.id }} .content__image {
+      top: {{ image_alignment_top_desktop }}%;
+      left: {{ image_alignment_left_desktop }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__title {
+      top: {{ title_alignment_top_desktop }}%;
+      left: {{ title_alignment_left_desktop }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__body {
+      top: {{ body_alignment_top_desktop }}%;
+      left: {{ body_alignment_left_desktop }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+
+    #shopify-section-{{ section.id }} .content__cta {
+      top: {{ button_alignment_top_desktop }}%;
+      left: {{ button_alignment_left_desktop }}%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+    }
+  {% endif %}
+
+  @media only screen and (max-width: 996px) {
+    {% unless individual_alignment %}
+      #shopify-section-{{ section.id }} .content {
+        top: {{ alignment_top_tablet }}%;
+        left: {{ alignment_left_tablet }}%;
+        {% if full_width_t %}width: {{ full_width_t }}%;{% else %}width: auto;{% endif %}
+      }
+    {% endunless %}
+  
+    {% if individual_alignment %}
+      #shopify-section-{{ section.id }} .content__image {
+        top: {{ image_alignment_top_tablet }}%;
+        left: {{ image_alignment_left_tablet }}%;
+        position: absolute;
+      }
+
+      #shopify-section-{{ section.id }} .content__title {
+        top: {{ title_alignment_top_tablet }}%;
+        left: {{ title_alignment_left_tablet }}%;
+        position: absolute;
+      }
+
+      #shopify-section-{{ section.id }} .content__body {
+        top: {{ body_alignment_top_tablet }}%;
+        left: {{ body_alignment_left_tablet }}%;
+        position: absolute;
+      }
+
+      #shopify-section-{{ section.id }} .content__cta {
+        top: {{ button_alignment_top_tablet }}%;
+        left: {{ button_alignment_left_tablet }}%;
+        position: absolute;
+      }
+    {% endif %}
+  }
+
+  @media only screen and (max-width: 640px) {
+
+    #shopify-section-{{ section.id }}.content-container {
+      margin-bottom: {{ gap_under_content_mobile }}px;
+    }
+    
+    #shopify-section-{{ section.id }} .content__title {
+      font-size: {{ content_title_font_size_mobile }}px;
+      {% if content_title_text_color_mobile %}color: {{ content_title_text_color_mobile }};{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .content__body {
+      font-size: {{ content_body_font_size_mobile }}px;
+      {% if content_body_text_color_mobile %}color: {{ content_body_text_color_mobile }};{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .content__cta {
+      font-size: {{ content_cta_font_size_mobile }}px;
+    }
+
+    #shopify-section-{{ section.id }} .link--no-style-primary,
+    #shopify-section-{{ section.id }} .link--no-style-secondary {
+      {% if content_cta_text_color_mobile %}color: {{ content_cta_text_color_mobile }};{% endif %}
+    }
+
+    {% if add_content_under_image_mobile %}
+      #shopify-section-{{ section.id }} .content-container-mobile {
+        height: {{ content_mobile_height }}px;
+        {% if content_background_color %}background-color: {{ content_background_color }};{% endif %}
+        {% if aligned_center_mobile %}margin: -3.5px auto 6px;{% endif %}
+        width: 100%;
+      }
+    {% endif %}
+
+    {% unless individual_alignment %}
+      #shopify-section-{{ section.id }} .content {
+        top: {{ alignment_top_mobile }}%;
+        left: {{ alignment_left_mobile }}%;
+        {% if full_width %}width: {{ full_width }}%;{% else %}width: auto;{% endif %}
+      }
+    {% endunless %}
+
+    {% if individual_alignment %}
+      #shopify-section-{{ section.id }} .content__image {
+        top: {{ image_alignment_top_mobile }}%;
+        left: {{ image_alignment_left_mobile }}%;
+        position: absolute;
+      }
+
+      #shopify-section-{{ section.id }} .content__title {
+        top: {{ title_alignment_top_mobile }}%;
+        left: {{ title_alignment_left_mobile }}%;
+        position: absolute;
+      }
+
+      #shopify-section-{{ section.id }} .content__body {
+        top: {{ body_alignment_top_mobile }}%;
+        left: {{ body_alignment_left_mobile }}%;
+        position: absolute;
+      }
+
+      #shopify-section-{{ section.id }} .content__cta {
+        top: {{ button_alignment_top_mobile }}%;
+        left: {{ button_alignment_left_mobile }}%;
+        position: absolute;
+      }
+    {% endif %}
+  }
+
+  @media only screen and (min-width: 641px) {
+
+    #shopify-section-{{ section.id }}.content-container {
+      margin-bottom: {{ gap_under_content }}px;
+    }
+
+    #shopify-section-{{ section.id }} .content-container-text {
+      {% if content_background_color %}background-color: {{ content_background_color }};{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .content__title {
+      {% if content_title_text_color_desktop %}color: {{ content_title_text_color_desktop }};{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .content__body {
+      {% if content_body_text_color_desktop %}color: {{ content_body_text_color_desktop }};{% endif %}
+    }
+
+    #shopify-section-{{ section.id }} .link--no-style-primary,
+    #shopify-section-{{ section.id }} .link--no-style-secondary {
+      {% if content_cta_text_color_desktop %}color: {{ content_cta_text_color_desktop }};{% endif %}
+    }
+  }
+</style>

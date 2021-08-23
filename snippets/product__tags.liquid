@@ -1,0 +1,41 @@
+{% comment %}
+
+Product tags.
+
+Objects Referenced:
+ • product https://help.shopify.com/en/themes/liquid/objects/product
+
+{%- endcomment -%}
+
+{% assign product_tags = '' | split: '' %}
+
+{% for tag in product.tags %}
+  {% if tag contains 'pdp_' %}
+    {% assign reworked_tag = tag | split: '_' %}
+    {% assign product_tags = reworked_tag[1] | concat: product_tags %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<div class="product__tags">
+
+  {% assign hide_tag = false %}
+
+  {% for collection in product.collections %}
+    {% if collection.handle == 'new-arrivals' %}
+      {% assign hide_tag = true %}
+    {% endif %}
+  {% endfor %}
+  
+  {% for tag in product_tags reversed %}
+    {% assign tag_handle = tag | handleize %}
+    {% assign lowercase_tag = tag | downcase %}
+    <h3>
+      <span class="tag tag--{{tag_handle}} js-product-tag">{% unless hide_tag and lowercase_tag == 'new' %}{{ tag }}{% endunless %}</span>
+    </h3>
+  {% else %}
+    <h3>
+      <span class="tag tag--{{tag_handle}} js-product-tag"></span>
+    </h3>
+  {% endfor %}
+</div>

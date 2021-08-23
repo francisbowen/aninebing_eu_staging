@@ -1,0 +1,74 @@
+<section class="product__colors">
+  {% assign current_product = product %}
+
+  {% assign product_title_split = product.title | split: ' - ' %}
+  {% assign product_prefix = false %}
+  {% if product_title_split[1] %}
+    {% assign product_prefix = product_title_split[0] %}
+    {% assign product_color = product_title_split[1] | handleize %}
+  {% endif %}
+
+  {% capture sliderConfig %}
+    {
+      "dots": false,
+      "arrows": true,
+      "infinite": true,
+      "speed": 300,
+      "slidesToShow": 3,
+      "lazyLoad": "progressive",
+      "nextArrow": "<button class='slick-next slick-arrow slider-arrow slider-arrow--next' aria-label='Next' type='button' style=''>Next</button>",
+      "prevArrow": "<button class='slick-prev slick-arrow slider-arrow slider-arrow--prev' aria-label='Previous' type='button' style=''>Previous</button>",
+      "responsive": [
+        {
+          "breakpoint": 996,
+          "settings": {
+            "dots": false,
+            "infinite": true,
+            "speed": 300,
+            "slidesToShow": 1,
+            "centerMode": true,
+            "variableWidth": true,
+            "lazyLoad": "progressive"
+          }
+        }
+      ]
+    }
+  {% endcapture %}
+
+  <h2 class="product__colors--title slider__title js-slider-title">{{ 'products.product.colors' | t }}</h2>
+
+  <div class="product__colors--slider slider js-slider" data-slider='{{ sliderConfig | h }}'>
+
+    {% comment %} Get matching product colors and check if merchant added other products manually through metafields {% endcomment %}
+
+    {% assign additionalProducts = product.metafields.more_color.additional_products | split: ',' %}
+    {% assign matchingProducts = '' | split: '' %}
+
+    {% paginate collections.all.products by 1000 %}	
+      {% for prod in collections.all.products  %}
+          {% assign getCommonProductName = prod.title | split: ' - ' %}
+          {% assign productTitle = getCommonProductName[0] %}
+          
+          {% if product_prefix == productTitle and current_product.id != prod.id or additionalProducts contains prod.handle %}
+            {% assign matchingProducts = prod | concat: matchingProducts %}
+          {% endif %}
+
+          {% for product_handle in additionalProducts %}
+            {% assign handle = product_handle | strip %}
+
+            {% if handle == prod.handle %}
+              {% assign matchingProducts = prod | concat: matchingProducts %}
+            {% endif %}
+          {% endfor %}
+
+      {% endfor %}
+    {% endpaginate %}
+
+    {% for prod in matchingProducts %}
+      <a href="{{ prod.url }}" class="slider__slide" title="{{ product.title }}">
+        <img class="slider__image" src="{{ prod.featured_image | img_url: 'master' }}" alt="{{ product.title }}" />
+      </a>
+    {% endfor %}
+
+  </div>
+</section>

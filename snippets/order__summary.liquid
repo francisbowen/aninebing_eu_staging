@@ -1,0 +1,18 @@
+{%- comment -%}
+
+Order summary table row.
+
+Objects Referenced:
+ • order https://help.shopify.com/en/themes/liquid/objects/order
+
+{%- endcomment -%}
+
+<tr class="order-summary order-summary--row table-responsive__row table-responsive__row--{{ account_template }}">
+  <th class="order-summary__name order-summary__data table-responsive__data" data-label="{{ 'customer.orders.order_number' | t }}" scope="row">
+    <a class="order__link link link--primary" href="{{ order.customer_url }}" aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">{{ order.name }}</a>
+  </th>
+  <td class="order-summary__data order-summary__date order-summary__date--created table-responsive__data" data-label="{{ 'customer.orders.date' | t }}">{{ order.created_at | time_tag: format: 'date' }}</td>
+  <td class="order-summary__data order-summary__title order-summary__status order-summary__status--payment table-responsive__data" data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+  <td class="order-summary__data order-summary__status order-summary__status--fulfillment table-responsive__data" data-label="{{ 'customer.orders.fulfillment_status' | t }}">{{ order.fulfillment_status_label }}</td>
+  <td class="order-summary__data order-summary__total order-summary__total--grand-total table-responsive__data" data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+</tr>

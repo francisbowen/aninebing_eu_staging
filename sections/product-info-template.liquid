@@ -1,0 +1,223 @@
+{% include 'product__classes' with base_class: 'product' %}
+
+{% include 'breadcrumb' %}
+<article class="{{ product_classes }} js-product">
+
+  {%- assign icon_classes_mob = 'icon-heart swym-add-to-wishlist js-add-to-wishlist hide-from@md product_' | append: product.id -%}
+
+  {% comment %} Check Gifts Options for ATC {% endcomment %}
+  {%- if settings.enable_gift_products and product.tags contains 'gift-fragrance' -%}
+    {%- if settings.enable_gift_products_purchasable -%}
+      {%- assign atc_button_type = 'purchasable' -%}
+    {%- else -%}
+      {%- assign atc_button_type = 'non-purchasable' -%}
+    {%- endif -%}
+  {%- else -%}
+    {%- assign atc_button_type = 'purchasable' -%}
+  {%- endif -%}
+
+  <div class="product__slider">
+    {%- if atc_button_type == 'purchasable' -%}
+      {%- include 'icons' with selected_icon: 'heart', icon_class: icon_classes_mob, icon_fill: 'none', icon_stroke: '#FFFFFF', title: 'products.product.icon_back', desc: 'products.product.back_toggle' -%}
+    {%- endif -%}
+    {%- assign variant_availability = true -%}
+    {%- if product.tags contains 'by-variant-images' -%}
+      {%- for variant in product.variants -%}
+        {%- unless variant.available -%}
+          {%- assign variant_availability = false -%}
+        {%- endunless -%}
+        <div class="js-product-slider product__slider-tile hide-from@md" data-variant-id="{{ variant.id }}"></div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="js-product-slider product__slider-tile hide-from@md" data-color-id="color--{{ product.id }}" data-variant-id="{{ variant.id }}"></div>
+    {%- endif -%}
+  </div>
+
+  {% include 'product__details' with product_details_class: 'hide-from@md', size: 'mobile' %}
+
+  <section class="product__grid">
+    {% include 'zoom-mobile-image' %}
+
+    {% assign productImagesLength = product.images | size %}
+
+    {%- assign img_class_mobile = 'product__image product__grid-item js-product-image js-prod-mob-image' -%}
+
+    {%- assign excluded_product_type = product.type | downcase -%}
+    {%- assign excluded_product_list = section.settings.excluded_product_types | downcase -%}
+
+    {%- if product.tags contains 'swym-comingsoon' or variant_availability == false -%}
+      {%- assign messageExist = 'is-active'  -%}
+    {%- else -%}
+      {%- assign messageExist = '' -%}
+    {%- endif -%}
+
+    <p class="product__out-of-stock-message js-product-message {{ messageExist }} hide-from@md">
+      {%- if product.tags contains 'swym-comingsoon' -%}
+        {{ settings.coming_soon_message }}
+      {%- else -%}
+        {%- unless variant_availability -%}
+          {{ settings.out_of_stock_message }}
+        {%- endunless -%}
+      {%- endif -%}
+    </p>
+      
+    {%- if product.tags contains 'by-variant-images' -%}
+
+      {% comment %}If different images for different variants{% endcomment %}
+
+      {% comment %} Featured Image of Variant {% endcomment %}
+      {%- for variant in product.variants -%}
+        {%- if forloop.first -%}
+          {%- assign img_class = 'product__image product__grid-item hide-until@md js-prod-desk-image' -%}
+        {%- else -%}
+          {%- assign img_class = 'product__image product__grid-item hide-until@md js-prod-desk-image hide' -%}
+        {%- endif -%}
+
+        {%- include 'image--responsive-no-max' with image: variant.image, wrapper_class: img_class, variantId: variant.id -%}
+        {%- include 'image--responsive-no-max' with image: variant.image, wrapper_class: img_class_mobile, variantId: variant.id -%}
+      {%- endfor -%}
+
+      {% comment %} Product Form {% endcomment %}
+
+      {%- include 'product_info' with custom_class: 'product__grid-item js-product-info', tag_list: section.settings.tag_list -%}
+
+
+      {% comment %} Rest of Images {% endcomment %}
+
+      {%- assign show_first_image = true -%}
+      {%- for variant in product.variants -%}
+        {%- for image in product.images -%}
+          {%- assign image_alt_text = image.alt | split: '-' -%}
+          {%- assign image_alt_text_variant = image_alt_text[1] | plus: 0 -%}
+
+          {%- if image_alt_text_variant == variant.id -%}
+            {%- if show_first_image -%}
+              {%- assign img_class = 'product__image product__grid-item hide-until@md js-prod-desk-image' -%}
+            {%- else -%}
+              {%- assign img_class = 'product__image product__grid-item hide-until@md js-prod-desk-image hide' -%}
+            {%- endif -%}
+
+            {%- include 'image--responsive-no-max' with image: image, wrapper_class: img_class, variantId: variant.id -%}
+            {%- include 'image--responsive-no-max' with image: image, wrapper_class: img_class_mobile, variantId: variant.id -%}
+
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- assign show_first_image = false -%}
+      {%- endfor -%}
+
+      {% comment %} Generic Images {% endcomment %}
+      {%- for image in product.images -%}
+        {%- if image.alt contains product.title or image.alt == '' or image.alt == blank -%}
+
+          {%- assign img_class = 'product__image product__grid-item hide-until@md js-prod-desk-image' -%}
+          {%- assign img_class_mobile = 'product__image product__grid-item js-product-image js-prod-mob-image hide' -%}
+          {%- include 'image--responsive-no-max' with image: image, wrapper_class: img_class -%}
+          {%- include 'image--responsive-no-max' with image: image, wrapper_class: img_class_mobile -%}
+
+        {%- endif -%}
+      {%- endfor -%}
+
+      {% comment %}End Images{% endcomment %}
+
+    {%- else -%}
+      {%- assign counter = 0 -%}
+      {%- for image in product.images -%}
+        {% assign wrapper_attributes_mobile = 'data-color-id="color--' | append: product.id | append: '"' %}
+
+        {%- if forloop.index == 2 -%}
+          {%- assign counter = counter | plus: 1 -%}
+          {%- include 'product_info' with custom_class: 'product__grid-item js-product-info', tag_list: section.settings.tag_list -%}
+        {%- elsif forloop.index == 1 -%}
+          {%- assign counter = counter | plus: 1 -%}
+          {% assign wrapper_class = 'product__image product__grid-item hide-until@md js-prod-desk-image js-featured-image js-featured-image--' | append: product.id %}
+          {% assign wrapper_attributes = 'data-color-id="color--' | append: product.id | append: '"' %}
+        {%- else -%}
+          {%- unless image.alt == 'swatch' -%}
+            {%- assign counter = counter | plus: 1 -%}
+            {% assign wrapper_class = 'product__image product__grid-item hide-until@md js-prod-desk-image js-other-product-images js-other-product-images--' | append: product.id %}
+            {% assign wrapper_attributes = 'data-color-id="color--' | append: product.id | append: '"' %}
+          {%- endunless -%}
+        {%- endif -%}
+
+        {%- unless image.alt == 'swatch' -%}
+          {%- include 'image--responsive-no-max' with image: image, wrapper_class: wrapper_class, wrapper_attributes -%}
+          {%- include 'image--responsive-no-max' with image: image, wrapper_class: 'product__image product__grid-item js-product-image js-prod-mob-image', wrapper_attributes: wrapper_attributes_mobile -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {% if productImagesLength == 1 %}
+      {%- include 'product_info' with custom_class: 'product__grid-item js-product-info', tag_list: section.settings.tag_list -%}
+    {%- endif -%}
+
+  </section>
+
+  {% comment %} Removing alternative product colors {% endcomment %}
+  {% comment %} {% include 'product-more-colors' %} {% endcomment %}
+
+  <div id="findmine-module"></div>
+
+  {% comment %} {% include 'product-related' %} {% endcomment %}
+</article>
+
+{% schema %}
+  {
+    "name": "Product Info",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Product & Zone Specific"
+      },
+      {
+        "type": "richtext",
+        "id": "specific_product_zone_text",
+        "label": "Text for specific product - US"
+      },
+      {
+        "type": "richtext",
+        "id": "specific_product_zone_text_eu",
+        "label": "Text for specific product - EU"
+      },
+      {
+        "type": "header",
+        "content": "Limited Quantity"
+      },
+      {
+        "type": "text",
+        "id": "limited_qty_text",
+        "label": "Text for Limited Quantity"
+      },
+      {
+        "type": "header",
+        "content": "Size Guide Exclusion"
+      },
+      {
+        "type": "textarea",
+        "id": "excluded_product_types",
+        "label": "Excluded Product Types",
+        "info": "Comma Separated List",
+        "default": "Accessories, Bags, Candle, Campaign, Editorial, Fragrance, Gift Card, Lookbook, Press, Donation, Jewelry"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "limimted_qty",
+        "name": "Limited Qty - Prod Type",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Product Type"
+          },
+          {
+            "type": "text",
+            "id": "qty_limit",
+            "label": "Limited Quantity Number",
+            "info": "ex: 3, means 3 or less"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

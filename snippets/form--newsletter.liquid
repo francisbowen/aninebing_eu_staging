@@ -1,0 +1,31 @@
+{%- comment -%}
+
+Newsletter subscription form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#customer
+
+Objects Referenced:
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+
+{%- assign form_id = 'NewsletterForm' -%}
+{%- assign form_class = 'form form--newsletter' -%}
+
+{% form 'customer', id: form_id, class: form_class, novalidate: 'novalidate' %}
+  {% include 'form__status', form_id: form_id %}
+  <input type="hidden" name="contact[tags]" value="newsletter">
+  {% assign field_id = form_id | append: '-email' %}
+  <label for="{{ field_id }}">{{ 'general.newsletter_form.email_placeholder' | t }}</label>
+  <input type="email"
+    name="contact[email]"
+    id="{{ field_id }}"
+    value="{% if customer %}{{ customer.email }}{% endif %}"
+    placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+    aria-label="{{ 'general.newsletter_form.email_placeholder' | t }}"
+    aria-required="true"
+    autocorrect="off"
+    autocapitalize="off"
+    required>
+  <button type="submit" name="commit">{{ 'general.newsletter_form.submit' | t }}</button>
+{% endform %}

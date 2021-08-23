@@ -1,0 +1,9 @@
+{% assign country_link_domain = 'country_link_' | append: store_domain %}
+{% assign country_abb_domain = 'country_abb_' | append: store_domain %}
+{% assign country_title_domain = 'country_title_' | append: store_domain %}
+
+{%- if section.settings[country_link_domain] != '' -%}
+  <li class="menu__item menu__item--each-country menu__item--redirect js-each-menu-country hide">
+    <a class="menu__subcategories js-country-redirect" href="{{ section.settings[country_link_domain] | replace: 'com/', 'com' | append: request.path }}?ref={{ section.settings[country_abb_domain] }}" title="{{ 'general.country.go_to_store' | t }}">{{ section.settings[country_title_domain] }}</a>
+  </li>
+{%- endif -%}

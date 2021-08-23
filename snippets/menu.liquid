@@ -1,0 +1,51 @@
+<div class="header__overlay header__border js-menu-overlay">
+  <nav class="header__navigation container menu js-menu hide-from@md" id="Menu">
+    <ul class="menu__items menu__items--main">
+      {%- include 'menu-items' with menu: section.settings.menu, wrapper_classes: 'menu__items--wrapper hide js-menu-wrapper', menu_classes: 'menu__items--nested', menu_level: 'parent', store_domain -%}
+    </ul>
+    <ul class="menu__items menu__items--single-item js-menu-single-item">
+      <li class="menu__item no-menu menu__item--account hide-from@md">
+        <a href="{% if customer %}/account{% else %}/account/login{% endif %}" class="heading--3" title="{{ 'general.account.go_to_account' | t }}">
+          {%- if customer -%}
+            {% comment %}TODO: Placeholder for now, need to attach to loyalty{% endcomment %}
+            {{ customer.name }}
+          {%- else -%}
+            {{ 'general.account.name' | t }}
+          {%- endif -%}
+        </a>
+      </li>
+      <li class="menu__item no-menu menu__item--wishlist hide-from@md">
+        <a href="{% if customer %}/pages/custom-wishlist{% else %}/account/login?from=header-wishlist{% endif %}" class="heading--3" title="{{ 'general.account.go_to_account' | t }}">
+          {{ 'general.wishlist.title' | t }}
+        </a>
+      </li>
+      {% comment %} {% if customer %}
+        <li class="menu__item menu__item--loyalty">
+          <a href="/pages/loyalty-program" title="{{ 'general.loyalty.go_to_loyalty' | t }}">
+            {{ 'general.loyalty.name' | t }}
+          </a>
+        </li>
+      {% endif %} {% endcomment %}
+
+      {%- render 'menu-items' with type: 'mobile', menu: section.settings.single_menu, wrapper_classes: 'menu__items--wrapper AYAA hide js-menu-wrapper', menu_classes: 'menu__items--nested', menu_level: 'parent', store_domain -%}
+     
+      <li class="menu__item no-menu menu__item--country js-menu-country menu__item--redirect">
+        <a class="js-country-selector" href="#" title="{{ 'general.country.go_to_store' | t }}">
+          <span class="menu__country-label">
+            {%- if store_domain == 'USA' -%}
+              {{ 'general.country.name' | t }}
+            {%- else -%}
+              {{ 'general.country.name_eu' | t }}
+            {%- endif -%}
+            <span class="svg-wrapper js-item-down">
+              {%- render 'icons' with selected_icon: 'chevron-down', icon_fill: 'none', icon_stroke: '#FFFFFF', icon_class: 'icon-chevron-down', title: 'general.dropdown.icon', desc: 'general.dropdown.toggle_dropdown' -%}
+            </span>
+          </span>
+        </a>
+        <ul id="js-menu-countries" class="menu__items menu__items--country js-menu-countries">
+          {%- include 'country-selector' with store_domain -%}
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>

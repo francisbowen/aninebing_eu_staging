@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    {% if order.attributes %}
+      {% for attribute in order.attributes %}
+        {% case attribute.first %}
+          {% when "OrderProducts" %}
+            var _ge_order_products_encoded = "{{ attribute | last }}";
+            var _ge_order_products = JSON.parse(_ge_order_products_encoded.replace(/&quot;/g,'"'));
+          {% when "OrderDiscounts" %}
+            var _ge_order_discounts_encoded = "{{ attribute | last }}";
+            var _ge_order_discounts = JSON.parse(_ge_order_discounts_encoded.replace(/&quot;/g,'"'));
+          {% when "OrderTrackingUrl" %}
+            var _ge_order_tracking_url = "{{ attribute | last | url_decode }}";
+          {% when "Shipping price paid by customer(local currency)" %}
+            var _ge_order_shipping_price = "{{ attribute | last }}";
+          {% when "Total order value(local currency)" %}
+            var _ge_order_total = "{{ attribute | last }}";
+          {% when "Local currency used by customer" %}
+            var _ge_order_currency = "{{ attribute | last }}";
+          {% when "Duties" %}
+            var _ge_duties = "{{ attribute | last }}";
+        {% endcase %}
+      {% endfor %}
+    {% endif %}
+</script>

@@ -1,0 +1,35 @@
+{%- comment -%}
+
+Product attributes.
+
+Objects Referenced:
+ • product https://help.shopify.com/en/themes/liquid/objects/product
+
+{%- endcomment -%}
+
+{% assign downcase_metafield = product.metafields.breadcrumb.collection_fallback_handle | downcase %}
+{% assign getCollection = collections[downcase_metafield] %}
+
+<div class="product__attributes js-product-attribute {{ class_name }}">
+  <div class="attributes">
+    {%- if collection -%}
+      <a class="js-product-attribute-link" href="javascript:history.back()" title="{{ 'products.product.back_toggle' | t }}">
+        <div class="attributes__value heading--4">
+          {%- include 'icons' with selected_icon: 'chevron-back', icon_class: 'icon-chevron-back', icon_fill: 'none', icon_stroke: '#000000', title: 'products.product.icon_back', desc: 'products.product.back_toggle' -%}
+          <span class="attributes__title js-product-attribute-title" data-fallback-url="{{ getCollection.url }}" data-fallback-type="{{ getCollection.title }}" data-product-type="{{ product.type }}">{{ collection.title | upcase }}</span>
+        </div>
+      </a>
+    {%- elsif product.metafields.breadcrumb.collection_fallback_handle != blank -%}
+      <a class="js-product-attribute-link" href="{{ getCollection.url }}" title="{{ 'products.product.back_toggle' | t }}">
+        <div class="attributes__value heading--4">
+          {%- include 'icons' with selected_icon: 'chevron-back', icon_class: 'icon-chevron-back', icon_fill: 'none', icon_stroke: '#000000', title: 'products.product.icon_back', desc: 'products.product.back_toggle' -%}
+          <span class="attributes__title js-product-attribute-title" data-fallback-url="{{ getCollection.url }}" data-fallback-type="{{ getCollection.title }}" data-product-type="{{ product.type }}">{{ getCollection.title | upcase }}</span>
+        </div>
+      </a>
+    {%- else -%}
+      <div class="attributes__value heading--4">
+        <span>{{ product.type }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

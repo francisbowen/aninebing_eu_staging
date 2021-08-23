@@ -1,0 +1,19 @@
+{%- comment -%}
+
+Collection tile renderer.
+
+Objects Referenced:
+ • collection https://help.shopify.com/en/themes/liquid/objects/collection
+
+{%- endcomment -%}
+
+<article class="collection-tile">
+  {% if collection.image %}
+    <a href="{{ collection.url }}">
+      {% include 'image--responsive' with image: collection.image, wrapper_class: 'collection-tile__image', max_width: settings.collection_tile_image_max %}
+    </a>
+  {% endif %}
+  <h2 class="collection-tile__title">
+    <a href="{{ collection.url }}">{{ collection.title }}</a>
+  </h2>
+</article>

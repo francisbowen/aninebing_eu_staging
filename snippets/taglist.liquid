@@ -1,0 +1,35 @@
+{%- comment -%}
+
+Tag list renderer.
+
+Documentation:
+• https://help.shopify.com/en/themes/liquid/filters/url-filters#link_to_tag
+• https://help.shopify.com/en/themes/liquid/filters/url-filters#link_to_add_tag
+• https://help.shopify.com/en/themes/liquid/filters/url-filters#link_to_remove_tag
+
+Objects Referenced:
+ • current_tags https://help.shopify.com/en/themes/liquid/objects/current-tags
+
+{%- endcomment -%}
+
+{%- assign multitag = false -%}
+
+{% if tags.size > 0 %}
+  <ul class="tags">
+    {% for tag in tags %}
+      {% if current_tags contains tag %}
+        <li class="tags__tag tags__tag--active">
+          {{ tag | link_to_remove_tag: tag }}
+        </li>
+      {% else %}
+        <li class="tags__tag">
+          {% if multitag %}
+            {{ tag | link_to_add_tag: tag }}
+          {% else %}
+            {{ tag | link_to_tag: tag }}
+          {% endif %}
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}

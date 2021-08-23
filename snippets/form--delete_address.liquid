@@ -1,0 +1,25 @@
+{%- comment -%}
+
+Customer address deletion form.
+
+Objects Referenced:
+ • customer_address https://help.shopify.com/en/themes/liquid/objects/customer-address
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+
+
+{%- assign form_id = 'CustomerAddressDelete' | append: customer_address.id -%}
+{%- assign form_class = 'form form--delete-address' -%}
+
+<form action="/account/addresses/{{ customer_address.id }}" method="post" id="{{ form_id }}" class="{{ form_class }}">
+  <input type="hidden" name="_method" value="delete">
+  <h2 class="addresses__subtitle">{{- 'customer.addresses.delete_address' | t -}}</h2>
+
+  {%- include 'address' with customer_address -%}
+
+  <div class="form__actions">
+  	<button class="form__cancel link link--primary js-close-modal" type="button" role="button" aria-label="button">{{ 'customer.addresses.cancel' | t }}</button>
+    <button class="form__submit link link--primary" type="submit">{{- 'customer.addresses.delete' | t -}}</button>
+  </div>
+</form>

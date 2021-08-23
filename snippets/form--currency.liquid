@@ -1,0 +1,33 @@
+{%- comment -%}
+
+Currency form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#currency
+
+Objects Referenced:
+ • cart https://help.shopify.com/en/themes/liquid/objects/cart
+ • currency https://help.shopify.com/en/themes/liquid/objects/currency
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+ • shop https://help.shopify.com/en/themes/liquid/objects/shop
+
+{%- endcomment -%}
+
+{% if shop.enabled_currencies.size > 1 %}
+  {%- assign form_id = 'CurrencyForm' -%}
+  {%- assign form_class = 'form form--currency' -%}
+
+  {% form 'currency', id: form_id, class: form_class %}
+    {% assign field_id = form_id | append: '-CurrencySelector' %}
+    <label for="{{ field_id }}">{{ 'general.currency.dropdown_label' | t }}</label>
+    <select name="currency" id="{{ field_id }}">
+      {% for currency in shop.enabled_currencies %}
+        <option value="{{currency.iso_code}}"
+          {%- if currency == cart.currency -%} selected{%- endif -%}
+          >
+          {{- currency.iso_code -}}
+        </option>
+      {% endfor %}
+    </select>
+    <button type="submit" name="commit">{{ 'general.currency.submit' | t }}</button>
+  {% endform %}
+{% endif %}

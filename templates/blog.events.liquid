@@ -1,0 +1,37 @@
+{%- include 'breadcrumb' -%}
+
+<div class="blog js-{{ template.name }}">
+
+  {%- include 'blog-header' -%}
+  
+  <div class="blog__body-events">
+
+    <h2 class="blog__body-events__title">{{ blog.title }}</h2>
+
+    {%- if blog.metafields.header['article'] != blank -%}
+      {%- assign start_at = 0 -%}
+      {%- assign loop_by = settings.articles_page_size -%}
+    {%- else -%}
+      {%- assign start_at = 1 -%}
+      {%- assign loop_by = settings.articles_page_size | plus: 1 -%}
+    {%- endif -%}
+
+    {%- paginate blog.articles by loop_by -%}
+      <div class="blog__body-events__articles">
+        {% comment %} Need to reset the start_at to 0 because on every page, the forloop index restarts at 1 {% endcomment %}
+        {% unless paginate.current_page == 1 and blog.metafields.header['article'] == blank %}
+          {%- assign start_at = 0 -%}
+        {% endunless %}
+        {%- for article in blog.articles offset: start_at -%}
+          {%- include 'article__tile' with blog_type: 'events' -%}
+        {%- else -%}
+          <div class="blog__empty">
+            <p>{{ 'blog.articles.empty' | t }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+      {% include 'paginate' %}
+    {%- endpaginate -%}
+
+  </div>
+</div>

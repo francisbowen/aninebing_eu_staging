@@ -1,0 +1,16 @@
+{%- comment -%}
+
+Shipping method renderer.
+
+Objects Referenced:
+ • tax_line https://help.shopify.com/en/themes/liquid/objects/tax_line
+
+{%- endcomment -%}
+
+<div class="tax-line order-total-info">
+  <span class="tax-line__label heading--3 order-total-label">{{ 'customer.order.tax' | t }}
+    <span class="tax-line__title">{{ tax_line.title }}</span>
+    <span class="tax-line__rate">{{ tax_line.rate | times: 100 }}%</span>
+  </span>
+  <span class="tax-line__price heading--3">{{ tax_line.price | money }}</span>
+</div>

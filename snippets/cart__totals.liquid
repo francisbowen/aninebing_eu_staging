@@ -1,0 +1,31 @@
+{%- comment -%}
+
+Cart totals.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/cart-liquid
+
+Objects Referenced:
+ • cart https://help.shopify.com/en/themes/liquid/objects/cart
+ • shop https://help.shopify.com/en/themes/liquid/objects/shop
+{%- endcomment -%}
+
+<div class="cart__totals">
+  <div class="total__shipping uppercase-text">
+    <span class="total__shipping--left heading--3">{{ 'cart.general.shipping' | t }}</span>
+    <span class="total__shipping--right heading--3 js-cart-shipping">Free</span>
+  </div>
+  <div class="total__value">
+    <span class="total__value--left uppercase-text heading--3">{{ 'cart.general.subtotal' | t }}</span>
+    <span class="total__value--right uppercase-text heading--3 js-total-price">{{ cart.total_price | money }}</span>
+  </div>
+  {% comment %} TO DO FOR NOV - DECEMBER 2019
+  <div class="total__points">
+    <span class="total__value--left uppercase-text">{{ 'cart.general.total_points' | t }}</span>
+    <span class="total__value--right uppercase-text"><span class="js-total-points">{{ cart.total_price | divided_by: 100 | floor }}</span> {{ 'cart.general.points' | t }}</span>
+  </div> {% endcomment %}
+  <a class="cart__checkout button button--primary" href="/checkout">{{ 'cart.general.checkout' | t }}</a>
+
+  {% if additional_checkout_buttons and settings.show_secondary_payment_option_cart and request.path == '/cart' %}
+    {{ content_for_additional_checkout_buttons }}
+  {% endif %}
+</div>

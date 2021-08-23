@@ -1,0 +1,53 @@
+{%- include 'collection-slider' -%}
+
+{% schema %}
+{
+	"name": "Collection slider",
+  "class": "slider",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "collection specific",
+      "settings": [
+          {
+            "type": "text",
+            "id": "collection_title",
+            "label": "Collection Title"
+          },
+          {
+            "type": "checkbox",
+            "id": "restrict_height",
+            "label": "Restrict height of images"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_product_limit",
+            "label": "Enable Product Limit",
+            "info": "If enabled, products displayed in slider will be restricted to the amount specified below.",
+            "default": true
+          },
+          {
+            "type":      "range",
+            "id":        "product_limit",
+            "min":       5,
+            "max":        500,
+            "step":       5,
+            "label":     "Number of product to display in slider",
+            "default":   10
+          },
+          {
+            "type": "collection",
+            "id": "selected_collection",
+            "label": "Select the collection to display."
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "Choose the url you want this page to show in."
+          }
+        ]
+      }
+    ]
+}
+{% endschema %}

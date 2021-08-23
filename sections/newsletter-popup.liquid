@@ -1,0 +1,124 @@
+{% assign newsletter_caption = section.settings.newsletter_caption %}
+{% assign newsletter_logo_primary = section.settings.newsletter_logo_primary %}
+{% assign newsletter_logo_secondary = section.settings.newsletter_logo_secondary %}
+{% assign newsletter_style = section.settings.newsletter_style %}
+{% assign popup_timing = section.settings.popup_timing %}
+{% assign visible_on_usa_store = section.settings.visible_on_usa_store %}
+{% assign visible_on_europe_store = section.settings.visible_on_europe_store %}
+{% assign new_popup_delay = section.settings.new_popup_delay %}
+{% assign hide_onscroll_pixels = section.settings.hide_onscroll_pixels %}
+{% assign newsletter_checkbox_text = section.settings.newsletter_checkbox_text %}
+{% assign exclude_urls = section.settings.exclude_urls %}
+{% assign pathnames = exclude_urls | split: ',' %}
+{% assign allow_popup = true %}
+{% assign allow_hide_on_scroll = section.settings.allow_hide_on_scroll %}
+
+{% for pathname in pathnames %}
+  {% assign stripPathname = pathname | strip %}
+
+  {%- if stripPathname == request.path -%}
+    {% assign allow_popup = false %}
+  {%- endif -%}
+{% endfor %}
+
+{% if allow_popup %}
+  {% include 'newsletter-popup-template' with caption_hidden: true, checkbox_text: newsletter_checkbox_text %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Newsletter Popup",
+    "settings": [
+      {
+        "type": "header",
+        "content": "United States"
+      },
+      {
+        "type": "checkbox",
+        "id": "visible_on_usa_store",
+        "label": "Check to show popup",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Europe"
+      },
+      {
+        "type": "checkbox",
+        "id": "visible_on_europe_store",
+        "label": "Check to show popup",
+        "default": false
+      },
+      {
+        "type": "textarea",
+        "id": "exclude_urls",
+        "label": "Comma Separated List",
+        "info": "Add the pathname of the page to which you'd like to pop up NOT to show up. e.g: /pages/about, /pages/privacy-policy, /collections/new-arrivals"
+      },
+      {
+        "type": "text",
+        "id": "newsletter_caption",
+        "label": "Newsletter Caption Title"
+      },
+      {
+        "type": "textarea",
+        "id": "newsletter_checkbox_text",
+        "label": "Newsletter Checkbox Text"
+      },
+      {
+        "type":     "range",
+        "id":       "popup_timing",
+        "min":       1000,
+        "max":       9500,
+        "step":      500,
+        "label":     "Time before Newsletter Popup shows up (in MS)",
+        "default":   5000
+      },
+      {
+        "type":     "range",
+        "id":       "new_popup_delay",
+        "min":       1,
+        "max":       7,
+        "step":      1,
+        "label":     "Delay before new popup",
+        "info":      "Numbers of days before new popup shows up after the user has seen it for the first time. (This will determine when the cookie stored in the browser will expire)",
+        "default":   3
+      },
+      {
+        "id": "allow_hide_on_scroll",
+        "type": "checkbox",
+        "label": "Check to allow the pop up to disappear after defined number of pixels.",
+        "default": false
+      },
+      {
+        "type":     "range",
+        "id":       "hide_onscroll_pixels",
+        "min":       0,
+        "max":       1000,
+        "step":      10,
+        "label":     "Nbs of pixels before is hidden",
+        "info":      "Numbers of pixel that the user has to scroll (Once the popup is revealed) before the popup gets hidden.",
+        "default":   100
+      },
+      {
+        "type": "image_picker",
+        "id": "newsletter_logo_primary",
+        "label": "Newsletter Logo - Black"
+      },
+      {
+        "type": "image_picker",
+        "id": "newsletter_logo_secondary",
+        "label": "Newsletter Logo - White"
+      },
+      {
+        "type": "select",
+        "id": "newsletter_style",
+        "options": [
+            { "value": "primary", "label": "Primary (Black)"},
+            { "value": "secondary", "label": "Secondary (White)"}
+        ],
+        "label": "Determine popup style"
+      }
+    ]
+  }
+{% endschema %}

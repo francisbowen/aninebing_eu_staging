@@ -1,0 +1,16 @@
+{%- comment -%}
+
+Discount application renderer.
+
+Objects Referenced:
+ • discount_allocation https://help.shopify.com/en/themes/liquid/objects/discount-allocation
+ • discount_application https://help.shopify.com/en/themes/liquid/objects/discount-application
+
+{%- endcomment -%}
+
+<div class="discount">
+  <span class="discount__label">
+    <span class="discount__title">{{ discount_allocation.discount_application.title }}</span>
+  </span>
+  <span class="discount__amount">{{ discount_allocation.amount | money }}</span>
+</div>

@@ -1,0 +1,46 @@
+<div class="account__header{% if settings.account_dashboard_switch_side %} account__header--right-side{% else %} account__header--left-side{% endif %}">
+  <h1 class="account__title heading--2">{{ 'customer.account.title' | t }} {{ customer.first_name }}</h1>
+  <div class="account__primary-information">
+    <div class="account__links account__links--primary">
+      <p class="account__link">
+        <span class="link link--primary">{{ 'layout.customer.log_out' | t | customer_logout_link }}</span>
+      </p>
+      {% comment %} {%- if settings.account_dashboard_external_link != '' -%}
+        <a href="{{ settings.account_dashboard_external_link }}" class="account__link" title="{{ 'general.account.link_to_preferences' | t }}">
+          <span class="link link--primary">{{ 'customer.account.preferences' | t }}</span>
+        </a>
+      {%- endif -%} {% endcomment %}
+      <a href="/account/addresses" class="account__link" title="{{ 'general.account.link_to_address' | t }}">
+        <span class="link link--primary">
+        {% assign customerAddressesSize = customer.addresses | size %}
+
+        {% if customerAddressesSize > 0 %}
+          {{ 'customer.account.view_add' | t }}
+        {% else %}
+          {{ 'customer.account.add' | t }}
+        {% endif %}
+        </span>
+      </a>
+    </div>
+    <div class="account__default-address">
+      {%- include 'address' with customer.default_address -%}
+    </div>
+  </div>
+
+  <div class="account__primary-information account__primary-information--extra">
+    <div class="account__links">
+      <a href="/account?view=order-history" class="account__link" title="{{ 'customer.account.view_orders' | t }}">
+        <span class="heading--3">{{ 'customer.account.orders' | t }}</span>
+      </a>
+
+      {% comment %} Remove until further notice {% endcomment %}
+      {% comment %} <a href="/pages/loyalty-program" class="account__link" title="{{ 'customer.account.view_loyalty' | t }}">
+        <span class="uppercase-text">{{ 'customer.account.membership' | t }}</span>
+      </a> {% endcomment %}
+
+      <a href="/pages/custom-wishlist" class="account__link" title="{{ 'customer.account.view_wishlist' | t }}">
+        <span class="heading--3">{{ 'customer.account.wishlist' | t }}</span>
+      </a>
+    </div>
+  </div>
+</div>

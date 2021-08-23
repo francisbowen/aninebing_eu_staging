@@ -1,0 +1,49 @@
+{% if section.settings.title != blank %}
+  <h1 class="fit-guide__header__title">{{ section.settings.title | upcase }}</h1>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Fit Guide header",
+    "class": "fit-guide__header",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header"
+      },  
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "color",
+        "id": "title_color",
+        "label": "Fallback title color",
+        "default": "#000000"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image"
+      },
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Fallback background color"
+      }
+    ]
+  }
+{% endschema %}
+
+<style>
+  .fit-guide__header {
+    background-color: {{ section.settings.color }};
+    {% if section.settings.image %}
+      background-image: url("{{ section.settings.image | img_url: 'master' }}");
+    {% endif %}
+  }
+  .fit-guide__header__title {
+    color: {{ section.settings.title_color }};
+  }
+</style>

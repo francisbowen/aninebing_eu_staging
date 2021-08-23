@@ -1,0 +1,7 @@
+{%- include 'breadcrumb' with template_name: 'full-order-history' -%}
+
+<article class="account account--order-history js-account">
+
+  {%- include 'account__order-history' with orders_per_page: settings.orders_page_size, account_template: 'full-order' -%}
+
+</article>

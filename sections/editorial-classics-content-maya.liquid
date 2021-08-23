@@ -1,0 +1,148 @@
+{%- include 'editorial-content' -%}
+
+{% schema %}
+  {
+    "name": "Classics content",
+    "class": "classics",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content block"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_size_desktop",
+        "label": "[Desktop] Logo Size",
+        "min": 0,
+        "max": 300,
+        "step": 5,
+        "default": 45,
+        "unit": "px",
+        "info": "Default: 45px"
+      },
+      {
+        "type": "range",
+        "id": "logo_size_mobile",
+        "label": "[Mobile] Logo Size",
+        "min": 0,
+        "max": 300,
+        "step": 5,
+        "default": 35,
+        "unit": "px",
+        "info": "Default: 35px"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text"
+      },
+      {
+        "type": "url",
+        "id": "button_url",
+        "label": "Button URL"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "options": [
+          { "value": "button_primary", "label": "Button Primary"},
+          { "value": "button_secondary", "label": "Button Secondary"},
+          { "value": "button_tertiary", "label": "Button Tertiary"},
+          { "value": "button_quaternary", "label": "Button Quaternary"},
+          { "value": "link_primary", "label": "Link Primary"},
+          { "value": "link_secondary", "label": "Link Secondary"},
+          { "value": "link_no_style_primary", "label": "Link - No Style Primary"},
+          { "value": "link_no_style_secondary", "label": "Link - No Style Secondary"}
+        ],
+        "label": "Choose the button style"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "Two images",
+        "type": "two_images",
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "options": [
+              { "value": "classics__gallery--two-first-variant", "label": "Primary"},
+              { "value": "classics__gallery--two-second-variant", "label": "Secondary"}
+            ],
+            "label": "Images positions"
+          },
+          {
+            "type": "image_picker",
+            "id": "first_image",
+            "label": "First image"
+          },
+          {
+            "type": "richtext",
+            "id": "first_image_caption",
+            "label":"First image caption"
+          },
+          {
+            "type": "url",
+            "id": "first_image_url",
+            "label": "First image URL"
+          },
+          {
+            "type": "image_picker",
+            "id": "second_image",
+            "label": "Second image"
+          },
+          {
+            "type": "richtext",
+            "id": "second_image_caption",
+            "label":"Second image caption"
+          },
+          {
+            "type": "url",
+            "id": "second_image_url",
+            "label": "Second image URL"
+          }
+        ]
+      },
+      {
+        "name": "Single image",
+        "type": "single_image",
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "options": [
+              { "value": "classics__gallery--single-first-variant", "label": "Primary"},
+              { "value": "classics__gallery--single-second-variant", "label": "Secondary"}
+            ],
+            "label": "Image position"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "richtext",
+            "id": "image_caption",
+            "label":"Image caption"
+          },
+          {
+            "type": "url",
+            "id": "image_url",
+            "label": "Image URL"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

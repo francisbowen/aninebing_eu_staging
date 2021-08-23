@@ -1,0 +1,29 @@
+{%- comment -%}
+
+Article user renderer.
+
+Objects Referenced:
+ • article.user https://help.shopify.com/en/themes/liquid/objects/article#article-user
+
+{%- endcomment -%}
+
+<address class="author">
+  <div class="author__name">
+    <p>{{ article.user.name }}</p>
+  </div>
+  {% if article.user.bio != blank %}
+    <div class="author__bio">
+      <p>{{ article.user.bio }}</p>
+    </div>
+  {% endif %}
+  {% if article.user.email != blank %}
+    <div class="author__email">
+      <a href="mailto:{{ article.user.name }}">{{ article.user.email }}</a>
+    </div>
+  {% endif %}
+  {% if article.user.homepage != blank %}
+    <div class="author__homepage">
+      <a href="{{ article.user.homepage }}" target="_blank">{{ article.user.homepage }}</a>
+    </div>
+  {% endif %}
+</address>

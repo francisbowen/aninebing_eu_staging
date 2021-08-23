@@ -1,0 +1,187 @@
+{% comment %}<div class="fit-guide__body__text-body">{{ section.settings.text_body }}</div>{% endcomment %}
+{%- include 'store-domain' -%}
+
+<div class="fit-guide__body__wrapper">
+  <div class="customer__logo">
+    <img src="{{ settings.logo | img_url: '45x' }}" alt="{{ shop.name }}" />
+  </div>
+  <h2 class="fit-guide__body__title heading--15">{{ section.settings.title }}</h2> 
+  <div class="fit-guide__body__size-category">
+    {%- for block in section.blocks -%}
+      <button class="fit-guide__body__button button button--secondary js-fit-guide-category{% if forloop.first %} is-active{% endif %}" data-fit-category="{{ block.settings.title }}" type="button">{{ block.settings.title }}</button>
+    {%- endfor -%}
+  </div>
+
+  <div class="fit-guide__body__table">
+    {%- for block in section.blocks -%}
+      
+      {%- if store_domain == 'USA' or block.settings.fit_guide_image_eu == '' -%}
+        {%- assign fit_guide_image = block.settings.fit_guide_image -%}
+        {%- assign fit_guide_image_mobile = block.settings.fit_guide_image_mobile -%}
+      {%- else -%} 
+        {%- assign fit_guide_image = block.settings.fit_guide_image_eu -%}
+        {%- assign fit_guide_image_mobile = block.settings.fit_guide_image_mobile_eu -%}
+      {%- endif -%}
+
+      <div class="fit-guide__body__category-image js-fit-guide-image{% unless forloop.first %} hide{% endunless %}" data-fit-category="{{ block.settings.title }}">
+        <img class="fit-guide__body__image fit-guide__body__image-{{ block.id }} hide-until@sm" src="{{ fit_guide_image | img_url: 'master' }}" alt="{% if fit_guide_image.alt != '' %}{{ fit_guide_image.alt }}{% else %}{{ section.settings.title }}{% endif %}" />
+        <img class="fit-guide__body__image fit-guide__body__image-{{ block.id }} hide-from@sm" src="{{ fit_guide_image_mobile | img_url: 'master' }}" alt="{% if fit_guide_image.alt != '' %}{{ fit_guide_image.alt }}{% else %}{{ section.settings.title }}{% endif %}" />
+      </div>
+
+      {%- if block.settings.title == 'Clothing' -%}
+        <div class="fit-guide__body__category-image js-fit-guide-image {% unless forloop.first %} hide{% endunless %}" data-fit-category="{{ block.settings.title }}">
+          <img class="fit-guide__body__image fit-guide__body__image-{{ block.id }} hide-until@sm" src="{{ section.settings.fit_guide_measurement | img_url: 'master' }}" alt="{% if section.settings.fit_guide_measurement.alt != '' %}{{ section.settings.fit_guide_measurement.alt }}{% else %}{{ section.settings.title }}{% endif %}" />
+          <img class="fit-guide__body__image fit-guide__body__image-{{ block.id }} hide-from@sm" src="{{ section.settings.fit_guide_measurement_mobile | img_url: 'master' }}" alt="{% if section.settings.fit_guide_measurement.alt != '' %}{{ section.settings.fit_guide_measurement.alt }}{% else %}{{ section.settings.title }}{% endif %}" />
+        </div>
+      {%- endif -%}
+
+    {%- endfor -%}
+  </div>
+
+  <div class="fit-guide__body__generic"> 
+
+    {%- if section.settings.fit_guideline_image != blank -%}
+      <div class="fit-guide__body__generic-image">
+        <img class="fit-guide__body__image hide-until@sm" src="{{ section.settings.fit_guideline_image | img_url: 'master' }}" alt="{% if section.settings.fit_guideline_image.alt != '' %}{{ section.settings.fit_guideline_image.alt }}{% else %}{{ section.settings.title }}{% endif %}" />
+        <img class="fit-guide__body__image hide-from@sm" src="{{ section.settings.fit_guideline_image_mobile | img_url: 'master' }}" alt="{% if section.settings.fit_guideline_image.alt != '' %}{{ section.settings.fit_guideline_image.alt }}{% else %}{{ section.settings.title }}{% endif %}" />
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.fit_guideline_title != blank -%}
+      <h2 class="fit-guide__body__generic-title heading--15">{{ section.settings.fit_guideline_title }}</h2>
+    {%- endif -%}
+
+    <div class="fit-guide__body__generic-text-body">
+      <p class="fit-guide__body__generic-subtext uppercase-text">{{ section.settings.fit_guideline_subtext }}</p>
+      {{ section.settings.fit_guideline_text_body }}
+    </div> 
+  </div>
+</div>
+
+<style>
+  {%- for block in section.blocks -%}
+    .fit-guide__body__image-{{ block.id }} {
+      {% if block.settings.fit_guide_max_width == '' %}
+        max-width: 100%;
+      {% else %}
+        max-width: {{ block.settings.fit_guide_max_width }}px;
+      {% endif %}
+    }
+
+    @media (max-width: 996px) {
+      .fit-guide__body__image-{{ block.id }} {
+        {% if block.settings.fit_guide_max_width_mobile == '' %}
+          max-width: 100%;
+        {% else %}
+          max-width: {{ block.settings.fit_guide_max_width_mobile }}px;
+        {% endif %}
+      }
+    }
+  {%- endfor -%}
+</style>
+
+{% schema %}
+  {
+    "name": "Fit Guide body",
+    "class": "fit-guide__body",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Size Charts Title"
+      },  
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "image_picker",
+        "id": "fit_guide_measurement",
+        "label": "Generic Fit Guide Measurements"
+      },
+      {
+        "type": "image_picker",
+        "id": "fit_guide_measurement_mobile",
+        "label": "Generic Fit Guide Measurements (Mobile)"
+      },
+      {
+        "type": "header",
+        "content": "Generic Section"
+      },
+      {
+        "type": "image_picker",
+        "id": "fit_guideline_image",
+        "label": "Generic Fit Guide Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "fit_guideline_image_mobile",
+        "label": "Generic Fit Guide Image (Mobile)"
+      },
+      {
+        "type": "text",
+        "id": "fit_guideline_title",
+        "label": "Generic Fit Guide Title"
+      },
+      {
+        "type": "text",
+        "id": "fit_guideline_subtext",
+        "label": "Generic Fit Guide Subtext"
+      },
+      {
+        "type": "richtext",
+        "id": "fit_guideline_text_body",
+        "label": "Generic Fit Guide Text Body"
+      }
+    ],
+    "blocks": [
+      {
+        "name": "sizing-charts",
+        "type": "image",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Size Charts Label"
+          },
+          {
+            "type": "text",
+            "id": "fit_guide_max_width",
+            "label": "Max Width of Images on Desktop",
+            "info": "Example: 620, for 620px. If empty then it's 100%"
+          },
+          {
+            "type": "text",
+            "id": "fit_guide_max_width_mobile",
+            "label": "Max Width of Image on Mobile",
+            "info": "Example: 620, for 620px. If empty then it's 100%"
+          },
+          {
+            "type": "image_picker",
+            "id": "fit_guide_image",
+            "label": "Size Chart Table"
+          },
+          {
+            "type": "image_picker",
+            "id": "fit_guide_image_mobile",
+            "label": "Size Chart Table (Mobile)"
+          },
+          {
+            "type": "image_picker",
+            "id": "fit_guide_image_eu",
+            "label": "Size Chart Table - EU"
+          },
+          {
+            "type": "image_picker",
+            "id": "fit_guide_image_mobile_eu",
+            "label": "Size Chart Table (Mobile) - EU"
+          }
+        ]
+      }
+    ] 
+  }
+{% endschema %}

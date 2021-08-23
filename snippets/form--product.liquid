@@ -1,0 +1,134 @@
+{%- comment -%}
+
+Product form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#product
+
+Objects Referenced:
+  • product https://help.shopify.com/en/themes/liquid/objects/product
+  • variant https://help.shopify.com/en/themes/liquid/objects/variant
+
+{%- endcomment -%}
+
+{%- assign form_id = 'ProductForm' | append: '--' | append: size -%}
+{%- assign form_class = 'form form--product' -%}
+{% assign size = size %}
+
+{%- capture product_variants -%}
+  {
+    "variants": [{%- for variant in product.variants -%}
+      {
+        "title": "{{ variant.title }}",
+        "id": {{ variant.id }},
+        "inventory": {{ variant.inventory_quantity }},
+        "price": {{ variant.price }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}]
+  }
+{%- endcapture -%}
+
+{%- capture variants_sizes -%}
+  [{%- for variant in product.variants -%}
+    {"{{- variant.title -}}": {{- variant.id -}}}{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}]
+{%- endcapture -%}
+
+{% form 'product', product, id: form_id, class: form_class, data-product-id: product.id %}
+  {% assign current_variant = product.selected_or_first_available_variant %}
+
+  {%- include 'color-swatches' -%}
+
+  {% unless product.has_only_default_variant %}
+    <div class="form__size-wrapper js-product-form-size js-product-form-size--{{ size }}">
+      <button type="button" class="button button-text button--primary button--size js-size-toggle js-button-size  hide-from@md">
+        {%- if product.variants.size > 1 -%}
+          <span class="form__btn-size button__bold style">{{- 'products.product.select_size' | t -}}</span>
+        {%- else -%}
+          <span class="form__btn-size button__bold style">{{ product.options_with_values[0].name }}: {{ product.variant[0].option1 }}</span>
+        {%- endif -%}
+        {%- include 'icons' with selected_icon: 'chevron-down', icon_fill: 'none', icon_stroke: '#FFFFFF', icon_class: 'icon-chevron-down', title: 'general.dropdown.icon', desc: 'general.dropdown.toggle_dropdown' -%}
+      </button>
+      <div class="form__inner-size-content js-form-size">
+        <button type="button" class="form__size-btn-close js-size-toggle hide-from@md">
+          {%- include 'icons' with selected_icon: 'chevron-down', icon_fill: 'none', icon_stroke: '#000000', icon_class: 'icon-chevron-down-big', title: 'general.dropdown.icon', desc: 'general.dropdown.toggle_dropdown' -%}
+        </button>
+
+        {% comment %} Max size on each row is 6 {% endcomment %}
+        {%- assign sizes_divided_by = product.variants.size | divided_by: 6 -%}
+        {%- assign sizes_remainder = product.variants.size | modulo: 6 -%}
+        {%- if sizes_divided_by > 1 or sizes_divided_by == 1 -%}
+          {%- assign number_size_class = '6' -%}
+        {%- elsif sizes_remainder > 0 -%}
+          {% assign number_size_class = product.variants.size %}
+        {%- endif -%}
+
+        {% assign productVariantsLength = product.variants | size %}
+
+        {% comment %} Find out if any of the variant is unavailable {% endcomment %}
+        {%- assign anyVariantOOS = false -%}
+        {%- for variant in product.variants -%}
+          {%- unless variant.available -%}
+            {%- assign anyVariantOOS = true -%}
+            {%- break -%}
+          {%- endunless -%}
+        {%- endfor -%}
+        
+        {% comment %} Check if variant title has '$'' to counter global E overlapping prices {% endcomment %}
+        {%- if product.selected_or_first_available_variant.title contains '$' or product.selected_or_first_available_variant.title contains '€' -%}
+          {%- assign option_form_class = ' options__group--price-type-' | append: number_size_class -%}
+        {%- else  -%}
+          {%- assign option_form_class = '' -%}
+        {%- endif -%}
+
+        <div class="form__field form__field--sizes options__group options__group--size-{{ number_size_class }} js-product-option js-block-selected {% if productVariantsLength == 1 %}js-has-one-variant{% endif %}{{ option_form_class }}" data-any-variant-oos="{{ anyVariantOOS }}" data-product-variants='{{ product_variants | h }}' data-sizes-variants='{{ variants_sizes | h }}' data-color-id="color--{{ product.id }}">
+          {% assign field_id = form_id | append: '-ProductSelect' %}
+          {%- assign show_limit_msg = false -%}
+          {%- assign variant_availability = true -%}
+          {%- assign qty_limit = 0  -%}
+          {%- for variant in product.variants -%}
+            {%- include 'product__limited-quantity' with item_qty: variant.inventory_quantity -%}
+
+            {%- if product.tags contains 'swym-comingsoon' -%}
+              {%- assign variant_availability = false -%}
+              <input class="option" value="{{ variant.id }}" type="radio" aria-hidden="true" aria-label="Hidden option input">
+              <label role="button" data-current-variant='[{"{{ variant.option1 }}": {{ variant.id }} }]' data-current-sku="{{ variant.sku }}" data-color-id="color--{{ product.id }}" data-product-handle="{{ product.handle }}" data-product-title="{{ product.title }}" data-product-id="{{ product.id }}"  data-variant-id="{{ variant.id }}" for="{{ variant.id }}-{{ size }}" class="is-disabled style style--secondary" data-variant-qty="{{ variant.inventory_quantity }}" data-qty-limit="{{ qty_limit }}" data-limit-msg="{% if show_limit_msg %}{{ section.settings.limited_qty_text }}{% endif %}" data-image="{{ product.featured_image | img_url: 'master' }}" data-price="{{ variant.price }}" data-loyalty-points="+ {{ variant.price | divided_by: 100 | floor }}{{ 'products.product.loyalty_points' | t }}" data-option1="{{ product.options_with_values[0].name | upcase }}: {{ variant.option1 }}" tabindex="0" aria-label="Click to select {{ product.options_with_values[0].name }}: {{ variant.option1 }}">{{ variant.title }}</label>
+            {%- elsif variant.available -%}
+              <input class="option" name="id" value="{{ variant.id }}" type="radio" aria-hidden="true" aria-label="Hidden option input" {%- if variant == current_variant -%} selected{%- endif -%}>
+              <label role="button" data-current-variant='[{"{{ variant.option1 }}": {{ variant.id }} }]' data-current-sku="{{ variant.sku }}" data-color-id="color--{{ product.id }}" data-product-handle="{{ product.handle }}" data-product-title="{{ product.title }}" data-product-id="{{ product.id }}" data-variant-id="{{ variant.id }}" for="{{ variant.id }}-{{ size }}" data-variant-qty="{{ variant.inventory_quantity }}" data-qty-limit="{{ qty_limit }}" data-limit-msg="{% if show_limit_msg %}{{ section.settings.limited_qty_text }}{% endif %}" data-image="{{ product.featured_image | img_url: 'master' }}" data-price="{{ variant.price }}" data-loyalty-points="+ {{ variant.price | divided_by: 100 | floor }}{{ 'products.product.loyalty_points' | t }}" data-option1="{{ product.options_with_values[0].name | upcase }}: {{ variant.option1 }}" class="style style--secondary" tabindex="0" aria-label="Click to select {{ product.options_with_values[0].name }}: {{ variant.option1 }}">{{ variant.title }}</label>
+            {%- else -%}
+              {%- assign variant_availability = false -%}
+              <input class="option" value="{{ variant.id }}" type="radio" aria-hidden="true" aria-label="Hidden option input">
+              <label role="button" data-current-variant='[{"{{ variant.option1 }}": {{ variant.id }} }]' data-current-sku="{{ variant.sku }}" data-color-id="color--{{ product.id }}" data-product-handle="{{ product.handle }}" data-product-title="{{ product.title }}" data-product-id="{{ product.id }}" data-variant-id="{{ variant.id }}" for="{{ variant.id }}-{{ size }}" class="is-disabled style style--secondary" data-variant-qty="{{ variant.inventory_quantity }}" data-qty-limit="{{ qty_limit }}" data-limit-msg="{% if show_limit_msg %}{{ section.settings.limited_qty_text }}{% endif %}" data-image="{{ product.featured_image | img_url: 'master' }}" data-price="{{ variant.price }}" data-loyalty-points="+ {{ variant.price | divided_by: 100 | floor }}{{ 'products.product.loyalty_points' | t }}" data-option1="{{ product.options_with_values[0].name | upcase }}: {{ variant.option1 }}" tabindex="0" aria-label="Click to select {{ product.options_with_values[0].name }}: {{ variant.option1 }}">{{ variant.title }}</label>
+            {%- endif -%}
+            {% comment %} Reset the quantity limit msg to nothing for the next variant {% endcomment %}
+            {%- assign show_limit_msg = false -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <input class="js-single-product" type="hidden" name="id" value="{{ current_variant.id }}" data-image="{{ product.featured_image | img_url: 'master' }}" data-price="{{ product.price }}" data-product-id="{{ product.id }}">
+  {% endunless %}
+
+  <div class="form__field hide">
+    {% assign field_id = form_id | append: '-Quantity' %}
+    <label for="{{ field_id }}">{{ 'products.product.quantity' | t }}</label>
+    <input type="number"
+      name="quantity"
+      id="{{ field_id }}"
+      value="1"
+      min="1"
+      max="{{ current_variant.inventory_quantity }}"
+      pattern="[0-9]*">
+  </div>
+
+  {% unless lowercase_excluded_product_types contains lowercase_product_type %}
+    <div class="product__fit-guide-link-desktop hide-until@md">
+      <a role="button" href="#" title="{{ 'products.product.go_to_fit_guide' | t }}" class="link link--primary js-open-modal" data-modal-target="#size-guide-modal">{{- 'products.product.fit_guide' | t -}}</a>
+    </div>  
+  {% endunless %}
+
+  {% unless template.suffix == 'bundle' %}
+    {% include 'form--product__action' %}
+  {% endunless %}
+{% endform %}

@@ -1,0 +1,23 @@
+{%- include 'monetate-head' -%}
+
+<!-- Begin monetateQ + set page type + addCartRows Method -->
+<script>
+  window.monetateQ = window.monetateQ || [];
+
+  const cartContent = theme.cart;
+  const cartItems = cartContent.items;
+  let productCartRows = [];
+
+  cartItems.forEach((item) => {
+    const unitPrice = item.price / 100;
+    const variantSku = item.sku;
+    productCartRows.push({ productId: item.product_id, quantity: item.quantity, unitPrice, sku: variantSku, currency: cartContent.currency});
+  });
+
+  window.monetateQ.push(["setPageType", theme.template.page_type]);
+
+  window.monetateQ.push(["addCartRows", productCartRows]);
+  
+  window.monetateQ.push(["trackData"]);
+</script>
+<!-- End monetateQ + set page type + addCartRows Method -->

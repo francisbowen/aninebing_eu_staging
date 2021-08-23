@@ -1,0 +1,36 @@
+<div class="cart-flyout__overlay header__overlay js-cart-flyout-overlay js-modal-click-exclude">
+  <div class="cart-flyout--container js-cart-flyout-container">
+    <nav class="cart-flyout js-cart {% if cart.item_count == 0 %}is-empty{% endif %}" id="cart-flyout">
+
+      {% if settings.cart_promo_message != blank and settings.show_cart_promo_message %}
+        <h1 class="cart__promo-message js-modal-click-exclude heading--4 hide-from@md">{{ settings.cart_promo_message }}</h1>
+      {% endif %}
+
+      <div class="cart-flyout__breadcrumb">
+        <a href="#CartFlyoutIcon" class="cart-flyout__close js-close-cart-flyout" id="CartFlyoutClose" title="{{ 'cart.general.close' | t }}">{{ 'cart.general.close' | t }}</a>
+        <h2 class="cart__items-count js-cart__items-count h1"><span class="js-cart-items-count">{{ cart.item_count }}{% if cart.item_count > 1 %} {{ 'cart.general.items' | t }}{% else %} {{ 'cart.general.item' | t }}{% endif %}</span> {{ 'cart.general.in_bag' | t }}</h2>
+      </div>
+
+      <div class="cart__overview js-cart-overview js-modal-click-exclude">
+        {% comment %} Injecting Cart Flyout items {% endcomment %}
+      </div>
+
+      {%- include 'recommended-products-flyout' -%}
+
+      <div class="cart__payment-details js-cart-payment-details js-modal-click-exclude">
+        {% if settings.enable_gift_products %}
+          <div class="cart__gift js-cart-gift js-modal-click-exclude">
+            <p class="cart__gift__description js-cart-gift-description uppercase-text">{{ 'gift_product.gift_description' | t }}</p>
+            <button type="button" class="cart__gift__button button button--secondary js-cart-gift-button">{{ 'gift_product.add_gift' | t }}</button>
+          </div> 
+        {% endif %}
+
+        {% if settings.cart_promo_message != blank and settings.show_cart_promo_message %}
+          <h1 class="cart__promo-message js-modal-click-exclude heading--4 hide-until@md">{{ settings.cart_promo_message }}</h1>
+        {% endif %}
+        {% include 'cart__totals' %}
+      </div>
+
+    </nav>
+  </div>
+</div>

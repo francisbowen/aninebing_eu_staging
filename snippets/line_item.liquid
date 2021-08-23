@@ -1,0 +1,130 @@
+{%- comment -%}
+
+Line item renderer.
+Must be included in a table.
+
+Objects Referenced:
+ • line_item https://help.shopify.com/en/themes/liquid/objects/line_item
+
+{%- endcomment -%}
+
+{%- assign custom_id = custom_id -%}
+
+{%- assign line_item_classes = 'line-item' | split: ' ' -%}
+{%- if line_item.original_price > line_item.final_price -%}
+  {%- assign line_item_classes = 'price--sale' | concat: line_item_classes -%}
+{%- else -%}
+  {%- assign line_item_classes = 'price--regular' | concat: line_item_classes -%}
+{%- endif -%}
+
+<div class="cart__item js-cart-item" 
+  data-title="{{ line_item.title }}"
+  data-product-id="{{ line_item.product.id }}"
+  data-variant-id="{{ line_item.variant.id }}"
+  data-key="{{ line_item.key }}" 
+  data-quantity="{{ line_item.quantity }}" 
+  data-inventory="{{ line_item.variant.inventory_quantity }}"
+  data-price="{{ line_item.variant.price }}"
+  data-image="{{ line_item.product.featured_image | img_url: 'medium' }}"
+  data-product-handle="{{ line_item.product.handle }}"
+  data-original-line-price="{{ line_item.original_line_price }}"
+  data-product-discount-tag="{% if line_item.product.tags contains settings.discount_tag_name %}true{% endif %}"
+  data-product-gift="{% if settings.enable_gift_products and line_item.product.tags contains 'gift-fragrance' and settings.gift_add_type == 'automatic' %}true{% endif %}">
+
+    {% comment %} Cart Item Image {% endcomment %}
+    <a class="cart__item-image js-cart-image" href="{{ line_item.url }}" title="Link to {{ line_item.product.title }}">
+      {% include 'image--responsive' with image: line_item.image, max_width: settings.line_item_image_max, image_class: 'responsive-image__image--cart'  %}
+    </a>
+    <div class="cart__item-details">
+
+    {% comment %} Cart Item - Remove from cart {% endcomment %}
+    <button type="button" title="Remove item" class="cart__item-remove js-remove-cart-item">
+      {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.cart.remove', desc: 'general.cart.remove_desc' -%}
+    </button>
+
+    {% comment %} Cart Item Title {% endcomment %}
+    {%- assign genericProductTitle = line_item.product.title | split: '- ' -%}
+    <p class="cart__item-title uppercase-text js-cart-item-title">
+      {%- if genericProductTitle.size > 1 -%}
+        {{ genericProductTitle[0] }}<br>
+        <span class="text-title-space">{{ genericProductTitle[1] }}</span>
+      {%- else -%}
+        {{ line_item.product.title }}
+      {%- endif -%}
+    </p>
+    
+    {% comment %} Cart Item Price and Sold Out Text {% endcomment %}
+    <div class="cart__item-price-container">
+      {%- if line_item.final_price == 0 -%}
+        <span class="small-text">GIFT</span>
+      {%- else -%}
+        {%- include 'pricing' with compare_at_price: line_item.product.compare_at_price, price: line_item.final_price, original_at_price: line_item.product.price -%}
+      {%- endif -%}
+      <span class="cart__item-sold-out heading--4-collection-banner js-cart__item-sold-out"></span>
+    </div>
+
+    {% comment %} Cart Item Quantity Selector {% endcomment %}
+    <div class="cart__item-quantity-selector {% if line_item.properties and line_item.properties._gift %}is-hidden{% endif %}">
+      <button type="button" title="Decrease quantity by one" class="js-cart-item-quantity-updater js-cart-item-quantity-minus quantity-updater">
+        {%- include 'icons' with selected_icon: 'minus-sign', icon_class: 'icon-minus' icon_fill: 'none', icon_stroke: '#000000', title: 'general.cart.minus_title', desc: 'general.cart.minus_desc' -%}
+      </button>
+      <span class="js-cart-item-quantity small-text">{{ line_item.quantity }}</span>
+      <button type="button" title="Increase quantity by one" class="js-cart-item-quantity-updater js-cart-item-quantity-plus quantity-updater">
+        {%- include 'icons' with selected_icon: 'plus-sign', icon_class: 'icon-plus', icon_fill: 'none', icon_stroke: '#000000', title: 'general.cart.plus_title', desc: 'general.cart.plus_desc' -%}
+      </button>
+    </div>
+
+    {% comment %} Cart Item Option Selector {% endcomment %}
+
+    {% assign variantCount = line_item.product.variants | size %}
+
+    {% comment %} Check if variant title has '$'' to counter global E overlapping prices {% endcomment %}
+    {%- if line_item.product.selected_or_first_available_variant.title contains '$' or line_item.product.selected_or_first_available_variant.title contains '€' -%}
+      {%- assign option_form_class = ' cart__item-option--price-type' -%}
+    {%- else  -%}
+      {%- assign option_form_class = '' -%}
+    {%- endif -%}
+
+    {% if line_item.variant.title != 'Default Title' %}
+      <div class="cart__item-options {% unless variantCount > 1 %}is-hidden{% endunless %}">
+        <div class="cart__item-options-container">
+          <button type="button" class="{% unless line_item.product.variants.size > 1 %}cart__item-option-single-variant {% endunless %}cart__item-option-selected dropdown__trigger js-accordion js-selected-option{{ option_form_class }}" aria-label="Variant selector" aria-expanded="false" data-item-key="{{ line_item.key }}" data-item-properties='{{ line_item.properties | json }}' data-toggle='{"target":"js-dropdown-container--{{ line_item.key }}--{{ custom_id }}","group":"js-dropdown-container", "focusTarget": "js-dropdown-container", "closeOnUnfocus": true}' data-variant-price="{{ line_item.price | money_without_trailing_zeros }}" data-variant-id="{{ line_item.variant.id }}" data-inventory="{{ line_item.variant.inventory_quantity }}">
+            <span class="small-text">{{ line_item.variant.title }}</span>
+          </button>
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} Cart Item Discount Message depending on Tag {% endcomment %}
+    {%- if settings.show_discount_message and line_item.product.tags contains settings.discount_tag_name -%}
+      <div class="cart__item-discount-message">
+        <span class="cart__item-discount-message-text small-text js-item-discount-message"></span>  
+      </div>
+    {%- endif -%}
+  </div>
+
+  <a class="cart__item-out-of-stock link link--primary hide js-open-modal js-out-of-stock-trigger-cart" data-modal-target="#my-signup-modal" name="modal" role="button" aria-label="button">
+    {{- 'products.product.out_of_stock' | t -}}
+  </a>
+  <p class="cart__item-error-message small-text js-cart-error-message"></p>
+
+  {% if line_item.variant.title != 'Default Title' %}
+    <div id="js-dropdown-container--{{ line_item.key }}--{{ custom_id }}" class="cart__item-dropdown dropdown__list js-dropdown-container">
+      <h4 class="cart__item-dropdown-title text-small">{{ 'general.cart.change_option' | t | upcase }}</h4>
+      <div class="cart__item-dropdown-container">
+        {% for variant in line_item.product.variants %}
+          <button type="button" class="cart__item-option js-cart-item-option {% if variant.inventory_quantity == 0 %}is-disabled is-oos{% endif%}{% if line_item.variant.title == variant.title %} is-selected{% endif %}{{ option_form_class }}" 
+            data-variant-price="{{ variant.price | strip_html | money_without_trailing_zeros }}" 
+            data-variant-id="{{ variant.id }}" 
+            data-inventory="{{ variant.inventory_quantity }}"
+            data-product-id="{{ line_item.product.id }}" 
+            data-image="{{ line_item.product.image }}" 
+            data-price="{{ variant.price }}"
+            data-oversell="{% if variant.inventory_policy == 'continue' %}true{% else %}false{% endif %}"
+            tabindex="-1"
+            aria-label="Variant {{ variant.title }}">{{ variant.title }}</button>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>

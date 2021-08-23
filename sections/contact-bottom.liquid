@@ -1,0 +1,80 @@
+<div class="contact__bottom__info">
+  {% if section.settings.logo %}
+    <img class="contact__bottom__info__image" src="{{ section.settings.logo | img_url: '45x45' }}" alt="{{ section.settings.logo.alt }}">
+  {% endif %}
+  <p class="contact__bottom__info__title heading--2">{{ section.settings.title }}</p>
+  <p class="contact__bottom__info__link">
+    <a href="{{ section.settings.link_url }}" class="link">{{ section.settings.link_text }}</a>
+  </p>
+</div>
+
+<p class="contact__bottom__second-title heading--2">{{ section.settings.second_title }}</p>
+<div class="contact__bottom__blocks">
+{% for block in section.blocks %}
+  <div class="contact__bottom__block">
+    <p class="contact__bottom__block__title heading--3">{{ block.settings.title }}</p>
+    <div class="contact__bottom__block__body">{{ block.settings.body }}</div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "Contact Bottom",
+    "class": "contact__bottom",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Information"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "link_text",
+        "label": "Link text"
+      },
+      {
+        "type": "url",
+        "id": "link_url",
+        "label": "Link URL"
+      },
+      {
+        "type": "header",
+        "content": "Content blocks"
+      },
+      {
+        "type": "text",
+        "id": "second_title",
+        "label": "Second title"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content_block",
+        "name": "Content block",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "body",
+            "label": "Body",
+            "info": "To include an email link, please enter 'mailto:' followed by the email address."
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

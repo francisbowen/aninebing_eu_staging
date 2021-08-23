@@ -1,0 +1,6 @@
+{% if shop.permanent_domain == 'anine-bing-dev01-us.myshopify.com' or shop.permanent_domain == 'aninebing.com' %}
+  {% assign gepi_domain = "intgepi.bglobale.com" %}
+{% else %}
+  {% assign gepi_domain = "gepi.global-e.com" %}
+{% endif %}
+<link id="GEPIStyles" rel="stylesheet" href="//{{ gepi_domain }}/proxy/css/667" />

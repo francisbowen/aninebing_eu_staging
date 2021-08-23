@@ -1,0 +1,373 @@
+{% for block in section.blocks %}
+  {% if block.settings.page_url == page.url %}
+    {% assign muse = block.settings %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+{%- comment -%} HEADER {%- endcomment -%}
+{% if muse.display_header %}
+  <div class="muse-details__header">
+    {% if muse.header_video_filename != blank %}
+      <video class="muse-details__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+        <source src="{{ muse.header_video_filename | file_url }}" type="video/mp4">
+      </video>
+    {% else %}
+      <picture>
+        <source media="(max-width: 996px)" srcset="{{ muse.header_image_mobile | img_url: '640x' }} 2x, {{ muse.header_image_mobile | img_url: '320x' }} 1x">
+        <source srcset="{{ muse.header_image_desktop | img_url: '1440x'}} 2x, {{ muse.header_image_desktop | img_url: '720x' }} 1x">
+        <img class="muse-details__image" src="{{ muse.header_image_desktop | img_url: '720x' }}" alt="{{ muse.header_image_desktop.alt }}">
+      </picture>
+      <p class="muse-details__caption small-text">{{ muse.header_image_caption }}</p>
+    {% endif %}
+    <div class="muse-details__content">
+      <p class="muse-details__content__title uppercase-text">{{ muse.header_title }}</p>
+      <div class="muse-details__content__text">{{ muse.header_text }}</div>
+      <a class="muse-details__content__link link link--primary muse-details__grid__link" href="{{ muse.header_link_url }}" title="Link to {{ muse.header_title }}">{{ muse.header_link_text }}</a>
+    </div>
+  </div>
+{% endif %}
+
+{%- comment -%} FIRST TEXT BODY{%- endcomment -%}
+{% if muse.display_first_text_body %}
+  <div class="muse-details__first-text-body">
+    <p class="muse-details__content__title uppercase-text">{{ muse.first_text_body_title}}</p>
+    <div class="muse-details__content__text">{{ muse.first_text_body_text }}</div>
+  </div>
+{% endif %}
+
+{%- comment -%} FIRST IMAGE {%- endcomment -%}
+{% if muse.display_first_image %}
+  <div class="muse-details__first-image">
+    {% if muse.first_video_filename != blank %}
+      <video class="muse-details__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+        <source src="{{ muse.first_video_filename | file_url }}" type="video/mp4">
+      </video>
+    {% else %}
+      <picture>
+        <source media="(max-width: 996px)" srcset="{{ muse.first_image | img_url: '640x' }} 2x, {{ muse.first_image | img_url: '320x' }} 2x">
+        <source srcset="{{ muse.first_image | img_url: '1440x'}} 2x, {{ muse.first_image | img_url: '720x' }} 1x">
+        <img class="muse-details__image" src="{{ muse.first_image | img_url: '720x' }}" alt="{{ muse.first_image.alt }}">
+      </picture>
+      <p class="muse-details__caption small-text">{{ muse.first_image_caption }}</p>
+    {% endif %}
+    <a class="muse-details__content__link link link--primary muse-details__grid__link" href="{{ muse.first_link_url }}" title="Link to product">{{ muse.first_link_text }}</a>
+  </div>
+{% endif %}
+
+{%- comment -%} BANNER IMAGE {%- endcomment -%}
+{% if muse.display_banner_image %}
+  <div class="muse-details__banner-image">
+    {% if muse.banner_video_filename != blank %}
+      <video class="muse-details__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+        <source src="{{ muse.banner_video_filename | file_url }}" type="video/mp4">
+      </video>
+    {% else %}
+    <picture>
+      <source media="(max-width: 996px)" srcset="{{ muse.banner_image | img_url: '640x' }} 2x, {{ muse.banner_image | img_url: '320x' }} 2x">
+      <source srcset="{{ muse.banner_image | img_url: '2880x'}} 2x, {{ muse.banner_image | img_url: '1440x' }} 1x">
+      <img class="muse-details__image" src="{{ muse.banner_image | img_url: '1440x' }}" alt="{{ muse.banner_image.alt }}">
+    </picture>
+    {% endif %}
+    <div class="muse-details__content">
+      <p class="muse-details__content__title heading--15">{{ muse.banner_title }}</p>
+      <div class="muse-details__content__subtitle heading--15">{{ muse.banner_subtitle }}</div>
+      <a class="muse-details__content__link link link--primary" href="{{ muse.banner_link_url }}" title="Link to {{ muse.banner_title }}">{{ muse.banner_link_text }}</a>
+    </div>
+  </div>
+{% endif %}
+
+{%- comment -%} SECOND TEXT BODY {%- endcomment -%}
+{% if muse.display_second_text_body %}
+  <div class="muse-details__second-text-body">
+    <div class="muse-details__content__text">{{ muse.second_text_body_text }}</div>
+  </div>
+{% endif %}
+
+{%- comment -%} SECOND IMAGE {%- endcomment -%}
+{% if muse.display_second_image %}
+  <div class="muse-details__second-image">
+    {% if muse.second_video_filename != blank %}
+      <video class="muse-details__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+        <source src="{{ muse.second_video_filename | file_url }}" type="video/mp4">
+      </video>
+    {% else %}
+      <picture>
+        <source media="(max-width: 996px)" srcset="{{ muse.second_image | img_url: '640x' }} 2x, {{ muse.second_image | img_url: '320x' }} 1x">
+        <source srcset="{{ muse.second_image | img_url: '1440x'}} 2x, {{ muse.second_image | img_url: '720x'}} 1x">
+        <img class="muse-details__image" src="{{ muse.second_image | img_url: '720x' }}" alt="{{ muse.second_image.alt }}">
+      </picture>
+      <p class="muse-details__caption small-text">{{ muse.second_image_caption }}</p>
+    {% endif %}
+    <a class="muse-details__content__link link link--primary muse-details__grid__link" href="{{ muse.second_link_url }}" title="Link to product">{{ muse.second_link_text }}</a>
+  </div>
+{% endif %}
+
+{%- comment -%} THIRD IMAGE {%- endcomment -%}
+{% if muse.display_third_image %}
+  <div class="muse-details__third-image">
+    {% if muse.third_video_filename != blank %}
+      <video class="muse-details__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+        <source src="{{ muse.third_video_filename | file_url }}" type="video/mp4">
+      </video>
+    {% else %}
+      <picture>
+        <source media="(max-width: 996px)" srcset="{{ muse.third_image | img_url: '640x' }} 2x, {{ muse.third_image | img_url: '320x' }} 1x">
+        <source srcset="{{ muse.third_image | img_url: '1440x'}} 2x, {{ muse.second_image | img_url: '720x'}} 1x">
+        <img class="muse-details__image" src="{{ muse.third_image | img_url: '720x' }}" alt="{{ muse.third_image.alt }}">
+      </picture>
+      <p class="muse-details__caption small-text">{{ muse.third_image_caption }}</p>
+    {% endif %}
+    <a class="muse-details__content__link link link--primary muse-details__grid__link" href="{{ muse.third_link_url }}" title="Link to product">{{ muse.third_link_text }}</a>
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Muse details",
+    "tag": "section",
+    "class": "muse-details",
+    "blocks": [
+      {
+        "name": "New page",
+        "type": "page",
+        "settings": [
+          {
+            "type": "url",
+            "id": "page_url",
+            "label": "Page URL",
+            "info": "This needs to point to a page that uses page.muse-details as their template suffix. A page suffix can be set in the shop admin under Sales Channels > Pages."
+          },
+          {
+            "type": "header",
+            "content": "Header"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_header",
+            "label": "Display header"
+          },
+          {
+            "type": "text",
+            "id": "header_video_filename",
+            "label": "Header Video filename e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Header mobile image",
+            "id": "header_image_mobile",
+            "type": "image_picker"
+          },
+          {
+            "label": "Header desktop image",
+            "id": "header_image_desktop",
+            "type": "image_picker"
+          },
+          {
+            "type": "text",
+            "id": "header_image_caption",
+            "label": "Header image caption"
+          },
+          {
+            "type": "text",
+            "id": "header_title",
+            "label": "Header title"
+          },
+          {
+            "type": "richtext",
+            "id": "header_text",
+            "label": "Header text"
+          },
+          {
+            "type": "text",
+            "id": "header_link_text",
+            "label": "Header link text"
+          },
+          {
+            "type": "url",
+            "id": "header_link_url",
+            "label": "Header link URL"
+          },
+          {
+            "type": "header",
+            "content": "First text body"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_first_text_body",
+            "label": "Display first text body"
+          },
+          {
+            "type": "text",
+            "id": "first_text_body_title",
+            "label": "First text body title"
+          },
+          {
+            "type": "richtext",
+            "id": "first_text_body_text",
+            "label": "First text body text"
+          },
+          {
+            "type": "header",
+            "content": "First image"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_first_image",
+            "label": "Display first image "
+          },
+          {
+            "type": "text",
+            "id": "first_video_filename",
+            "label": "First Video filename e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "First image",
+            "id": "first_image",
+            "type": "image_picker"
+          },
+          {
+            "type": "text",
+            "id": "first_image_caption",
+            "label": "First image caption"
+          },
+          {
+            "type": "text",
+            "id": "first_link_text",
+            "label": "First link text"
+          },
+          {
+            "type": "url",
+            "id": "first_link_url",
+            "label": "First link URL"
+          },
+          {
+            "type": "header",
+            "content": "Banner image"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_banner_image",
+            "label": "Display banner image "
+          },
+          {
+            "type": "text",
+            "id": "banner_video_filename",
+            "label": "Banner Video filename e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Banner image",
+            "id": "banner_image",
+            "type": "image_picker"
+          },
+          {
+            "label": "Banner title",
+            "id": "banner_title",
+            "type": "text"
+          },
+          {
+            "label": "Banner subtitle",
+            "id": "banner_subtitle",
+            "type": "text"
+          },
+          {
+            "type": "text",
+            "id": "banner_link_text",
+            "label": "Banner link text"
+          },
+          {
+            "type": "url",
+            "id": "banner_link_url",
+            "label": "Banner link URL"
+          },
+          {
+            "type": "header",
+            "content": "Second text body"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_second_text_body",
+            "label": "Display second text body"
+          },
+          {
+            "type": "richtext",
+            "id": "second_text_body_text",
+            "label": "Second text body text"
+          },
+          {
+            "type": "header",
+            "content": "Second image"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_second_image",
+            "label": "Display second image "
+          },
+          {
+            "type": "text",
+            "id": "second_video_filename",
+            "label": "Second Video filename e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Second image",
+            "id": "second_image",
+            "type": "image_picker"
+          },
+          {
+            "type": "text",
+            "id": "second_image_caption",
+            "label": "Second image caption"
+          },
+          {
+            "type": "text",
+            "id": "second_link_text",
+            "label": "Second link text"
+          },
+          {
+            "type": "url",
+            "id": "second_link_url",
+            "label": "Second link URL"
+          },
+          {
+            "type": "header",
+            "content": "Third image"
+          },
+          {
+            "type": "checkbox",
+            "id": "display_third_image",
+            "label": "Display third image "
+          },
+          {
+            "type": "text",
+            "id": "third_video_filename",
+            "label": "Third Video filename e.g: Video.mp4",
+            "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to use an image instead."
+          },
+          {
+            "label": "Third image",
+            "id": "third_image",
+            "type": "image_picker"
+          },
+          {
+            "type": "text",
+            "id": "third_image_caption",
+            "label": "Third image caption"
+          },
+          {
+            "type": "text",
+            "id": "third_link_text",
+            "label": "Third link text"
+          },
+          {
+            "type": "url",
+            "id": "third_link_url",
+            "label": "Third link URL"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

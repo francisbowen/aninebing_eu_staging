@@ -1,0 +1,19 @@
+{% comment %} 
+  Shared wishlist page - Page generated when copied to clipboard 
+  from clicking on "Share Wishlist" on the the /pages/custom-wishlist
+{% endcomment %}
+
+{%- if customer -%}
+  {%- assign customer_status = 'js-' | append: template.name  -%}
+{%- else -%}
+  {%- assign customer_status = 'custom-wishlist--not-customer' -%}
+{%- endif -%}
+
+<article class="custom-wishlist {{ customer_status }}">
+  <div class="custom-wishlist__header">
+    <h1 class="custom-wishlist__title">{{ page.title }}</h1>
+  </div>
+  <div class="custom-wishlist__wrapper" id="wishlist-items-container">
+    <script src="{{ 'shared-wishlist.js' | asset_url }}" ></script>
+  </div>
+</article>

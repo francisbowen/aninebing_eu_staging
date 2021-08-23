@@ -1,0 +1,17 @@
+{% if shop.permanent_domain == 'anine-bing-dev01-us.myshopify.com' or shop.permanent_domain == 'aninebing.com' %}
+  {% assign gepi_domain = "intgepi.bglobale.com" %}
+{% else %}
+  {% assign gepi_domain = "gepi.global-e.com" %}
+{% endif %}
+{% if customer.id  %}
+  <input type="hidden" name="customer_id" id="customer_id" value="{{ customer.id }}_{{ customer.id | append: "!#Gl0b@lE-$3cr3t!)%1#" | sha1 }}" />
+{% endif %}
+<script id="globaleScript">
+  (function () {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = '//{{ gepi_domain }}/proxy/get/667';
+    document.getElementsByTagName('head')[0].appendChild(s);
+    })();
+</script>

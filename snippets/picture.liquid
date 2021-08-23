@@ -1,0 +1,17 @@
+{% assign image_desktop = iamge_desktop %}
+{% assign image_mobile = iamge_mobile %}
+{% assign alt = alt %}
+{% assign class = class %}
+
+<picture>
+  <source srcset="{{ image_mobile | img_url: '375x' }}, {{ image_mobile | img_url: '750x' }} 2x"
+          media="(max-width: 375px)"> 
+  <source srcset="{{ image_mobile | img_url: '640x' }}, {{ image_mobile | img_url: '1280x' }} 2x"
+          media="(max-width: 640px)">
+  <source srcset="{{ image_desktop | img_url: '1280x' }}, {{ image_desktop | img_url: '2560x' }} 2x"
+          media="(max-width: 1280px)">          
+  <source srcset="{{ image_desktop | img_url: '1600x' }}, {{ image_desktop | img_url: '3200x' }} 2x"
+          media="(max-width: 1600px)"> 
+  <img class="{{ class }}" src="{{ image_desktop | img_url: '1920x' }}" alt="{{ alt }}"
+      srcset="{{ image_desktop | img_url: '3840x' }} 2x">
+</picture>

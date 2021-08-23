@@ -1,0 +1,30 @@
+{%- comment -%}
+
+Product state class renderer.
+
+Objects Referenced:
+ • product https://help.shopify.com/en/themes/liquid/objects/product
+
+{%- endcomment -%}
+
+{%- assign product_classes = base_class | split: ' ' -%}
+
+{%- if product.available -%}
+  {%- assign product_classes = 'availability--in-stock' | concat: product_classes -%}
+{%- else -%}
+  {%- assign product_classes = 'availability--out-of-stock' | concat: product_classes -%}
+{%- endif -%}
+
+{%- if product.compare_at_price_min > product.price_min -%}
+  {%- assign product_classes = 'price--sale' | concat: product_classes -%}
+{%- else -%}
+  {%- assign product_classes = 'price--regular' | concat: product_classes -%}
+{%- endif -%}
+
+{%- if product.price_varies -%}
+  {%- assign product_classes = 'price--varies' | concat: product_classes -%}
+{%- else -%}
+  {%- assign product_classes = 'price--same' | concat: product_classes -%}
+{%- endif -%}
+
+{%- assign product_classes = product_classes | reverse | join: ' ' -%}

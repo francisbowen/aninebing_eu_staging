@@ -1,0 +1,79 @@
+<section class="styleguide">
+  <p>Button & Text Links</p>
+
+  <a href="/" class="button button-text button--primary button--thin">Shop now</a>
+
+  <button class="button button-text button--primary">Shop now</button>
+
+  <button class="button button-text button--secondary">Shop now</button>
+
+  <div class="container-for-white-el">
+    <button class="button button-text button--tertiary">Shop now</button>
+  </div>
+
+  <button class="button button--quaternary">Shop now</button>
+
+  <a href="/" class="link link--primary">Primary Link</a>
+
+  <div class="container-for-white-el">
+    <a href="/" class="link link--secondary">Secondary Link</a>
+  </div>
+
+  <input class="input input-text input__textbox" placeholder="Email Address">
+
+  <p>Typography</p>
+  <h1>Testing H1</h1>
+  <h2>Testing H2</h2>
+  <h3>Testing H3</h2>
+  <h4>Testing H4</h4>
+  <h4 class="heading--4-filter">Testing H4 -- FILTER</h4>
+  <h4 class="heading--4-product">Testing H4 -- PRODUCT</h4>
+  <h4 class="collections-product-title">Testing H4 -- COLLECTION</h4>
+
+
+  <div class="options__group">
+    {% comment %}{% for i in (1..3) %}
+      <button {% if forloop.last %}disabled{% endif %} class="option style {% if forloop.first %}style--primary{% elsif forloop.last %}is-disabled{% else %}style--secondary{% endif %}">XS</button>
+    {% endfor %}{% endcomment %}
+    {% for i in (1..3) %}
+      <input type="radio" {% if forloop.last %}disabled{% endif %} class="option style">
+      <label class="{% if forloop.first %}style--primary{% elsif forloop.last %}is-disabled{% else %}style--secondary{% endif %}">XS</label>
+    {% endfor %}
+  </div>
+
+  {% for collection in collections %}
+    {% if collection.handle == 'new-in-2' %}
+      {% paginate collection.products by 10 %}
+          {% for product in collection.products %}
+          {% endfor %}
+        {% include 'paginate' %}
+      {% endpaginate %}
+    {% endif %}
+  {% endfor %}
+
+  <div class="dropdown" role="listbox">
+    <button class="dropdown__trigger js-accordion" data-toggle='{"target":"js-toggle-container","group":"js-toggle-container", "focusTarget": "js-toggle-container", "closeOnUnfocus": true}'>Color</button>
+    <div id="js-toggle-container" class="dropdown__list js-toggle-container">
+      <p>Black</p>
+      <p>Red</p>
+      <p>Pink</p>
+      <p>White</p>
+      <p>Yellow</p>
+      <p>Off-white</p>
+    </div>
+  </div>
+
+  <div class="dropdown" role="listbox">
+    <button class="dropdown__trigger js-accordion" data-toggle='{"target":"js-toggle-container-2","group":"js-toggle-container-2", "focusTarget": "js-toggle-container-2", "closeOnUnfocus": true}'>Color</button>
+    <div id="js-toggle-container-2" class="dropdown__list js-toggle-container-2">
+      <p>Black</p>
+      <p>Red</p>
+      <p>Pink</p>
+      <p>White</p>
+      <p>Yellow</p>
+      <p>Off-white</p>
+    </div>
+  </div>
+
+  {% section 'home-slider' %}
+</section>

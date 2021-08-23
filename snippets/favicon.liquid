@@ -1,0 +1,12 @@
+{%- comment -%}
+
+Favicon.
+
+Objects Referenced:
+ • settings https://help.shopify.com/en/themes/liquid/objects#settings
+
+{%- endcomment -%}
+
+{%- if settings.favicon -%}
+  <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+{%- endif -%}

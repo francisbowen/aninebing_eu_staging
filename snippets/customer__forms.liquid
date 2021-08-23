@@ -1,0 +1,29 @@
+<article class="customer">
+  <div class="customer__login">
+    <h2 class="customer__title">{{ 'customer.login.title' | t }}</h2>
+    <p class="customer__subtext">{{ 'customer.login.description' | t }}</p>
+    <div class="customer__login">
+      {% include 'form--customer_login' %}
+    </div>
+
+    <div class="customer__login-recover">
+      {% include 'form--recover_customer_password' %}
+    </div>
+
+    
+    {% comment %}
+      If accounts are set as optional, the following will be shown as an option
+      during checkout, not on the default /login page.
+    {% endcomment %}
+    
+    {% if shop.checkout.guest_login %}
+      <div class="account-forms__login-guest">
+        {% include 'form--guest_login' %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="customer__register">
+    <h2 class="customer__title">{{ 'customer.register.title' | t }}</h2>
+    <p class="customer__subtext">{{ 'customer.register.description' | t }}</p>
+  </div>
+</article>

@@ -1,0 +1,88 @@
+{% assign salesGatewayTitle = section.settings.sales_gateway_title %}
+{% assign salesGatewaySubtitle = section.settings.sales_gateway_subtitle %}
+{% assign slider_title = section.settings.slider_title %}
+
+{%- if section.settings.center_title -%}
+  {% assign center_title = 'sale-gateway__slider__title--center' %}
+{%- else -%} 
+  {% assign center_title = '' %}
+{%- endif -%}
+
+{%- if section.settings.form_submission_from != '' -%}
+  {% assign salesGatewayFormFrom = section.settings.form_submission_from %}
+{%- else -%}
+  {% assign salesGatewayFormFrom = page.handle %}
+{%- endif -%}
+
+{% unless section.settings.enable %}
+  <script>
+    if (!Shopify.designMode) {
+      window.location.href = '{{ shop.url }}{{ section.settings.redirection_url_sales_up }}';
+    }
+  </script>
+{% endunless %}
+
+<div class="sale-gateway-wrapper js-sale-gateway-wrapper" data-redirection-url="{{ section.settings.redirection_url_sales_down }}"> 
+
+  <div class="sale-gateway__image">
+    <img class="sale-gateway__image--mobile" src='{{ section.settings.image_mobile | img_url: "x320", crop: "center" }}' alt='{{ section.settings.image_mobile.alt }}'/>
+    <img class="sale-gateway__image--desktop" src='{{ section.settings.image_desktop | img_url: "master" }}' alt='{{ section.settings.image_desktop.alt }}'/>
+  </div>
+
+  <div class="sale-gateway__form">
+    <img class="sale-gateway__form__image" src='{{ section.settings.form_image | img_url }}' alt='{{ section.settings.form_image.alt }}'>
+    <h1 class="sale-gateway__form__title heading--2">{{ section.settings.sales_gateway_page_title | upcase }}</h1>
+
+    <form class="js-gateway-form" data-email-duplication="{{ section.settings.enable_email_duplication }}" method="post">
+      <div class="sale-gateway__form__input input__group input__group--black js-form">
+        <input class="input input-text js-input js-sale-gateway-input" type="email" placeholder="{{ 'sale_gateway.email' | t }}" aria-label="{{ 'sale_gateway.email' | t }}" id="email--sale-gateway" name="email--sale-gateway" />
+        {% comment %} <button type="button" class="input__submit button-text js-submit-btn js-sale-gateway-submit hide" data-form-submit="{{ salesGatewayFormFrom }}" name="submit" disabled >
+          {{ 'sale_gateway.submit' | t | upcase }}
+        </button> {% endcomment %}
+        <p class="error-msg" data-previous-error-message="{{ 'sale_gateway.error_message' | t }}">{{ 'sale_gateway.error_message' | t }}</p>
+      </div>
+      <div class="sale-gateway__form__description">{{ section.settings.form_description | newline_to_br }}</div>
+      <button type="submit" class="sale-gateway__form__button button button--secondary js-submit-btn js-sale-gateway-submit" name="submit" data-form-submit="{{ salesGatewayFormFrom }}" disabled>
+        {{ section.settings.button_title }}
+      </button> 
+    </form>
+
+    <div class="sale-gateway__form__disclaimer">{{ section.settings.form_disclaimer }}</div>
+  </div>
+
+  <div class="sale-gateway-modal-button js-open-modal" style="display: none" data-modal-target="#sale-gateway-modal"></div>
+
+  <div class="modal-content" id="sale-gateway-modal">
+    <button type="button" class="modal-close js-close-modal" name="close">
+      {%- include 'icons' with selected_icon: 'close', icon_class:'icon-close icon-close--small', icon_fill: '#FFFFFF', icon_stroke: '#000000', title: 'general.menu.close', desc: 'general.menu.toggle_item' -%}
+    </button>
+    <section class="sale-gateway__modal">
+      <img class="sale-gateway__modal__image" src='{{ section.settings.form_image | img_url }}' alt='{{ section.settings.form_image.alt }}'>
+
+      {% if salesGatewayTitle != blank %}
+        <h2 class="sale-gateway__modal__title heading--2">{{ salesGatewayTitle }}</h2>
+      {% endif %}
+
+      {% if salesGatewaySubtitle != blank %}
+        <p class="sale-gateway__modal__text">{{ salesGatewaySubtitle }}</p> 
+      {% endif %}
+
+      <div class="sale-gateway__slider__wrapper">
+        {% if slider_title != blank %}
+          <p class="sale-gateway__slider__title heading--2 {{ center_title }}">{{ slider_title }}</p>
+        {% endif %}
+        {% comment %} {%- if section.settings.collection_retrieved_from == 'sailthru' -%}
+          <div class="js-product-related"></div>
+          <div class="sale-gateway__related-slider js-related-product-gallery slider"></div>
+        {%- else -%}
+          <div class="sale-gateway__related-slider js-related-product-gallery-shopify slider">
+            {%- include 'gateway-slider' -%}
+          </div>
+        {%- endif -%} {% endcomment %}
+        <div class="sale-gateway__related-slider js-related-product-gallery-shopify slider">
+          {%- include 'gateway-slider' -%}
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

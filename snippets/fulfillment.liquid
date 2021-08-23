@@ -1,0 +1,18 @@
+{%- comment -%}
+
+Fulfillment renderer.
+
+Objects Referenced:
+ • fulfillment https://help.shopify.com/en/themes/liquid/objects/fulfillment
+
+{%- endcomment -%}
+
+<div class="fulfillment">
+  {%- assign created_at = fulfillment.created_at | time_tag: format: 'date' -%}
+  <span class="fulfillment__date">{{ 'customer.order.fulfilled_at_html' | t: date: created_at }}</span>
+  <span class="fulfillment__tracking-company">{{ fulfillment.tracking_company }}</span>
+  <span class="fulfillment__tracking-number">{{ fulfillment.tracking_number }}</span>
+  {% if fulfillment.tracking_url != blank %}
+    <a href="{{ fulfillment.tracking_url }}" class="fulfillment__tracking-url">{{ 'customer.order.track_shipment' | t }}</a>
+  {% endif%}
+</div>

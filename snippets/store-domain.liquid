@@ -1,0 +1,9 @@
+{% comment %}
+  Determines the store domain, to know which store it's on.
+{% endcomment %}
+
+{%- if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' -%}
+	{%- assign store_domain = 'USA' -%}
+{%- else -%}
+	{%- assign store_domain = 'EU' -%}
+{%- endif -%}

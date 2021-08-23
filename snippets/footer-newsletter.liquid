@@ -1,0 +1,19 @@
+{% assign footer_newsletter_title = 'general.footer.newsletter.title' | t %}
+{% assign footer_newsletter_placeholder = 'general.footer.newsletter.placeholder' | t %}
+{% assign footer_newsletter_submit = 'general.footer.newsletter.submit' | t %}
+{% assign footer_newsletter_error_msg = 'general.footer.newsletter.error_msg' | t %}
+{% assign footer_newsletter_success_msg = 'general.footer.newsletter.success_msg' | t %}
+
+<p class="footer__newsletter--title button-text">{{ footer_newsletter_title }}</p>
+<form method="post" action="/contact#FormFooter" id="FormFooter" accept-charset="UTF-8" class="js-form footer__newsletter js-sailthru-footer" novalidate>
+  <input type="hidden" name="form_type" value="customer">
+  <input type="hidden" name="utf8" value="✓">
+  <p class="footer__newsletter--success js-success-msg is-hidden">{{ footer_newsletter_success_msg }}</p>
+  <input type="hidden" name="contact[tags]" value="newsletter">
+  <div class="input__group input__group--footer input__group--primary">
+    <input class="input input--footer js-input input-text {% if customer %}has-focus{% endif %}" type="email" name="contact[email]" id="EmailFooter" placeholder="{{ footer_newsletter_placeholder }}" aria-label="{{ footer_newsletter_placeholder }}" value="{% if customer %}{{ customer.email }}{% endif %}">
+    {% comment %} <label class="input__label input-text">{{ footer_newsletter_placeholder }}</label> {% endcomment %}
+    <button class="input__submit input__submit--footer button-text js-submit-btn" name="submit" type="submit">{{ footer_newsletter_submit }}</button>
+    <p class="error-msg footer__newsletter-error js-error-msg is-hidden">{{ footer_newsletter_error_msg }}</p>
+  </div>   
+</form>

@@ -1,0 +1,63 @@
+<div class="careers__body">
+  <p class="careers__body__text-block">{{ section.settings.text_block }}</p>
+  <a class="careers__body__link link link--primary" href="{{ section.settings.link_url }}">{{ section.settings.link_text }}</a>
+</div>
+
+<div class="careers__images">
+  <div class="careers__images__left"></div>
+  <div class="careers__images__right"></div>
+</div>
+
+<style>
+  .careers__images__left {
+    background-image: url({{ section.settings.image1 | img_url: '718x579', crop: 'center' }});
+  }
+
+  .careers__images__right {
+    background-image: url({{ section.settings.image2 | img_url: '718x579', crop: 'center' }});
+  }
+
+</style>
+
+<blockquote class="careers__blockquote">
+  <p>{{ section.settings.blockquote }}</p>
+</blockquote>
+
+{% schema %}
+  {
+    "name": "Careers body",
+    "class": "careers",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "text_block",
+        "label": "Introduction text block"
+      },
+      {
+        "type": "text",
+        "id": "link_text",
+        "label": "Link text"
+      },
+      {
+        "type": "url",
+        "id": "link_url",
+        "label": "Link URL"
+      },
+      {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image 1"
+      },
+      {
+      "type": "image_picker",
+      "id": "image2",
+      "label": "Image 2"
+      },
+      {
+        "type": "textarea",
+        "id": "blockquote",
+        "label": "Blockquote"
+      }
+    ]
+  }
+{% endschema %}

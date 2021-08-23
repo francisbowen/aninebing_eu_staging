@@ -1,0 +1,12 @@
+{%- comment -%}
+
+Default customer registration template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/customers-activate-account
+
+{%- endcomment -%}
+
+<article class="customer-activate-account">
+  <h1 class="customer-activate-account__title">{{ 'customer.activate_account.title' | t }}</h1>
+  {% include 'form--activate_customer_password' %}
+</article>

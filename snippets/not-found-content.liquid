@@ -1,0 +1,11 @@
+<section class="not-found-content-wrapper">
+  <div class="not-found-content">
+    <h1 class="not-found-content__title">{{ 'general.404.title' | t | upcase }}</h1>
+    <p class="not-found-content__subtext">{{ 'general.404.subtext' | t }}</p>
+    <form class="not-found-content__search" action="/search">
+      <p class="not-found-content__search__title heading--2">{{ 'general.404.looking_for' | t | upcase }}</p>
+      <input class="not-found-content__search__form input input-text" type="textarea" placeholder="{{ 'general.404.search' | t }}" aria-label="{{ 'general.404.search' | t }}" name="q" />
+      <input class="not-found-content__search__submit button button-text button--primary button--secondary-border" type="submit" value="ENTER" />
+    </form>
+  </div>
+</section>

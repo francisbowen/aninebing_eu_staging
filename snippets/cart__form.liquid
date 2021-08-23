@@ -1,0 +1,22 @@
+{%- comment -%}
+
+Cart form.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/cart-liquid
+
+Objects Referenced:
+  • cart https://help.shopify.com/en/themes/liquid/objects/cart
+
+{%- endcomment -%}
+
+{%- assign form_id = 'Cart' -%}
+{%- assign form_class = 'form form--cart' -%}
+{%- assign custom_id = custom_id -%}
+
+
+<form class="{{ form_class }}" id="{{ form_id }}" action="/cart" method="post">
+  <h1 class="cart__items-count heading--2 js-cart__items-count"><span class="js-cart-items-count">{{ cart.item_count }}{% if cart.item_count > 1 %} {{ 'cart.general.items' | t }}{% else %} {{ 'cart.general.item' | t }}{% endif %}</span> {{ 'cart.general.in_bag' | t }}</h1>
+  <div class="cart__items js-cart-items">
+    {% include 'line_item' with cart.items, custom_id: custom_id %}
+  </div>
+</form>

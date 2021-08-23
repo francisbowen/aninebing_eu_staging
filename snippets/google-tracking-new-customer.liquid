@@ -1,0 +1,8 @@
+<script>
+window.onload = function() {
+    var orders = {{ customer.orders_count }};
+    if(orders === 1) {
+        ga('send', 'event', "New Customer");
+    }
+};
+</script>

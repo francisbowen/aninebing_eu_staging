@@ -1,0 +1,202 @@
+<a class="event__breadcrumb" href="{{ section.settings.breadcrumb_url }}">
+  {% include 'icons' with icon_class: 'event__breadcrumb__chevron' selected_icon: 'chevron-left-small', icon_fill: 'none', icon_stroke: '#000000' %}
+  <div class="event__breadcrumb__text heading--2">{{ section.settings.breadcrumb_text | upcase}}</div>
+</a>
+
+{% for block in section.blocks %}
+{% if block.settings.blog_post_url == article.url %}
+  {% assign event = block.settings %}
+{% endif %}
+{% endfor %}
+
+{% if event %}
+<div class="event__grid">
+
+  {%- comment -%} First media {%- endcomment -%}
+  {% if event.video1 != blank %}
+    <video class="event__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+      <source src="{{ event.video1 | file_url }}" type="video/mp4">
+    </video>
+  {% elsif event.image1 != blank %}
+    <picture>
+      <source media="(max-width: 996px)" srcset="{{ event.image1 | img_url: '640x470', crop: 'center' }} 2x, {{ event.image1 | img_url: '320x235', crop: 'center' }} 1x" alt="{{ event.image1.alt }}">
+      <source srcset="{{ event.image1 | img_url: '1436x1218', crop: 'center' }} 2x, {{ event.image1 | img_url: '718x608', crop: 'center' }} 1x" alt="{{ event.image1.alt }}">
+      <img class="event__image" src="{{ event.image1 | img_url: 'large' }}" alt="{{ event.image1.alt }}">
+    </picture>
+  {% endif %}
+
+  {%- comment -%} Content {%- endcomment -%}
+  <div class="event__content">
+
+    {% if event.title != blank %}
+      <h1 class="event__content__title uppercase-text">{{ event.title }}</h1>
+    {% endif %}
+
+    <p class="event__content__date-title uppercase-text">{{ 'blogs.events.date' | t }}</p>
+    <p class="event__content__date uppercase-text">{{ article.created_at | date: '%A, %B %-d, %Y' }} </p>
+
+    {% if event.time != blank %}
+      <p class="event__content__time-title uppercase-text">{{ 'blogs.events.time' | t }}</p>
+      <p class="event__content__time uppercase-text">{{ event.time }}</p>
+    {% endif %}
+
+    {% if event.location != blank %}
+      <p class="event__content__location-title uppercase-text">{{ 'blogs.events.location' | t }}</p>
+      <p class="event__content__location uppercase-text" uppercase-text>{{ event.location }}</p>
+    {% endif %}
+
+    {% if event.body != blank %}
+      <div class="event__content__body">
+        {{ event.body }}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Social Media Sharing {%- endcomment -%}
+    {% if settings.share_facebook or settings.share_pinterest or settings.share_twitter %}
+      <p class="event__content__share uppercase-text">{{ 'blogs.events.share' | t }}</p>
+      <section class="event__content__social-media-container">
+          {% if settings.share_facebook %}
+            <a class="social-icon facebook-icon" href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url | url_encode }}{{ article.url | url_encode }}" title="Facebook Social Media Icon" target="_blank"><img src="{{ 'icon-facebook.png' | asset_url }}" alt="Facebook share icon"/></a>
+          {% endif %}
+
+          {% if settings.share_pinterest %}
+          <a class="social-icon pinterest-icon" href="http://pinterest.com/pin/create/button/?url={{ shop.url | url_encode }}{{ article.url | url_encode }}" title="Pinterest Social Media Icon" target="_blank"><img src="{{ 'icon-pinterest.png' | asset_url }}" alt="Pinteset share icon" /></a>
+          {% endif %}
+
+          {% if settings.share_twitter %}
+            <a class="social-icon twitter-icon" href="https://twitter.com/intent/tweet?url={{ shop.url | url_encode }}{{ article.url | url_encode }}" title="Twitter Social Media Icon" target="_blank"><img src="{{ 'icon-twitter.png' | asset_url }}" alt="Twitter share icon" /></a>
+          {% endif %}
+        </section>
+      {% endif %}
+  </div>
+
+  {%- comment -%} Second media {%- endcomment -%}
+  {% if event.video2 != blank %}
+    <video class="event__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+      <source src="{{ event.video2 | file_url }}" type="video/mp4">
+    </video>
+  {% elsif event.image2 != blank %}
+    <picture>
+      <source media="(max-width: 996px)" srcset="{{ event.image2 | img_url: '640x470', crop: 'center' }} 2x, {{ event.image2 | img_url: '320x235', crop: 'center' }} 1x" alt="{{ event.image2.alt }}">
+      <source srcset="{{ event.image2 | img_url: '1436x1218', crop: 'center' }} 2x, {{ event.image2 | img_url: '718x608', crop: 'center' }} 1x" alt="{{ event.image2.alt }}">
+      <img class="event__image" src="{{ event.image2 | img_url: 'large' }}" alt="{{ event.image2.alt }}">
+    </picture>
+  {% endif %}
+
+  {%- comment -%} Third media {%- endcomment -%}
+  {% if event.video3 != blank %}
+    <video class="event__video" playsinline loop="true" autoplay="autoplay" muted aria-hidden="true">
+      <source src="{{ event.video3 | file_url }}" type="video/mp4">
+    </video>
+  {% elsif event.image3 != blank %}
+    <picture>
+      <source media="(max-width: 996px)" srcset="{{ event.image3 | img_url: '640x470', crop: 'center' }} 2x, {{ event.image3 | img_url: '320x235', crop: 'center' }} 1x" alt="{{ event.image3.alt }}">
+      <source srcset="{{ event.image3 | img_url: '1436x1218', crop: 'center' }} 2x, {{ event.image3 | img_url: '718x608', crop: 'center' }} 1x" alt="{{ event.image3.alt }}">
+      <img class="event__image" src="{{ event.image3 | img_url: 'large' }}" alt="{{ event.image3.alt }}">
+    </picture>
+  {% endif %}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Blog Posts",
+  "tag": "section",
+  "class": "event",
+  "settings": [
+    {
+      "type": "text",
+      "id": "breadcrumb_text",
+      "label": "Breadcrumb text"
+    },
+    {
+      "type": "url",
+      "id": "breadcrumb_url",
+      "label": "Breadcrumb URL"
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Event",
+      "type": "event",
+      "settings": [
+        {
+          "type": "url",
+          "id": "blog_post_url",
+          "label": "Blog Post URL",
+          "info": "This needs to point to a blog post."
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "time",
+          "label": "Time"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location"
+        },
+        {
+          "type": "richtext",
+          "id": "body",
+          "label": "Body"
+        },
+        {
+          "type": "header",
+          "content": "First media"
+        },
+        {
+          "type": "image_picker",
+          "id": "image1",
+          "label": "Store image"
+        },
+        {
+          "type": "text",
+          "id": "video1",
+          "label": "Video Filename e.g: Video.mp4",
+          "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to only use an image."
+        },
+        {
+          "type": "header",
+          "content": "Second media"
+        },
+        {
+          "type": "image_picker",
+          "id": "image2",
+          "label": "Store image"
+        },
+        {
+          "type": "text",
+          "id": "video2",
+          "label": "Video Filename e.g: Video.mp4",
+          "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to only use an image."
+        },
+        {
+          "type": "header",
+          "content": "Third media"
+        },
+        {
+          "type": "image_picker",
+          "id": "image3",
+          "label": "Third image"
+        },
+        {
+          "type": "text",
+          "id": "video3",
+          "label": "Video Filename e.g: Video.mp4",
+          "info": "To import your video please go to Settings > Files > Upload Files. Leave blank to only use an image."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

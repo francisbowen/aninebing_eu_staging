@@ -1,0 +1,8 @@
+<article class="customer customer--recover">
+  <div class="customer__logo">
+    <img src="{{ settings.logo_light | img_url: '200x' }}" alt="{{ shop.name }}" />
+  </div>
+  <h1 class="customer__recover-title">{{ 'customer.recover_password.title' | t }}</h1>
+  <p class="customer__recover-description">{{ 'customer.recover_password.subtext' | t }}</p>
+  {%- include 'form--recover_customer_password' -%}
+</article>

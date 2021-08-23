@@ -1,0 +1,183 @@
+(function() {
+  const resetErrorMessages = () => {
+    const allResetErrorMessages = [...document.querySelectorAll('.js-field-error')];
+    allResetErrorMessages.forEach(message => {
+      if (message.closest('.field--error')) message.closest('.field--error').classList.remove('field--error');
+      message.remove();
+    });
+  };
+
+  const zoneProductValidityContactMethod = (e) => {
+    const checkoutRegion = document.getElementById('checkout_shipping_address_province');
+    const checkoutRegionName = checkoutRegion.querySelector(':checked') ? checkoutRegion.querySelector(':checked') : 'empty';
+    const expressCheckout = document.querySelector('.dynamic-checkout__content');
+    const checkoutCountry = document.getElementById('checkout_shipping_address_country');
+    const currentCheckoutCountry = checkoutCountry.querySelector(':checked').getAttribute('data-code');
+    let exceptionZoneMessage;
+
+    if (theme.shop.domain == 'eu.aninebing.com') {
+      exceptionZoneMessage = `
+        <div class="field__message field__message--error field__message--error-shown js-field-error">
+          ${theme.settings.checkout.excluded_zone_message_eu}
+        </div>
+      `;
+    } else {
+      exceptionZoneMessage = `
+        <div class="field__message field__message--error field__message--error-shown js-field-error">
+          ${theme.settings.checkout.excluded_zone_message}
+        </div>
+      `;
+    }
+
+    // Removing all previous custom error messages
+    resetErrorMessages();
+
+    // Check to see if country/region/state is acceptable with specific product
+    if (productExcluded && !includedCountries.includes(currentCheckoutCountry)) {
+      if (e) e.preventDefault();
+      toggleErrorMessage(checkoutCountry, checkoutCountry.querySelector(':checked').closest('.field').querySelector('.js-field-error'), exceptionZoneMessage);
+    }
+
+    // Check to see if region/state is acceptable with specific product
+    if (productExcluded && excludedRegions.includes(checkoutRegionName.value)) {
+      if (e) e.preventDefault();
+      toggleErrorMessage(checkoutRegion, checkoutRegionName.closest('.field').querySelector('.js-field-error'), exceptionZoneMessage);
+    }
+
+    // Allow click on the express checkouts
+    if (!(productExcluded && !includedCountries.includes(currentCheckoutCountry)) && !(productExcluded && excludedRegions.includes(checkoutRegionName.value))) {
+      // Enable express checkout
+      expressCheckout.style.pointerEvents = 'visible';
+    } else {
+      // Disable express checkout
+      expressCheckout.style.pointerEvents = 'none';
+    }
+  };
+
+  const zoneProductValidityShippingPaymentMethod = (paymentMethodException) => {
+    const countryCode = paymentMethodException.dataset.countryCode;
+    const provinceCode = paymentMethodException.dataset.provinceCode;
+
+    if (!(productExcluded && !includedCountries.includes(countryCode)) && !(productExcluded && excludedRegions.includes(provinceCode))) {
+      // Show exception message
+      if (!(paymentMethodException.classList.contains('hidden'))) paymentMethodException.classList.add('hidden');
+    } else {
+      // Hide exception message
+      if (paymentMethodException.classList.contains('hidden')) paymentMethodException.classList.remove('hidden');
+    }
+  }
+
+  const toggleErrorMessage = (field, errorField, errorMessage) => {
+    const checkoutContinueButton = document.querySelector('.step form.edit_checkout #continue_button');
+
+    // Remove any existing error message
+    if (errorField) errorField.remove();
+
+     // Add custom postal code error message for Ireland
+    if (!field.closest('.field').classList.contains('field--error')) {
+      field.closest('.field').classList.add('field--error');
+    }
+    
+    field.closest('.field').insertAdjacentHTML('beforeend', errorMessage);
+
+    setTimeout(function() {
+      checkoutContinueButton.classList.remove('btn--loading');
+      checkoutContinueButton.disabled = false;
+    }, 1000);
+  };
+
+  const validatePostalCodeExist = () => {
+    const checkoutCountry = document.getElementById('checkout_shipping_address_country');
+    const checkoutPostalCode = document.getElementById('checkout_shipping_address_zip');
+    const companyAddress = document.querySelector('#checkout_shipping_address_company');
+    const checkoutForm = document.querySelector('.step form.edit_checkout');
+
+    const irelandErrorMessage = `
+      <p class="field__message field__message--error js-field-error">
+        ${theme.settings.checkout.zip_ireland}
+      </p>
+    `;
+    const companyAddressErrorMessage = `
+      <p class="field__message field__message--error js-field-error">
+        ${theme.settings.checkout.business_address}
+      </p>
+    `;
+
+    checkoutForm.addEventListener('submit', (e) => {
+      const checkoutPostalCodeError = checkoutPostalCode.closest('.field').querySelector('.js-field-error');
+      const currentCheckoutCountry = checkoutCountry.querySelector(':checked').getAttribute('data-code');
+      const checkoutBusinessAddressError = companyAddress.closest('.field').querySelector('.js-field-error');
+
+      if (theme.settings.checkout.zone_product_exclusion_enabled) {
+        zoneProductValidityContactMethod(e);
+      }
+
+      // Ireland and empty postal code
+      if (currentCheckoutCountry == 'IE' && checkoutPostalCode.value == '') {
+        e.preventDefault();
+        toggleErrorMessage(checkoutPostalCode, checkoutPostalCodeError, irelandErrorMessage);
+      }
+
+      // Check to make sure that the Company (optional) field is mandatory if "Please check if this is a business address"
+      if (companyAddress.classList.contains('required') && companyAddress.value == '') {
+        e.preventDefault();
+        toggleErrorMessage(companyAddress, checkoutBusinessAddressError, companyAddressErrorMessage);
+
+        const businessCheckbox = document.querySelector('#isBusiness');
+        const closestErrorField = companyAddress.closest('.field--error');
+
+        businessCheckbox.onclick = function() {
+          if (!this.checked) {
+            if (closestErrorField) closestErrorField.classList.remove('field--error');
+          }
+        };
+      }
+    });
+
+    if (theme.settings.checkout.zone_product_exclusion_enabled) {
+      checkoutForm.addEventListener('change', () => {
+        zoneProductValidityContactMethod();
+      });
+    }
+  }
+
+  // Separate the title with color	
+  const updateProductTitle = () => {
+    const products = [...document.querySelectorAll('.product')];	
+    products.forEach((item) => {	
+      const productTitle = item.querySelector('.product__description__name');	
+      let itemName;	
+      let itemColor;	
+      if (productTitle.innerText.includes('- ')) {	
+        itemName = productTitle.innerText.split('- ')[0];	
+        itemColor = productTitle.innerText.split('- ')[1].toLowerCase();	
+        productTitle.innerHTML = itemName + `<br><span class="text-title-space">` + itemColor + `</span>`;	
+      }	
+    });	
+  }
+  
+  // On load
+  if (Shopify.Checkout.step == 'contact_information') validatePostalCodeExist();
+  updateProductTitle();
+  const productExcluded = (document.querySelector('.js-main-content').dataset.productExclusion == 'true');
+  const includedCountries = ["US", "AT", "BE", "BG", "HR", "CZ", "DK", "EE", "FI", "FR","DE", "GR", "HU", "IT", "LV", "LT", "LU", "MT", "NL", "PL", "PT","RO", "SK", "SI", "ES"];
+  const excludedRegions = ["HI", "AK", "PR"];
+
+  if (theme.settings.checkout.zone_product_exclusion_enabled) {
+    // Check validity of the zone that has the exclusion product in cart
+    if (Shopify.Checkout.step == 'contact_information') {
+      setTimeout(function() {
+        zoneProductValidityContactMethod();
+      }, 1000);
+    }
+
+    // Show Message on Payment method page
+    if (Shopify.Checkout.step == 'payment_method' || Shopify.Checkout.step == 'shipping_method') {
+      const paymentMethodException = document.querySelector('.js-exception-message');
+
+      if (paymentMethodException) {
+        zoneProductValidityShippingPaymentMethod(paymentMethodException);
+      }
+    }
+  }
+})();

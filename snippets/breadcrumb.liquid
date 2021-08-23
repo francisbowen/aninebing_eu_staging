@@ -1,0 +1,56 @@
+{% comment %}
+
+Product: Checking to see if product type matches with only one of product's collection's title.
+Addresses: Going back to My Account
+Blogs: Going back to the parent Blog
+
+Note: Add 'js-{{ template.name }}' class to the container below it.
+
+{% endcomment %}
+
+<nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+
+  {% comment %}TODO: Planning on changing these to switch cases but will do it later so no merge conflicts{% endcomment %}
+
+  {%- if template.name == 'product' -%}
+    {% if collection %}
+      <div class="breadcrumb__back js-breadcrumb scroll-down hide-from@md">
+        {%- include 'icons' with selected_icon: 'chevron-back', icon_class: 'icon-chevron-back', icon_fill: 'none', icon_stroke: '#000000', title: 'products.product.icon_back', desc: 'products.product.back_toggle' -%}
+        <a href="{{ collection.url }}" class="breadcrumb__back-link heading--4" title="{{ 'products.product.back_toggle' | t }}">{{ collection.title | upcase }}</a>
+      </div>
+    {% elsif product.metafields.breadcrumb.collection_fallback_handle != blank %}
+      {% assign downcase_metafield = product.metafields.breadcrumb.collection_fallback_handle | downcase %}
+
+      {% assign getCollection = collections[downcase_metafield] %}
+
+      <div class="breadcrumb__back js-breadcrumb scroll-down hide-from@md">
+        {%- include 'icons' with selected_icon: 'chevron-back', icon_class: 'icon-chevron-back', icon_fill: 'none', icon_stroke: '#000000', title: 'products.product.icon_back', desc: 'products.product.back_toggle' -%}
+        <a href="{{ getCollection.url }}" class="breadcrumb__back-link heading--4" title="{{ 'products.product.back_toggle' | t }}">{{ getCollection.title | upcase }}</a>
+      </div>
+    {% endif %}
+
+  {%- elsif template.name == 'addresses' or template_name == 'full-order-history' or template.name == 'order' or template.suffix == 'custom-wishlist' -%}
+  
+    <div class="breadcrumb__back js-breadcrumb">
+      {%- include 'icons' with selected_icon: 'chevron-back', icon_class: 'icon-chevron-back', icon_fill: 'none', icon_stroke: '#000000', title: 'customer.account.icon_back', desc: 'customer.account.back_toggle' -%}
+      <a href="/account" class="breadcrumb__back-link heading--4" title="{{ 'customer.account.return' | t }}">{{ 'customer.account.return' | t | upcase }}</a>
+    </div>
+
+  {%- elsif template.name == 'blog' -%}
+    <div class="breadcrumb__back js-breadcrumb">
+      {%- assign blog_breadcrumb = blog.metafields.header.breadcrumb -%}
+      {%- assign blog_handle = blog_breadcrumb | split: '/pages/' | last -%}
+
+      
+      {%- include 'icons' with selected_icon: 'chevron-back', icon_class: 'icon-chevron-back', icon_fill: 'none', icon_stroke: '#000000', title: 'customer.account.icon_back', desc: 'customer.account.back_toggle' -%}
+      <a href="{% if blog_breadcrumb != blank %}{{ blog_breadcrumb }}{% else %}/pages/events-press{% endif %}" class="breadcrumb__back-link heading--4" title="{% if blog_breadcrumb != blank %}{{ pages[blog_handle].title }}{% else %}{{ pages['events-press'].title }}{% endif %}">
+        {%- if blog_breadcrumb != blank -%}
+          {{- pages[blog_handle].title -}}
+        {%- else -%}
+          {{- pages['events-press'].title -}}
+        {%- endif -%}
+      </a>
+    </div>
+  {%- endif -%}
+
+</nav>

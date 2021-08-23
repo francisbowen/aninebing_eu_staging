@@ -1,0 +1,21 @@
+{%- comment -%}
+
+Comment form.
+
+Documentation: https://help.shopify.com/en/themes/liquid/tags/theme-tags#guest_login
+
+Objects Referenced:
+ • form https://help.shopify.com/en/themes/liquid/objects/form
+
+{%- endcomment -%}
+
+{%- assign form_id = 'GuestLogin' -%}
+{%- assign form_class = 'form form--guest-login' -%}
+
+{% form 'guest_login', id: form_id, class: form_class %}
+  {% include 'form__status', form_id: form_id %}
+
+  <div class="form__actions">
+    <button type="submit">{{ 'customer.login.guest_continue' | t }}</button>
+  </div>
+{% endform %}

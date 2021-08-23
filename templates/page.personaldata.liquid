@@ -1,0 +1,44 @@
+{% comment %}
+   Page Liquid for Easy GDPR Shopify app: https://apps.shopify.com/easy-gdpr
+   The 3 GDPR pages (Request Personal Data, My Personal Data, Edit Personal Data) should use this liquid.
+   PLEASE DON'T MODIFY
+{% endcomment %}
+<link rel="stylesheet" href="https://gdpr-app.firebaseapp.com/style.css" type="text/css"/>
+<div class="EG-container">
+{%- comment -%}
+
+Default page template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/page-liquid
+
+Objects Referenced:
+  • page https://help.shopify.com/en/themes/liquid/objects/page
+
+{%- endcomment -%}
+
+<article class="page">
+  {% if request.path contains 'site-accessibility' %}
+    <div class="page__accessibility-logo">
+      <a href="https://accessible360.com" aria-label="Accessibility Logo" class="page__accessible-link">
+        <img src="{{ 'accessibility-logo-black.png' | asset_url }}" alt="Reviewed by Accessible360">
+      </a>
+    </div>
+  {% endif %}
+  <h1 class="page__title heading--1">{{ page.title }}</h1>
+  {% comment %} <p class="page__date">{{ 'general.page.published_at' | t }} {{ page.published_at | date: '%B %e, %Y' }}</p> {% endcomment %}
+  <div class="page__content">
+    {{ page.content }}
+  </div>
+</article>
+
+</div>
+
+<div>
+{% if customer %}
+  {% assign hash_id = customer.id | append: '-' | append: shop.permanent_domain %}
+{% else %}
+  {% assign hash_id = '0-' | append: shop.permanent_domain %}
+{% endif %}
+  <input type="hidden" value="{{ hash_id | hmac_sha256: "P,>3GLHGU|@a/t#0" }}" id="eg_hmac" />
+  <input type="hidden" id="accounts_enabled" value="{{ shop.customer_accounts_enabled }}" />
+</div>

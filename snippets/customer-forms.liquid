@@ -1,0 +1,41 @@
+{%- include 'store-domain' -%}
+
+<article class="customer">
+  <div class="customer__login-wrapper js-customer-login {% if template.name == 'register' %}hide-until@md{% endif %}">
+    <div class="customer__logo hide-from@md">
+      <img src="{{ settings.logo | img_url: '200x' }}" alt="{{ shop.name }}" />
+    </div>
+    <h2 class="customer__title">{{ 'customer.login.title' | t }}</h2>
+    <p class="customer__subtext customer__subtext--login">{{ 'customer.login.description' | t }}</p>
+    <div class="customer__login">
+      {% include 'form--customer_login' %}
+    </div>
+
+    {% comment %}
+      If accounts are set as optional, the following will be shown as an option
+      during checkout, not on the default /login page.
+    {% endcomment %}
+    
+    {% if shop.checkout.guest_login %}
+      <div class="account-forms__login-guest">
+        {% include 'form--guest_login' %}
+      </div>
+    {% endif %}
+  </div>
+  <div class="customer__register-wrapper js-customer-register {% if template.name == 'login' %}hide-until@md{% endif %}">
+    <div class="customer__logo hide-from@md">
+      <img src="{{ settings.logo | img_url: '200x' }}" alt="{{ shop.name }}" />
+    </div>
+    <h2 class="customer__title">{{ 'customer.register.title' | t }}</h2>
+    <p class="customer__subtext customer__subtext--register">
+      {%- if shop_domain == 'USA' -%}
+        {{ 'customer.register.description' | t }}
+      {%- else -%}
+        {{ 'customer.register.description_eu' | t }}
+      {%- endif -%}
+    </p>
+    <div class="customer__register">
+      {% include 'form--create_customer' %}
+    </div>
+  </div>
+</article>

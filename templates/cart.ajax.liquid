@@ -1,0 +1,25 @@
+{%- comment -%}
+
+Cart template used by the cart flyout.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/cart-liquid
+
+Objects Referenced:
+ • cart https://help.shopify.com/en/themes/liquid/objects/cart
+
+{%- endcomment -%}
+
+{% layout none %}
+
+{% if cart.item_count > 0 %}
+  {% include 'cart__form' with custom_id: 'cart-page' %}
+{% endif %}
+
+{% if cart.item_count == 0 %}
+  <div class="cart__empty-container">
+    <div class="cart__empty js-cart-is-empty {% unless cart.item_count > 0 %}is-visible{% endunless %}">
+      <p class="cart__empty-body">{{ 'cart.general.empty' | t }}</p>
+      <a class="cart__empty-link link link--primary" href="/">{{ 'cart.general.continue_shopping' | t }}</a>
+    </div>
+  </div>
+{% endif %}

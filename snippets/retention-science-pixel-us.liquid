@@ -1,0 +1,85 @@
+<!-- RetentionScience start -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  <script type="text/javascript">
+    var _rsq = _rsq || [];
+    _rsq.push(['_setSiteId', '468']); // replace site_id with your static Site ID
+    _rsq.push(['_enableOnsite']);
+
+    {% if customer %}
+      _rsq.push(['_setUserId', '{{ customer.id }}']);
+      _rsq.push(['_setUserEmail', '{{ customer.email }}']);
+    {% endif %}
+
+    /*** EVENT SPECIFIC CODE ***/
+    {% if template == 'product' and product %}
+      _rsq.push(['_addItem', { 'id':'{{ product.id }}' }]);
+    {% endif %}
+
+    {% if template == 'cart' %}
+      {% for item in cart.items %}
+        _rsq.push(['_addItem', { 'id':'{{ item.id }}', 'name':'{{ item.title }}', 'price':'{{ item.price | money_without_currency }}' }]);
+      {% endfor %}
+      _rsq.push(['_setAction', 'shopping_cart']);
+    {% endif %}
+
+    {% if template == 'search' and search.performed %}
+        _rsq.push(['_setAction', 'search']) ;
+         _rsq.push(['_setParams', { 'term': '{{ search.terms }}'}]);
+    {% endif %}
+
+    _rsq.push(['_track']);
+    /*** END EVENT SPECIFIC CODE ***/
+    /*** FUNCTION FOR AJAX TRACKING ***/
+    var _rs_ajax = {};
+    _rs_ajax.updateCart = function() {
+      jQuery.getJSON('/cart.js', function (cart, textStatus) {
+        for(var i = 0; i < cart.items.length; i++) {
+          var cartItem = cart.items[i];
+          var price = cartItem.price / 100;
+
+          _rsq.push(['_addItem', { 'id':cartItem.id.toString(), 'name':cartItem.title.toString(),'price':price.toFixed(2).toString() }]);
+        }
+        _rsq.push(['_setAction', 'shopping_cart']);
+        _rsq.push(['_track']);
+      });
+    };
+    /*** END FUNCTION FOR AJAX TRACKING ***/
+    
+    /*** JUSTUNO EMAIL TRACKING ***/
+    function testfunction(email){
+    _rsq.push(['_setUserProperties', { 
+        'record_id': CryptoJS.MD5(email).toString(),
+        'email':email,
+        'country': 'US' 
+    }]);                              
+    _rsq.push(['_setAction', 'email_entered']); // custom event params
+    _rsq.push(['_track']);
+    }
+    /*** END JUSTUNO EMAIL TRACKING ***/
+
+    (function() {
+       var rScix = document.createElement('script');
+       rScix.type = 'text/javascript';
+       rScix.async = true;
+       rScix.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'd1stxfv94hrhia.cloudfront.net/waves/v2/w.js';
+       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(rScix);
+    })();
+    
+    jQuery(document).ready(function($) {
+      $('#email, #footer-EMAIL').on('change', function() {
+          _rsq.push(['_setUserProperties', { 
+              'record_id': CryptoJS.MD5($(this).val()).toString(),
+              'email':$(this).val(),
+              'country': 'US' 
+          }]);  
+          _rsq.push(['_setAction', 'email_entered']);
+          _rsq.push(['_track']);
+      });
+      setTimeout(function(){
+      $('#addToCart, .quickshop').on('click', function() {
+          _rs_ajax.updateCart();
+      });
+      }, 2500);
+    });
+  </script>
+<!-- RetentionScience end -->

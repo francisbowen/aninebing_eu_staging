@@ -1,0 +1,48 @@
+{% if shop.url == 'https://anine-bing-dev01-us.myshopify.com' or shop.url == 'https://www.aninebing.com' %}
+  {% comment %} Added geotargetly to hide Klarna messages coming outside of US {% endcomment %}
+  <script>
+    (function(g,e,o,t,a,r,ge,tl,y){
+    s=function(){var def='geotargetlygeocontent1594765329414_content_1',len=g.getElementsByClassName(def).length;
+    if(len>0){for(i=0;i<len;i++){g.getElementsByClassName(def)[i].style.display='inline';}}};ge=0;y=[];r=[];tl=function(){if(ge<5){
+    a=Math.round(new Date().getTime()/(86400000*10))-1837+ge;r[ge]='g'+198084335*a+'.co';t=g.getElementsByTagName(e)[0];y[ge]=g.createElement(e);
+    y[ge].async=true;y[ge].src='//'+r[ge]+'/gc?id=-MCEPwBhyJgOv9VvfiSi&refurl='+g.referrer+'&winurl='+encodeURIComponent(window.location);
+    t.parentNode.insertBefore(y[ge],t);y[ge].onerror=function(){y[ge].remove();ge++;tl();};}else{s();}};tl();
+    })(document,'script');
+  </script>
+  <noscript><style>.geotargetlygeocontent1594765329414_content_1{display:inline !important}</style></noscript>
+  <script>window.KlarnaThemeGlobals={};{%case template.name%} {%when"product"%} window.KlarnaThemeGlobals.data_purchase_amount={{product.first_available_variant.price | default: product.price}};window.KlarnaThemeGlobals.productVariants={{product.variants|json}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%when"cart"%} window.KlarnaThemeGlobals.data_purchase_amount={{cart.total_price}};window.KlarnaThemeGlobals.documentCopy=document.cloneNode(true);{%endcase%}</script>
+
+  {% comment %} Geotargetly to add Perfume messaging {% endcomment %}
+  <script>
+    (function(g,e,o,t,a,r,ge,tl,y){
+    s=function(){var def='geotargetlygeocontent1600729262304_default',len=g.getElementsByClassName(def).length;
+    if(len>0){for(i=0;i<len;i++){g.getElementsByClassName(def)[i].style.display='inline';}}};
+    t=g.getElementsByTagName(e)[0];y=g.createElement(e);
+    y.async=true;y.src='https://g1584674680.co/gc?id=-MHmtXWaE6NBjVqJKSD6&refurl='+g.referrer+'&winurl='+encodeURIComponent(window.location);
+    t.parentNode.insertBefore(y,t);y.onerror=function(){s()};
+    })(document,'script');
+  </script>
+  <noscript><style>.geotargetlygeocontent1600729262304_default{display:inline !important}</style></noscript>
+{% else %}
+  {% comment %} Geotargetly to add Perfume messaging {% endcomment %}
+  <script>
+    (function(g,e,o,t,a,r,ge,tl,y){
+    s=function(){var def='geotargetlygeocontent1601482781680_default',len=g.getElementsByClassName(def).length;
+    if(len>0){for(i=0;i<len;i++){g.getElementsByClassName(def)[i].style.display='inline';}}};
+    t=g.getElementsByTagName(e)[0];y=g.createElement(e);
+    y.async=true;y.src='https://g1584674680.co/gc?id=-MIUnzDuPSu3dLW8qjZS&refurl='+g.referrer+'&winurl='+encodeURIComponent(window.location);
+    t.parentNode.insertBefore(y,t);y.onerror=function(){s()};
+    })(document,'script');
+  </script>
+  <noscript><style>.geotargetlygeocontent1601482781680_default{display:inline !important}</style></noscript>
+
+  {% comment %} Geotargetly to redirect from the EU site ( https://eu.aninebing.com/ ) to https://www.aninebing.com/?glCountry=US for GE{% endcomment %}
+  {% comment %} https://dashboard.geotargetly.com/geo-location {% endcomment %}
+  <script>
+    (function(g,e,o,t,a,r,ge,tl,y){
+    t=g.getElementsByTagName(e)[0];y=g.createElement(e);y.async=true;
+    y.src='https://g1386590345.co/gl?id=-MKcGaE8-nd5NuXi1Vcu&refurl='+g.referrer+'&winurl='+encodeURIComponent(window.location);
+    t.parentNode.insertBefore(y,t);
+    })(document,'script');
+  </script>
+{% endif %}

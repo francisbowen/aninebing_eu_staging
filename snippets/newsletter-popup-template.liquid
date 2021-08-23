@@ -1,0 +1,34 @@
+{% assign style = 'is-primary' %}
+{% assign logo = newsletter_logo_secondary %}
+{% assign close = 'general.accessibility.close_modal' | t %}
+
+{% if newsletter_style == 'secondary' %}
+  {% assign style = 'is-secondary' %}
+  {% assign logo = newsletter_logo_primary %}
+{% endif %}
+
+{% capture newsletterPopup %}
+<div class="newsletter-popup {{ style }} js-container-popup is-hidden" tabindex="-1" data-settings='{ "timing": {{ popup_timing }}, "delay": {{ new_popup_delay }}, "pixel_to_scroll": {{ hide_onscroll_pixels }}, "allow_hide_on_scroll": {{ allow_hide_on_scroll }} }'>
+  <button class="newsletter-popup__close js-close-popup" title="{{ close }}" aria-label="{{ close }}"></button>
+
+  <div class="newsletter-popup__content">
+    <img src="{{ logo | img_url: 'master' }}" class="newsletter-popup__logo" alt="Anine Bing Logo" />
+
+    {% if newsletter_caption %}
+      <p class="newsletter-popup__title button-text">{{ newsletter_caption }}</p>
+    {% endif %}
+
+    {% include 'newsletter' %}
+  </div>
+</div>
+{% endcapture %}
+
+{% if visible_on_usa_store and shop.url == 'https://www.aninebing.com' %}
+  {{ newsletterPopup }}
+{% endif %}
+
+{% if visible_on_europe_store and shop.url == 'https://eu.aninebing.com' %}
+  {{ newsletterPopup }}
+{% endif %}
+
+{% comment %} is-disabled {% endcomment %}

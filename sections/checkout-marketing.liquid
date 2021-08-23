@@ -1,0 +1,29 @@
+{%- assign header = section.settings.title -%}
+{%- assign text = section.settings.text -%}
+
+{% if header != blank %}
+  <h2 class="checkout-marketing__header">{{ header }}</h2>
+{% endif %}
+
+{% if text != blank %}
+  <div class="checkout-marketing__text">{{ text }}</div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Checkout Marketing",
+    "class": "checkout-marketing",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Header"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      }
+    ]
+  }
+{% endschema %}

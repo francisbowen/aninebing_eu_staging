@@ -1,0 +1,17 @@
+{% layout none %}
+
+{
+  "name": {{ product.title | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  "variants": [    
+    {%- for variant in product.variants -%}
+    {
+      "quantity": {{ variant.inventory_quantity | json }},
+      "id": {{ variant.id | json }},
+      "price": {{ variant.price | json }},
+      "title": {{ variant.title | json }},
+      "inventory_policy": {{ variant.inventory_policy | json }}
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}

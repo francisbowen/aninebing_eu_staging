@@ -1,0 +1,86 @@
+<!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZP79G5"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<style> .sk-logo { display: none !important; } </style>
+
+<!-- Pinterest Pixel Base Code -->
+<script type="text/javascript">
+!function(e){if(!window.pintrk){window.pintrk=function()
+{window.pintrk.queue.push(Array.prototype.slice.call(arguments))};var
+n=window.pintrk;n.queue=[],n.version="3.0";var
+t=document.createElement("script");t.async=!0,t.src=e;var
+r=document.getElementsByTagName("script")[0];r.parentNode.insertBefore(t,r)}}
+("https://s.pinimg.com/ct/core.js"); 
+pintrk('load','2613667945459', { em: '{{ customer.email }}', });
+pintrk('page');
+</script> 
+<noscript> 
+<img height="1" width="1" style="display:none;" alt=""
+src="https://ct.pinterest.com/v3/?tid=2613667945459&noscript=1" /> 
+</noscript>
+<!-- End Pinterest Pixel Base Code -->
+
+{%- if template.name == 'product' -%}
+<!-- Pinterest Pixel for PageVisit on Product Details for US -->
+<script>
+  pintrk('track', 'pagevisit', {
+    line_items: [{
+      product_id: '{{ product.id }}' 
+    }]
+  });
+</script>
+<noscript><img height="1" width="1" style="display:none;" alt="" src="https://ct.pinterest.com/v3/?tid=2613667945459&event=pagevisit&noscript=1" /></noscript>
+<!-- End Pinterest Pixel for PageVisit on Product Details for US -->
+{%- endif -%}
+
+<!-- Pinterest Pixel for AddToCart on Product Details for US -->
+<script>
+  $(function() {
+    $(document).on('Cart:add', function(event, item) {
+      pintrk('track', 'AddToCart', {
+        line_items: [
+          {
+            product_id: item.product_id
+          }
+        ]
+      });
+    });
+  });
+</script>
+<!-- End Pinterest Pixel for AddToCart on Product Details for US -->
+
+<!-- Pebblepost pixel -->
+<script>
+  window._pp = window._pp || [];
+  _pp.siteId = "1529";
+  _pp.siteUId = "{{ customer.id | default: '' }}";
+  _pp.email = "{{ customer.email | default: '' }}";
+  _pp.orderValue = "";
+  _pp.orderId = "";
+  (function() {
+  var ppjs = document.createElement('script');
+  ppjs.type = 'text/javascript';
+  ppjs.async = true;
+  ppjs.src = ('https:' == document.location.protocol ? 'https:' :
+  'http:') +
+  '//cdn.pbbl.co/r/' + _pp.siteId + '.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(ppjs, s);
+  })();
+</script>
+<!-- End Pebblepost pixel -->
+
+<!--SteelHouse Tracking Pixel-->
+<!-- INSTALL ON ALL PAGES OF SITE-->
+<script type="text/javascript">
+  (function(){"use strict";var e=null,b="4.0.0",
+  n="30816",
+  additional="term=value",
+  t,r,i;try{t=top.document.referer!==""?encodeURIComponent(top.document.referrer.substring(0,2048)):""}catch(o){t=document.referrer!==null?document.referrer.toString().substring(0,2048):""}try{r=window&&window.top&&document.location&&window.top.location===document.location?document.location:window&&window.top&&window.top.location&&""!==window.top.location?window.top.location:document.location}catch(u){r=document.location}try{i=parent.location.href!==""?encodeURIComponent(parent.location.href.toString().substring(0,2048)):""}catch(a){try{i=r!==null?encodeURIComponent(r.toString().substring(0,2048)):""}catch(f){i=""}}var l,c=document.createElement("script"),h=null,p=document.getElementsByTagName("script"),d=Number(p.length)-1,v=document.getElementsByTagName("script")[d];if(typeof l==="undefined"){l=Math.floor(Math.random()*1e17)}h="dx.steelhousemedia.com/spx?"+"dxver="+b+"&shaid="+n+"&tdr="+t+"&plh="+i+"&cb="+l+additional;c.type="text/javascript";c.src=("https:"===document.location.protocol?"https://":"http://")+h;v.parentNode.insertBefore(c,v)})()
+</script>
+
+<script>
+  __attentive_domain="aninebing.attn.tv",function(){window.__attentive={invoked:!1,show:function(){this.invoked=!0}};var t=!1,e=function(){if(document.readyState&&!/loaded|complete/.test(document.readyState))return void setTimeout(e,10);if(!t)return t=!0,void setTimeout(e,50);var n=document.createElement("script");n.setAttribute("async","true"),n.type="text/javascript",n.src="https://cdn.attn.tv/loader.js",((document.getElementsByTagName("head")||[null])[0]||document.getElementsByTagName("script")[0].parentNode).appendChild(n)};if(document.readyState && /loaded|complete/.test(document.readyState))e();else window.addEventListener?window.addEventListener("load",e,!1):window.attachEvent("onload",e)}(),window.__attentive.show();
+</script>

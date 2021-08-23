@@ -1,0 +1,19 @@
+{% assign product_details_class = product_details_class %}
+
+{% include 'product__handles' %}
+
+{%- assign genericProductTitle = product.title | split: '- ' -%}
+
+<div class="product__keep-in-view js-keep-in-view {{ product_details_class }}">
+  <section class="product-bundle__content">
+    {% comment %} <div class="product-bundle js-product-bundle">
+      <div class="product-bundle__featured-image js-product-bundle-featured-image"></div>
+      <div class="product-bundle__info">
+        <div class="product-bundle__title js-product-bundle-title"></div>
+        <div class="product-bundle__color-swatch js-product-bundle-swatch"></div>
+        <div class="product-bundle__sizes js-product-bundle-sizes"></div>
+      </div>
+    </div> {% endcomment %}
+    {%- include 'product_info' with custom_class: 'product__grid-item', tag_list: section.settings.tag_list, type: 'bundle', access: 'first' -%}
+  </section>
+</div>

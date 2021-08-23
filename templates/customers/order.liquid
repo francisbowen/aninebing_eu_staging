@@ -1,0 +1,57 @@
+<!-- globale_my_account_order_include -->
+{% include 'globale-order' %}
+
+{%- comment -%}
+
+Default order template.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/customers-order
+
+Objects Referenced:
+ • order https://help.shopify.com/en/themes/liquid/objects/order
+
+{%- endcomment -%}
+
+{%- include 'breadcrumb' -%}
+
+<article class="order js-{{ template.name }} {% if order.cancelled %}order--cancelled{% endif %}">
+  <h1 class="order__title">{{- 'customer.order.title_summary' | t -}}</h1>
+  {% comment %}<p><a href="/account">{{ 'customer.account.return' | t }}</a></p>{% endcomment %}
+
+  <div class="order__info">
+    {%- assign order_date = order.created_at | time_tag: format: "date" -%}
+    {%- assign cancelled_at = order.cancelled_at | time_tag: format: "date" -%}
+    <p>{{ 'customer.order.title' | t: name: order.name }}</p>
+    <p class="order__date order__date--created">{{ 'customer.order.date_html' | t: date: order_date }}</p>
+
+    {% if order.cancelled %}
+      <div class="order__cancelation">
+        {%- assign cancelled_at = order.cancelled_at | time_tag: format: "date_at_time" -%}
+        <p order__date order__date--cancelled>{{ 'customer.order.cancelled_html' | t: date: cancelled_at }}</p>
+        <p order__cancel-reason>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <h3 class="order__products uppercase-text hide-until@md">{{- 'customer.order.products' | t -}}</h3>
+
+  <div class="order__items">
+    <ul class="line-item line-item hide-until@md">
+      <li class="line-item__image line-item__image--header line-item__header uppercase-text"></li>
+      <li class="line-item__info line-item__info--header line-item__header uppercase-text">{{ 'customer.order.product' | t }}</li>
+      <li class="line-item__price line-item__price--header uppercase-text">{{ 'customer.order.price' | t }}</li>
+      <li class="line-item__quantity line-item__quantity--header line-item__header uppercase-text">{{ 'customer.order.quantity' | t }}</li>
+      <li class="line-item__sku line-item__sku--header line-item__header uppercase-text">{{ 'customer.order.sku' | t }}</li>
+      <li class="line-item__total line-item__total--header line-item__header uppercase-text">{{ 'customer.order.total' | t }}</li>
+    </ul>
+
+    <div class="table-responsive">
+      {%- for line_item in order.line_items -%}
+        {%- include 'line_item--order' -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {% include 'order__totals' %}
+  {% include 'order__details' %}
+</article>

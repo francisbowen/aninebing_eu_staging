@@ -1,0 +1,21 @@
+{%- comment -%}
+
+Shipping method renderer.
+
+Objects Referenced:
+ • shipping_method https://help.shopify.com/en/themes/liquid/objects/shipping_method
+
+{%- endcomment -%}
+
+<div class="shipping-method order-total-info">
+  <span class="shipping-method__label uppercase-text order-total-label">
+    {{ 'customer.order.shipping' | t }}
+  </span>
+  <span class="shipping-method__price uppercase-text order-letter-space-sm">
+    {%- if shipping_method.price == 0 -%}
+  	   {{ 'customer.order.shipping_free' | t }}
+    {%- else -%}
+      {{ shipping_method.price | money_without_currency }}
+    {%- endif -%}
+  </span>
+</div>

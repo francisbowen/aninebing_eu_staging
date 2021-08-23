@@ -1,0 +1,20 @@
+{% comment %}
+
+Finding the quantity limit based on client's inputs on `product-info-template.liquid` section.
+
+1. item: can be variant or first variant of a product
+
+{% endcomment %}
+
+{%- assign product_type = product.type | downcase -%}
+{%- for block in section.blocks -%}
+  {%- assign block_product_type = block.settings.title | downcase -%}
+  {%- assign block_qty_limit = block.settings.qty_limit | plus: 0 -%}
+  {%- if product_type == block_product_type -%}
+    {%- assign qty_limit = block_qty_limit -%}
+    {%- if item_qty <= block_qty_limit and item_qty > 0 -%}
+      {%- assign show_limit_msg = true -%}
+      {% break %}
+    {%- endif -%}
+  {%- endif -%}
+{%- endfor -%}

@@ -1,0 +1,36 @@
+{%- comment -%}
+
+Order totals.
+
+Documentation: https://help.shopify.com/en/themes/development/templates/customers-order
+
+Objects Referenced:
+ • order https://help.shopify.com/en/themes/liquid/objects/order
+
+{%- endcomment -%}
+
+
+<div class="order__totals">
+  <div class="total total--subtotal order-total-info">
+    <span class="total__title uppercase-text order-total-label">{{ 'customer.order.subtotal' | t }}</span>
+    <span class="total__amount uppercase-text order-letter-space-sm">{{ order.line_items_subtotal_price | money }}</span>
+  </div>
+  {% include 'discount_application' with order.cart_level_discount_applications %}
+  {% include 'shipping_method' with order.shipping_methods %}
+  {% include 'tax_line' with order.tax_lines %}
+  <div class="total total--grand-total order-total-info">
+    <span class="total__title uppercase-text order-total-label">{{ 'customer.order.total' | t }}</span>
+    <span class="total__amount uppercase-text order-letter-space-sm">
+      {{ order.total_price | money }}
+      <span class="total__currency">{{ order.currency }}</span>
+    </span>
+  </div>
+  {% comment %} TODO: Loyalty points will be phased out of this step at the moment. {% endcomment %}
+  {% comment %} <div class="points order-total-info">
+    <span class="points__title uppercase-text order-total-label">{{ 'customer.order.total_points' | t }}</span>
+    <span class="points__amount uppercase-text">{%- if order.financial_status == 'refunded' -%}- {% endif %}{{ order.line_items_subtotal_price | divided_by: 100 }}{{ 'customer.order.points_unit' | t }}
+    </span>
+  </div> {% endcomment %}
+</div>
+ 
+
